@@ -40,6 +40,10 @@ const AnimesTest = () => {
 
   console.log(watchedAnimes, 'watchedAnimes');
 
+  // if (user === undefined) {
+  //   return null;
+  // }
+
   return (
     <>
       <p>観たアニメ</p>

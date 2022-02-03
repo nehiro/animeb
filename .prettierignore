@@ -1,0 +1,4 @@
+node_modules
+.next
+packge-lock.json
+public

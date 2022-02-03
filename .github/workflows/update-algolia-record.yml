@@ -1,0 +1,16 @@
+name: update-algolia-record
+on: [push]
+jobs:
+  update-algolia-record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Github Action for curl
+        uses: wei/curl@v1.1.1
+      - name: curl
+        uses: wei/curl@v1
+        with:
+          args: -vv -H "application/vnd.github.everest-preview+json" https://asia-northeast1-animeb-b876d.cloudfunctions.net/addAlgoliaRecords -d @pages/api/db.json

@@ -1,0 +1,21 @@
+export type Anime = {
+  id: string | null;
+  doing: boolean | null;
+  media: string | null;
+  firstTime: boolean | null;
+  season: number | null;
+  title: string | null;
+  ruby: string | null;
+  url: string | null;
+  pv: string | null;
+  year: number | null;
+  quarter: number | null;
+  staff: object | null;
+  op: object | null;
+  ed: object | null;
+  summary: string | null;
+  cast: object | null;
+  subTitle: string[] | null;
+  onair: object | null;
+  streaming: string[] | null;
+};

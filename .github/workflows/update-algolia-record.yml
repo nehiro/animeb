@@ -13,4 +13,4 @@ jobs:
       - name: curl
         uses: wei/curl@v1
         with:
-          args: -vv -H "application/vnd.github.everest-preview+json" https://asia-northeast1-animeb-b876d.cloudfunctions.net/addAlgoliaAnimes -d @pages/api/dbName.json
+          args: -vv -H "application/vnd.github.everest-preview+json" https://asia-northeast1-animeb-b876d.cloudfunctions.net/addAlgoliaAnimes -d @pages/api/dbName02.json

@@ -12,12 +12,7 @@ import { auth, db } from '../utils/firebase';
 import { useAuth } from '../utils/userContext';
 import { ItemInterface, ReactSortable, Sortable } from 'react-sortablejs';
 import {
-  collection,
   doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  setDoc,
   updateDoc,
 } from 'firebase/firestore';
 

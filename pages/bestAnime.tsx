@@ -11,10 +11,7 @@ import LayoutNoNav from '../layouts/LayoutNoNav';
 import { auth, db } from '../utils/firebase';
 import { useAuth } from '../utils/userContext';
 import { ItemInterface, ReactSortable, Sortable } from 'react-sortablejs';
-import {
-  doc,
-  updateDoc,
-} from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 
 type ItemType = {
   id: number;
@@ -36,16 +33,20 @@ const BestAnime = () => {
   }, []);
 
   //ランキング
-  const setUserRanking = () => {
+  const setUserRanking = async () => {
+    const { user } = await useAuth();
     if (user?.ranking) {
       return user?.ranking;
     } else {
       return [];
     }
   };
+
   console.log(setUserRanking(), 'setUserRanking');
 
-  const [ranking, setRanking] = useState(setUserRanking() as ItemInterface[]);
+  const [ranking, setRanking] = useState(
+    setUserRanking() as unknown as ItemInterface[]
+  );
 
   // userが見た作品
   // const watchedDoc = () => {

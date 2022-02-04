@@ -13,4 +13,4 @@ jobs:
       - name: curl
         uses: wei/curl@v1
         with:
-          args: -vv -H "application/json" https://asia-northeast1-animeb-b876d.cloudfunctions.net/addAlgoliaAnimes -d @pages/api/dbName02.json
+          args: -vvf -H "Content-Type:\ application/json" -X POST https://asia-northeast1-animeb-b876d.cloudfunctions.net/addAlgoliaAnimes -d @pages/api/dbName02.json

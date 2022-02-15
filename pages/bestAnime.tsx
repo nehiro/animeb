@@ -12,14 +12,8 @@ import { auth, db } from '../utils/firebase';
 import { useAuth } from '../utils/userContext';
 import { ItemInterface, ReactSortable, Sortable } from 'react-sortablejs';
 import { doc, updateDoc } from 'firebase/firestore';
-
-type ItemType = {
-  id: number;
-  image: string;
-  title: string;
-  chosen?: boolean;
-  selected?: boolean;
-};
+import { UserRanking } from '../types/UserRanking';
+import WatchedAnimes from '../components/WatchedAnimes';
 
 const BestAnime = () => {
   // user管理
@@ -32,54 +26,17 @@ const BestAnime = () => {
     });
   }, []);
 
-  //ランキング
-  const setUserRanking = async () => {
-    const { user } = await useAuth();
+  useEffect(() => {
     if (user?.ranking) {
-      return user?.ranking;
+      setRanking(user.ranking);
     } else {
-      return [];
+      setRanking([]);
     }
-  };
+  }, [user?.ranking]);
 
-  console.log(setUserRanking(), 'setUserRanking');
+  console.log(user?.ranking);
 
-  const [ranking, setRanking] = useState(
-    setUserRanking() as unknown as ItemInterface[]
-  );
-
-  // userが見た作品
-  // const watchedDoc = () => {
-  //   const ref = collection(db, `watchedAnimes`);
-  //   return onSnapshot(ref, async (snap) => {
-  //     const tasks = snap.docs.map((doc) => {
-  //       return getUser(doc.id);
-  //     });
-  //     const users = await Promise.all(tasks);
-  //   });
-  // };
-
-  //rankingとwatchedAnimesで共通の内容を排除
-  // if (watchedAnimes === undefined) {
-  //   return [];
-  // }
-
-  // const newAnimes = watchedAnimes.map((watchedAnime) => {
-  //   const sameIdItem = ranking.find((item) => item.id === watchedAnime.id);
-  //   if (sameIdItem) {
-  //     return setWatched(watchedAnimes);
-  //   } else {
-  //     return setWatched(watchedAnimes);
-  //   }
-  // });
-
-  const [watched, setWatched] = useState<ItemType[]>([]);
-  // const [watched, setWatched] = useState<ItemType[]>([
-  //   { id: 1, image: '/images/hiroaka.png', title: 'あ' },
-  //   { id: 2, image: '/images/hiroaka.png', title: 'い' },
-  //   { id: 3, image: '/images/hiroaka.png', title: 'う' },
-  //   { id: 4, image: '/images/hiroaka.png', title: 'え' },
-  // ]);
+  const [ranking, setRanking] = useState<UserRanking[]>([]);
 
   const bestAnimeSet = async () => {
     await updateDoc(doc(db, `users/${user?.uid}`), {
@@ -90,6 +47,7 @@ const BestAnime = () => {
   const choiced = {
     name: 'bestAnime',
     put: (to: any) => to.el.children.length < 3,
+    // pull: (to: any, from: any) => from.el.children.length > 1,
   };
 
   if (user === undefined) {
@@ -150,28 +108,7 @@ const BestAnime = () => {
           </form>
         </BackGroundGray>
 
-        <ReactSortable
-          className="mb-4 grid grid-cols-5 gap-4"
-          list={watched}
-          setList={setWatched}
-          group="bestAnime"
-          animation={200}
-          delay={2}
-          tag="ul"
-        >
-          {watched ? (
-            watched?.map((item) => (
-              <li key={item.id}>
-                <div className="relative h-24 w-20">
-                  <Image src={item.image} alt="" layout="fill"></Image>
-                </div>
-                {item.title}
-              </li>
-            ))
-          ) : (
-            <li>作品がありません。</li>
-          )}
-        </ReactSortable>
+        <WatchedAnimes></WatchedAnimes>
         <Button>さらに表示する</Button>
       </BackGroundWhite>
 

@@ -7,13 +7,4 @@ module.exports = {
       'lh3.googleusercontent.com',
     ],
   },
-  async redirects() {
-    return [
-      {
-        source: '/myPage',
-        destination: '/myPage/watched',
-        permanent: true,
-      },
-    ];
-  },
 };

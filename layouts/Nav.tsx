@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react';
-import Link from 'next/Link';
 import { SparklesIcon, XIcon } from '@heroicons/react/solid';
 import { FireIcon } from '@heroicons/react/solid';
 import { ClockIcon } from '@heroicons/react/solid';
@@ -10,6 +9,7 @@ import { PencilAltIcon } from '@heroicons/react/solid';
 import { LockClosedIcon } from '@heroicons/react/solid';
 import { Dialog, Transition } from '@headlessui/react';
 import { SideMenu } from '../types/SideMenu';
+import Link from 'next/link';
 
 const Nav = ({ open, toggle }: SideMenu) => {
   const sideNavList01 = [
@@ -61,7 +61,7 @@ const Nav = ({ open, toggle }: SideMenu) => {
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" open={!toggle} onClose={toggle}>
           <div>
-            <div className="fixed inset-y-0 left-0 w-52 flex mt-14">
+            <div className="fixed inset-y-0 left-0 mt-14 flex w-52">
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -72,10 +72,10 @@ const Nav = ({ open, toggle }: SideMenu) => {
                 leaveTo="-translate-x-full"
               >
                 <div className="w-screen max-w-md">
-                  <div className="h-full flex flex-col py-6 bg-white shadow-xl">
-                    <div className="mt-6 relative flex-1 px-4 sm:px-6">
+                  <div className="flex h-full flex-col bg-white py-6 shadow-xl">
+                    <div className="relative mt-6 flex-1 px-4 sm:px-6">
                       <nav>
-                        <ul className="border-b mb-7">
+                        <ul className="mb-7 border-b">
                           {sideNavList01.map((item) => (
                             <li className="mb-7" key={item.label}>
                               <Link href={item.href}>
@@ -89,7 +89,7 @@ const Nav = ({ open, toggle }: SideMenu) => {
                             </li>
                           ))}
                         </ul>
-                        <ul className="border-b mb-7">
+                        <ul className="mb-7 border-b">
                           {sideNavList02.map((item) => (
                             <li className="mb-7" key={item.label}>
                               <Link href={item.href}>

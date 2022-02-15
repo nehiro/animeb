@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/Link';
 import { MenuAlt1Icon } from '@heroicons/react/solid';
 import {
   CheckIcon,
@@ -26,6 +25,7 @@ import {
 } from '@heroicons/react/outline';
 import { signOut } from '@firebase/auth';
 import { auth } from '../utils/firebase';
+import Link from 'next/link';
 
 const googleLogout = () => {
   signOut(auth)
@@ -86,7 +86,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
   return (
     <>
       <SearchModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <header className="bg-purple h-14 w-full flex justify-between items-center fixed top-0 left-0 z-40">
+      <header className="fixed top-0 left-0 z-40 flex h-14 w-full items-center justify-between bg-purple">
         <div className="w-full px-4">
           <div className="flex justify-between">
             <div className="flex items-center">
@@ -94,7 +94,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                 <MenuAlt1Icon className="h-6 w-6" />
               </button>
               <Link href="/">
-                <a className="flex items-center mx-2">
+                <a className="mx-2 flex items-center">
                   <Image
                     src="/images/logo.svg"
                     width="175"
@@ -105,28 +105,28 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
               </Link>
             </div>
             <button
-              className="h-10 max-w-xl bg-white rounded-full flex-1 relative hidden md:flex items-center justify-between px-4"
+              className="relative hidden h-10 max-w-xl flex-1 items-center justify-between rounded-full bg-white px-4 md:flex"
               onClick={() => setIsOpen(true)}
             >
               <p>キーワードで検索</p>
-              <SearchIcon className="h-5 w-5 inline-block text-gray-500" />
+              <SearchIcon className="inline-block h-5 w-5 text-gray-500" />
             </button>
             <div className="flex justify-between">
               <Link href="/help">
-                <a className="mx-4 hidden md:flex items-center justify-center">
+                <a className="mx-4 hidden items-center justify-center md:flex">
                   <i className="mr-1.5 leading-none">
-                    <QuestionMarkCircleIcon className="h-5 w-5 inline-block" />
+                    <QuestionMarkCircleIcon className="inline-block h-5 w-5" />
                   </i>
                   <span className="text-sm font-bold">ヘルプ</span>
                 </a>
               </Link>
               {user ? (
                 <>
-                  <Popover className="w-10 h-10 relative">
+                  <Popover className="relative h-10 w-10">
                     {({ open }) => (
                       <>
                         <Popover.Button>
-                          <div className="w-10 h-10 rounded-full relative overflow-hidden">
+                          <div className="relative h-10 w-10 overflow-hidden rounded-full">
                             <Image src={user.photoURL} alt="" layout="fill" />
                           </div>
                         </Popover.Button>
@@ -140,13 +140,13 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                           leaveFrom="opacity-100 translate-y-0"
                           leaveTo="opacity-0 translate-y-1"
                         >
-                          <Popover.Panel className="absolute z-10 right-0 mt-3 px-2 w-48 max-w-md sm:px-0">
-                            <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+                          <Popover.Panel className="absolute right-0 z-10 mt-3 w-48 max-w-md px-2 sm:px-0">
+                            <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                               <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-5 sm:py-4 sm:px-6">
-                                <Link href="/myPage/watched">
+                                <Link href="/myPage">
                                   <a>
                                     <i className="mr-1.5 leading-none">
-                                      <UserCircleIcon className="h-5 w-5 inline-block text-purple" />
+                                      <UserCircleIcon className="inline-block h-5 w-5 text-purple" />
                                     </i>
                                     <span className="text-sm">マイページ</span>
                                   </a>
@@ -154,7 +154,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                                 <Link href="/profile">
                                   <a>
                                     <i className="mr-1.5 leading-none">
-                                      <IdentificationIcon className="h-5 w-5 inline-block text-purple" />
+                                      <IdentificationIcon className="inline-block h-5 w-5 text-purple" />
                                     </i>
                                     <span className="text-sm">
                                       プロフィール編集
@@ -164,7 +164,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                                 <Link href="/account">
                                   <a>
                                     <i className="mr-1.5 leading-none">
-                                      <CogIcon className="h-5 w-5 inline-block text-purple" />
+                                      <CogIcon className="inline-block h-5 w-5 text-purple" />
                                     </i>
                                     <span className="text-sm">
                                       アカウント情報
@@ -174,7 +174,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                                 <Link href="/bestAnime">
                                   <a>
                                     <i className="mr-1.5 leading-none">
-                                      <MusicNoteIcon className="h-5 w-5 inline-block text-purple" />
+                                      <MusicNoteIcon className="inline-block h-5 w-5 text-purple" />
                                     </i>
                                     <span className="text-sm">
                                       ベストアニメ設定
@@ -182,13 +182,13 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                                   </a>
                                 </Link>
                               </div>
-                              <div className="px-5 py-6 sm:py-4 sm:px-6 bg-gray-100">
+                              <div className="bg-gray-100 px-5 py-6 sm:py-4 sm:px-6">
                                 <button
                                   onClick={googleLogout}
                                   className="flex items-center justify-center"
                                 >
                                   <i className="mr-1.5 leading-none">
-                                    <LogoutIcon className="h-5 w-5 inline-block text-purple" />
+                                    <LogoutIcon className="inline-block h-5 w-5 text-purple" />
                                   </i>
                                   <span className="text-sm font-semibold">
                                     ログアウト
@@ -215,9 +215,9 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                     </a>
                   </Link> */}
                   <Link href="/signup">
-                    <a className="px-8 mx-2 bg-yellow rounded-full hidden md:flex items-center justify-center min-w-146 max-h-40">
+                    <a className="mx-2 hidden max-h-40 min-w-146 items-center justify-center rounded-full bg-yellow px-8 md:flex">
                       <i className="mr-1.5 leading-none">
-                        <UserIcon className="h-5 w-5 inline-block" />
+                        <UserIcon className="inline-block h-5 w-5" />
                       </i>
                       <span className="text-sm font-bold">登録・ログイン</span>
                     </a>

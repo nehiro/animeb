@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import { ReactSortable, Sortable } from 'react-sortablejs';
 import {
   collection,
@@ -11,7 +11,9 @@ import {
 import { db } from '../utils/firebase';
 import { User } from '../types/User';
 import { useAuth } from '../utils/userContext';
-import AnimesTest from '../components/AnimesTest';
+import AnimesTest from '../components/WatchedAnimes';
+import LayoutNoNav from '../layouts/LayoutNoNav';
+import WatchedAnimes from '../components/WatchedAnimes';
 
 interface ItemType {
   id: number;
@@ -90,7 +92,7 @@ const test = () => {
       {/* <button onClick={get} className="border border-green-800">
         id取得
       </button> */}
-      <AnimesTest></AnimesTest>
+      <WatchedAnimes></WatchedAnimes>
       {/* <p>SORT</p>
       <ReactSortable
         list={select}
@@ -125,3 +127,4 @@ const test = () => {
 };
 
 export default test;
+test.getLayout = (page: ReactElement) => <LayoutNoNav>{page}</LayoutNoNav>;

@@ -2,17 +2,10 @@ import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import Image from 'next/image';
 import React, { ReactElement, useEffect } from 'react';
 import BackGroundGray from '../components/BackGroundGray';
-import BackGroundWhite from '../components/BackGroundWhite';
 import Button from '../components/Button';
 import Card from '../components/card/Card';
-import Review from '../components/Review';
-import Season from '../components/Season';
-import StreamingService from '../components/StreamingService';
-import Tag from '../components/Tag';
 import TopTitle from '../components/TopTitle';
-import { AllUserTable } from '../components/AllUserTable';
 import Layout from '../layouts/Layout';
-import { Anime } from '../types/Anime';
 import { useAnime } from '../utils/animeContext';
 import { db } from '../utils/firebase';
 import { useAuth } from '../utils/userContext';
@@ -24,8 +17,12 @@ import Profile from '../components/Profile';
 
 const Home = () => {
   //アニメ管理
-  const { anime } = useAnime();
-  const animeMap = anime?.map((item) => <li key={item.title}>{item.title}</li>);
+  const { animes } = useAnime();
+  console.log(animes, 'animes');
+  // console.log(animes, 'anime.items');
+
+  // const animeMap = animes?.map((item) => <li key={item.title}>{item.title}</li>);
+  // console.log(animeMap, 'animeMap');
 
   // followとuser管理
   const { user, loading } = useAuth();
@@ -58,7 +55,7 @@ const Home = () => {
             <Timeline />
           </div>
           <div>
-            <div className="shadow rounded-md p-4 bg-white">
+            <div className="rounded-md bg-white p-4 shadow">
               <h2 className="font-bold">ユーザー一覧</h2>
               <ul className="divide-y">
                 {users
@@ -72,8 +69,8 @@ const Home = () => {
             </div>
           </div>
           <div>
-            <div className="shadow rounded-md p-4 bg-white">
-              <h2 className="font-bold mb-2">あなたの情報</h2>
+            <div className="rounded-md bg-white p-4 shadow">
+              <h2 className="mb-2 font-bold">あなたの情報</h2>
               <Profile />
             </div>
           </div>
@@ -83,8 +80,8 @@ const Home = () => {
 
       <BackGroundGray>
         <TopTitle>今期のアニメ（2022年冬）</TopTitle>
-        <ul id="animeTitle">{animeMap}</ul>
-        <Card anime={anime}></Card>
+        {/* <ul id="animeTitle">{animeMap}</ul> */}
+        <Card anime={animes}></Card>
         <Button>もっと見る</Button>
       </BackGroundGray>
       {/* <BackGroundWhite>

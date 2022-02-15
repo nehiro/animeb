@@ -25,7 +25,7 @@ const AnimesTest = () => {
         return getWatchedAnimes(doc.id);
       });
       const animes = await Promise.all(tasks);
-      console.log(animes, 'animes');
+      // console.log(animes, 'animes');
 
       setWatchedAnimes(animes);
     });

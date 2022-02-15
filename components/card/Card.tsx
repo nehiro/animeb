@@ -63,7 +63,7 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
   return (
     <>
       {/* <ul className="grid grid-cols-5 gap-4 justify-items-center mb-8"> */}
-      <ul className="grid grid-cols-5 gap-4 justify-items-center mb-8">
+      {/* <ul className="grid grid-cols-5 gap-4 justify-items-center mb-8">
         {anime?.map((item: Anime) => (
           <li key={item.title}>
             <div className="mb-2">
@@ -111,14 +111,14 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
             </div>
           </li>
         ))}
-      </ul>
+      </ul> */}
       <Transition.Root show={reviewModal} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed z-50 inset-0 overflow-y-auto"
+          className="fixed inset-0 z-50 overflow-y-auto"
           onClose={modalOpen}
         >
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -133,7 +133,7 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
 
             {/* This element is to trick the browser into centering the modal contents. */}
             <span
-              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              className="hidden sm:inline-block sm:h-screen sm:align-middle"
               aria-hidden="true"
             >
               &#8203;
@@ -147,8 +147,8 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div className="hidden sm:block absolute top-0 right-0 pt-2 pr-2">
+              <div className="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle">
+                <div className="absolute top-0 right-0 hidden pt-2 pr-2 sm:block">
                   <button
                     type="button"
                     className="text-white hover:text-yellow"
@@ -162,14 +162,14 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
                   <div className="mt-3 text-center sm:mt-0">
                     <Dialog.Title
                       as="h3"
-                      className="text-lg leading-6 font-medium text-white bg-purple py-2"
+                      className="bg-purple py-2 text-lg font-medium leading-6 text-white"
                     >
                       レビュー
                     </Dialog.Title>
-                    <ul className="bg-buttonBlack text-white p-4">
+                    <ul className="bg-buttonBlack p-4 text-white">
                       <li
                         onChange={changeScoreAverage}
-                        className="text-2xl border-b border-gray-500 pb-2"
+                        className="border-b border-gray-500 pb-2 text-2xl"
                       >
                         {scoreAverage}
                       </li>
@@ -272,25 +272,25 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
                     placeholder="#好きなタグを1つ入力"
                   />
                 </div>
-                <div className="px-4 flex justify-start items-center">
-                  <button className="text-xs bg-gray-200 rounded p-2">
+                <div className="flex items-center justify-start px-4">
+                  <button className="rounded bg-gray-200 p-2 text-xs">
                     ネタバレ
                   </button>
-                  <p className="text-red-600 text-xs">
+                  <p className="text-xs text-red-600">
                     レビュー内容にネタバレが含まれている場合はこちらをチェックしてください。
                   </p>
                 </div>
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-buttonBlack text-base font-medium text-white hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => setReviewModal(false)}
                   >
                     投稿
                   </button>
                   <button
                     type="button"
-                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
                     onClick={() => setReviewModal(false)}
                   >
                     キャンセル

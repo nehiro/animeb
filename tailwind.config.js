@@ -66,5 +66,5 @@ module.exports = {
       lowerLatin: 'lower-latin',
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 };

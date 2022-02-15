@@ -1,3 +1,5 @@
+import { UserRanking } from './UserRanking';
+
 export type User = {
   bd: string | undefined;
   email: string;
@@ -9,5 +11,5 @@ export type User = {
   followCount: number;
   followerCount: number;
   createdAt: number;
-  ranking: object[];
+  ranking: UserRanking[];
 };

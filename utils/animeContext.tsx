@@ -8,14 +8,14 @@ import {
 import { Anime } from '../types/Anime';
 
 type AnimeContextProps = {
-  anime: Anime[] | undefined;
+  animes: Anime[] | undefined;
 };
 
 //箱を定義
-const AnimeContext = createContext<AnimeContextProps>({ anime: undefined });
+const AnimeContext = createContext<AnimeContextProps>({ animes: undefined });
 
 export const AnimeProvider = ({ children }: { children: ReactNode }) => {
-  const [anime, setAnime] = useState();
+  const [animes, setAnimes] = useState();
 
   useEffect(() => {
     getAllAnimeTitles();
@@ -31,12 +31,12 @@ export const AnimeProvider = ({ children }: { children: ReactNode }) => {
     // console.log('json', json);
 
     //全部のアニメ
-    setAnime(json);
+    setAnimes(json.items);
   }
 
   return (
     //中身を詰めて、箱を配る人を用意する
-    <AnimeContext.Provider value={{ anime }}>{children}</AnimeContext.Provider>
+    <AnimeContext.Provider value={{ animes }}>{children}</AnimeContext.Provider>
   );
 };
 

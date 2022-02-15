@@ -5,6 +5,7 @@ import {
   UsersIcon,
 } from '@heroicons/react/solid';
 import { useRouter } from 'next/dist/client/router';
+import Link from 'next/link';
 import React, { ReactElement, useEffect } from 'react';
 import Layout from '../../layouts/Layout';
 import MyPageSubHeader from '../../layouts/MyPageSubHeader';
@@ -22,7 +23,7 @@ const MyPage = () => {
     });
   }, []);
   const tabs = [
-    { name: 'watched', href: '/myPage/watched', icon: EyeIcon, current: true },
+    { name: 'watched', href: '/myPage', icon: EyeIcon, current: true },
     {
       name: 'checked',
       href: '/myPage/checked',
@@ -55,28 +56,29 @@ const MyPage = () => {
             <div className="border-b border-gray-200">
               <nav className="-mb-px flex space-x-8" aria-label="Tabs">
                 {tabs.map((tab) => (
-                  <a
-                    key={tab.name}
-                    href={tab.href}
-                    className={classNames(
-                      tab.current
-                        ? 'border-indigo-500 text-indigo-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                      'group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm'
-                    )}
-                    aria-current={tab.current ? 'page' : undefined}
-                  >
-                    <tab.icon
+                  <Link href={tab.href}>
+                    <a
+                      key={tab.name}
                       className={classNames(
                         tab.current
-                          ? 'text-indigo-500'
-                          : 'text-gray-400 group-hover:text-gray-500',
-                        '-ml-0.5 mr-2 h-5 w-5'
+                          ? 'border-indigo-500 text-indigo-600'
+                          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                        'group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium'
                       )}
-                      aria-hidden="true"
-                    />
-                    <span>{tab.name}</span>
-                  </a>
+                      aria-current={tab.current ? 'page' : undefined}
+                    >
+                      <tab.icon
+                        className={classNames(
+                          tab.current
+                            ? 'text-indigo-500'
+                            : 'text-gray-400 group-hover:text-gray-500',
+                          '-ml-0.5 mr-2 h-5 w-5'
+                        )}
+                        aria-hidden="true"
+                      />
+                      <span>{tab.name}</span>
+                    </a>
+                  </Link>
                 ))}
               </nav>
             </div>

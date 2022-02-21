@@ -1,6 +1,6 @@
 import React from 'react';
 import { KeyIcon, MailIcon, UserIcon } from '@heroicons/react/solid';
-import Link from 'next/Link';
+import Link from 'next/link';
 import { createUserWithEmailAndPassword, User } from 'firebase/auth';
 import { auth, db } from '../utils/firebase';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -64,14 +64,14 @@ const PasswordBaseSignup = () => {
         >
           ユーザー名
         </label> */}
-        <div className="mt-1 relative rounded-md shadow-sm">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <div className="relative mt-1 rounded-md shadow-sm">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <UserIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
           </div>
           <input
             type="text"
             id="name"
-            className="block w-full pl-10 sm:text-sm border rounded-md py-2"
+            className="block w-full rounded-md border py-2 pl-10 sm:text-sm"
             placeholder="ユーザー名"
             required
             autoComplete="name"
@@ -92,8 +92,8 @@ const PasswordBaseSignup = () => {
         >
           メールアドレス
         </label>
-        <div className="mt-1 relative rounded-md shadow-sm">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <div className="relative mt-1 rounded-md shadow-sm">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <MailIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
           </div>
           <input
@@ -108,7 +108,7 @@ const PasswordBaseSignup = () => {
             id="email"
             autoComplete="email"
             placeholder="メールアドレス"
-            className="block w-full pl-10 sm:text-sm border rounded-md py-2"
+            className="block w-full rounded-md border py-2 pl-10 sm:text-sm"
             required
           />
           {errors.email?.type === 'required' && (
@@ -129,8 +129,8 @@ const PasswordBaseSignup = () => {
         >
           パスワード
         </label>
-        <div className="mt-1 relative rounded-md shadow-sm">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <div className="relative mt-1 rounded-md shadow-sm">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <KeyIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
           </div>
           <input
@@ -139,7 +139,7 @@ const PasswordBaseSignup = () => {
             autoComplete="current-password"
             required
             placeholder="パスワード"
-            className="appearance-none block w-full pl-10 py-2 sm:text-sm border rounded-md"
+            className="block w-full appearance-none rounded-md border py-2 pl-10 sm:text-sm"
             {...register('password', { required: true })}
           />
           {errors.email?.type === 'required' && (
@@ -151,11 +151,11 @@ const PasswordBaseSignup = () => {
       <div>
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border bg-buttonBlack text-white hover:bg-gray-500"
+          className="flex w-full justify-center border bg-buttonBlack py-2 px-4 text-white hover:bg-gray-500"
         >
           メールアドレスで新規登録
         </button>
-        <div className="text-xs mt-4 text-center">
+        <div className="mt-4 text-center text-xs">
           <Link href="/signin">
             <a>メールアドレスで登録している方はこちら</a>
           </Link>

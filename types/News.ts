@@ -4,4 +4,6 @@ export type News = {
   body: {
     content: object[];
   };
+  createdAt: number;
+  updatedAt?: number;
 };

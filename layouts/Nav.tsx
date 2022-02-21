@@ -1,12 +1,16 @@
 import React, { Fragment, useState } from 'react';
-import { SparklesIcon, XIcon } from '@heroicons/react/solid';
-import { FireIcon } from '@heroicons/react/solid';
-import { ClockIcon } from '@heroicons/react/solid';
-import { VideoCameraIcon } from '@heroicons/react/solid';
-import { InformationCircleIcon } from '@heroicons/react/solid';
-import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
-import { PencilAltIcon } from '@heroicons/react/solid';
-import { LockClosedIcon } from '@heroicons/react/solid';
+import {
+  SparklesIcon,
+  XIcon,
+  NewspaperIcon,
+  FireIcon,
+  ClockIcon,
+  VideoCameraIcon,
+  InformationCircleIcon,
+  PencilAltIcon,
+  LockClosedIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/react/solid';
 import { Dialog, Transition } from '@headlessui/react';
 import { SideMenu } from '../types/SideMenu';
 import Link from 'next/link';
@@ -35,6 +39,11 @@ const Nav = ({ open, toggle }: SideMenu) => {
     },
   ];
   const sideNavList02 = [
+    {
+      href: '/news',
+      label: 'ニュース',
+      icon: <NewspaperIcon className="h-5 w-5 text-purple" />,
+    },
     {
       href: '/about',
       label: 'アニメ部！について',

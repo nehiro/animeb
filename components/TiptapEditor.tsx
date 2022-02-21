@@ -1,4 +1,4 @@
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent, JSONContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import { collection, doc, setDoc, updateDoc } from 'firebase/firestore';
@@ -9,10 +9,15 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { lowlight } from 'lowlight/lib/common.js';
 import { useController, UseControllerProps } from 'react-hook-form';
 
-const Tiptap = (
-  props: UseControllerProps<any>,
-  { editable = true, content = 'hello' }: { editable: boolean; content: string }
-) => {
+// type Props = {
+//   control: Control<TFieldValues>;
+//   name: TName;
+//   rules:;
+//   content?: object;
+// };
+
+const TiptapEditor = (props: UseControllerProps<any>) => {
+  // console.log(props, 'props');
   const { field, fieldState, formState } = useController(props);
   // classの連結
   const classNames = (...classes: (string | boolean | undefined)[]) =>
@@ -33,6 +38,7 @@ const Tiptap = (
       }),
     ],
     content: field.value,
+    //useEffect で変更があったらcontentに
     onBlur() {
       field.onBlur();
     },
@@ -41,7 +47,6 @@ const Tiptap = (
       field.onChange(editor.getJSON());
     },
     editorProps: {
-      editable: () => editable,
       attributes: {
         class:
           'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none border rounded-sm',
@@ -75,38 +80,38 @@ const Tiptap = (
     editor.chain().focus().setImage({ src: imageURL }).run();
   };
 
-  console.log(editable);
+  // console.log(editable);
   return (
     <div className="container">
-      {editable && (
-        <div className="flex">
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={classNames(
-              'border p-2',
-              editor.isActive('bold') && 'bg-violet-600 font-bold text-white'
-            )}
-            type="button"
-          >
-            <i className="ri-bold"></i>
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={classNames(
-              'border p-2',
-              editor.isActive('bulletList') &&
-                'bg-violet-600 font-bold text-white'
-            )}
-            type="button"
-          >
-            <i className="ri-list-unordered"></i>
-          </button>
-          <label className="border p-2">
-            <i className="ri-image-add-line"></i>
-            <input className="hidden" type="file" onChange={uploadImage} />
-          </label>
-        </div>
-      )}
+      {/* {editable && ( */}
+      <div className="flex">
+        <button
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={classNames(
+            'border p-2',
+            editor.isActive('bold') && 'bg-violet-600 font-bold text-white'
+          )}
+          type="button"
+        >
+          <i className="ri-bold"></i>
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={classNames(
+            'border p-2',
+            editor.isActive('bulletList') &&
+              'bg-violet-600 font-bold text-white'
+          )}
+          type="button"
+        >
+          <i className="ri-list-unordered"></i>
+        </button>
+        <label className="border p-2">
+          <i className="ri-image-add-line"></i>
+          <input className="hidden" type="file" onChange={uploadImage} />
+        </label>
+      </div>
+      {/* )} */}
       <EditorContent editor={editor} />
       {fieldState.error?.type === 'required' && '必須入力です'}
       {/* {editable && <button onClick={submit}>投稿</button>} */}
@@ -114,4 +119,4 @@ const Tiptap = (
   );
 };
 
-export default Tiptap;
+export default TiptapEditor;

@@ -14,15 +14,22 @@ import { User } from '../types/User';
 import Timeline from '../components/Timeline';
 import UserItem from '../components/UserItem';
 import Profile from '../components/Profile';
+import Link from 'next/link';
 
 const Home = () => {
   //アニメ管理
   const { animes } = useAnime();
-  console.log(animes, 'animes');
+  // console.log(animes, 'animes');
   // console.log(animes, 'anime.items');
 
-  // const animeMap = animes?.map((item) => <li key={item.title}>{item.title}</li>);
-  // console.log(animeMap, 'animeMap');
+  const animesMap = animes?.map((item) => (
+    <li key={item.title}>
+      <Link href={encodeURI('animes/' + `${item.title}`)}>
+        <a>{item.title}</a>
+      </Link>
+    </li>
+  ));
+  // console.log(animesMap, 'animesMap');
 
   // followとuser管理
   const { user, loading } = useAuth();
@@ -48,7 +55,7 @@ const Home = () => {
           priority
         />
       </section>
-      <div>
+      {/* <div>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <h2 className="font-bold">あなたのタイムライン</h2>
@@ -75,11 +82,13 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <AllUserTable></AllUserTable> */}
 
       <BackGroundGray>
         <TopTitle>今期のアニメ（2022年冬）</TopTitle>
+        {/* <ul>{animesMap}</ul> */}
+
         {/* <ul id="animeTitle">{animeMap}</ul> */}
         <Card anime={animes}></Card>
         <Button>もっと見る</Button>

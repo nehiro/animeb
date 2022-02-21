@@ -1,4 +1,5 @@
 import { deleteDoc, doc } from '@firebase/firestore';
+import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/dist/client/router';
 import React, { ReactElement, useEffect } from 'react';
 import BackGroundWhite from '../components/BackGroundWhite';
@@ -29,7 +30,7 @@ const Delete = () => {
       <Breadcrumbs />
       <BackGroundWhite>
         <SubpageTitle>退会</SubpageTitle>
-        <p className="text-center mb-8">
+        <p className="mb-8 text-center">
           アニメ部！を退会してもよろしいですか？
           <br />
           これまでの記録はすべて削除されてしまいます。
@@ -37,7 +38,7 @@ const Delete = () => {
         <p className="text-center">
           <button
             onClick={DeleteUserData}
-            className="bg-buttonBlack rounded-full py-3 px-12 text-white mx-auto inline-block relative"
+            className="relative mx-auto inline-block rounded-full bg-buttonBlack py-3 px-12 text-white"
           >
             退会する
           </button>

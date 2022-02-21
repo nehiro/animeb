@@ -4,12 +4,14 @@ import React, { ReactElement } from 'react';
 import { adminDB } from '../../firebase/server';
 import Layout from '../../layouts/Layout';
 import Link from 'next/link';
-import Tiptap from '../../components/Tiptap';
 import { useForm } from 'react-hook-form';
 import { News } from '../../types/News';
+import TiptapRender from '../../components/TiptapRender';
 
-const Slug = (news: News) => {
-  // console.log(slugArticleContents, 'slugArticleContents');
+const Slug = ({ news }: { news: News }) => {
+  // console.log(news, 'news');
+  // console.log(news.title, 'news.title');
+  console.log(news.body, 'news.body');
 
   const {
     register,
@@ -34,15 +36,13 @@ const Slug = (news: News) => {
       <ul>
         <li>【ID】{news.title}の記事ページ</li>
         <li>
-          <Tiptap
-            control={control}
-            name="body"
-            rules={{
-              required: true,
-            }}
-            editable={false}
-            content={news.body}
-          ></Tiptap>
+          {/* contentは受け取った内容全て渡す */}
+          <TiptapRender editable={false} content={news.body} />
+        </li>
+        <li>
+          <Link href={`${news.id}/newsEditor`}>
+            <a>編集</a>
+          </Link>
         </li>
       </ul>
     </>
@@ -55,6 +55,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const newsRef = adminDB.collection('news');
   const snap = await newsRef.get();
   const paths = snap.docs.map((doc) => `/news/${doc.id}`);
+  // console.log(paths, 'paths');
   return {
     paths,
     fallback: false,
@@ -62,21 +63,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // console.log(params, 'params');
+  console.log(params, 'params');
   const newsRef = adminDB.collection('news').doc(`${params?.slug}`);
   // console.log(newsRef, 'newsRef');
   const snap = await newsRef.get();
   // console.log(snap, 'snap');
-  const news = {
-    id: snap.id,
-    title: snap.data()?.title,
-    body: snap.data()?.body,
-  };
-  // console.log(news, 'news');
-  // console.log(news.title, 'news.title');
-  // console.log(news.body, 'news.body');
+  // console.log(snap.data(), 'snap.data()');
+  const news = snap.data();
   return {
-    props: news,
+    props: { news },
   };
 };
 

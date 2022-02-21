@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/dist/client/router';
-import Link from 'next/Link';
+import Link from 'next/link';
 import React, { ReactElement, useEffect } from 'react';
 import BackGroundWhite from '../components/BackGroundWhite';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -24,48 +24,48 @@ const Account = () => {
       <Breadcrumbs />
       <BackGroundWhite>
         <SubpageTitle>アカウント情報</SubpageTitle>
-        <h2 className="font-bold mb-8 text-center">非公開情報</h2>
+        <h2 className="mb-8 text-center font-bold">非公開情報</h2>
         <ul>
           <li>
             <Link href="/accountSetting">
-              <a className="flex items-center justify-between bg-bgGray border rounded py-2 px-4 mb-4">
+              <a className="mb-4 flex items-center justify-between rounded border bg-bgGray py-2 px-4">
                 メールアドレス
                 <div>
                   <span className="mr-4">{user?.email}</span>
-                  <ChevronRightIcon className="h-6 w-6 inline-block" />
+                  <ChevronRightIcon className="inline-block h-6 w-6" />
                 </div>
               </a>
             </Link>
           </li>
           <li>
             <Link href="/accountSetting">
-              <a className="flex items-center justify-between bg-bgGray border rounded py-2 px-4 mb-4">
+              <a className="mb-4 flex items-center justify-between rounded border bg-bgGray py-2 px-4">
                 性別
                 <div>
                   <span className="mr-4">
                     {user?.gender ? user?.gender : '未設定'}
                   </span>
-                  <ChevronRightIcon className="h-6 w-6 inline-block" />
+                  <ChevronRightIcon className="inline-block h-6 w-6" />
                 </div>
               </a>
             </Link>
           </li>
           <li>
             <Link href="/accountSetting">
-              <a className="flex items-center justify-between bg-bgGray border rounded py-2 px-4 mb-12">
+              <a className="mb-12 flex items-center justify-between rounded border bg-bgGray py-2 px-4">
                 生年月日
                 <div>
                   <span className="mr-4">{user?.bd ? user?.bd : '未設定'}</span>
-                  <ChevronRightIcon className="h-6 w-6 inline-block" />
+                  <ChevronRightIcon className="inline-block h-6 w-6" />
                 </div>
               </a>
             </Link>
           </li>
           <li>
             <Link href="/delete">
-              <a className="flex items-center justify-between bg-bgGray border rounded py-2 px-4">
+              <a className="flex items-center justify-between rounded border bg-bgGray py-2 px-4">
                 退会する
-                <ChevronRightIcon className="h-6 w-6 inline-block" />
+                <ChevronRightIcon className="inline-block h-6 w-6" />
               </a>
             </Link>
           </li>

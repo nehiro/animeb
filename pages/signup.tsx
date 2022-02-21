@@ -1,6 +1,6 @@
 import { KeyIcon, MailIcon, UserIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/dist/client/router';
-import Link from 'next/Link';
+import Link from 'next/link';
 import React, { ReactElement, useEffect } from 'react';
 import SubpageTitle from '../components/SubpageTitle';
 import LayoutNoNav from '../layouts/LayoutNoNav';
@@ -31,7 +31,7 @@ const Signup = () => {
               <GoogleLogin />
               <FacebookLogin />
               <TwitterLogin />
-              <button className="w-full flex justify-center items-center py-1 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-line hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-line">
+              <button className="flex w-full items-center justify-center rounded-md border border-transparent bg-line py-1 px-4 text-sm font-medium text-white shadow-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-line focus:ring-offset-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="28"
@@ -69,7 +69,7 @@ const Signup = () => {
               </div>
             </div>
             <PasswordBaseSignup /> */}
-            <p className="mt-6 pt-4 border-t border-gray-300 text-gray-600 text-xs lead">
+            <p className="lead mt-6 border-t border-gray-300 pt-4 text-xs text-gray-600">
               会員登録することにより、
               <Link href="/terms">
                 <a className="underline">利用規約</a>

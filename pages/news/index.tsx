@@ -1,12 +1,22 @@
 import Head from 'next/head';
 import React, { ReactElement } from 'react';
-import Tiptap from '../../components/Tiptap';
 import { adminDB } from '../../firebase/server';
 import Layout from '../../layouts/Layout';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
+import { News } from '../../types/News';
 
-const Index = ({ articles }) => {
+const Index = ({ news }: { news: News[] }) => {
+  // console.log(news, 'news');
+  //日付表示フォーマット
+  const dateFormat = (time: number) => {
+    const dt = new Date(time);
+    var y = dt.getFullYear();
+    var m = ('00' + (dt.getMonth() + 1)).slice(-2);
+    var d = ('00' + dt.getDate()).slice(-2);
+    return y + '-' + m + '-' + d;
+  };
+
   return (
     <>
       <Head>
@@ -16,10 +26,13 @@ const Index = ({ articles }) => {
         ></link>
       </Head>
       <ul>
-        {articles.map((article) => (
-          <li key={article.id}>
-            <Link href={`/news/${article.id}`}>
-              <a>{article.id}</a>
+        {news.map((item) => (
+          <li key={item.id}>
+            <Link href={`/news/${item.id}`}>
+              <a>
+                <span className="mr-4">{dateFormat(item.createdAt)}</span>
+                <span>{item.title}</span>
+              </a>
             </Link>
           </li>
         ))}
@@ -33,19 +46,22 @@ export default Index;
 
 export const getStaticProps: GetStaticProps = async () => {
   const newsRef = adminDB.collection('news');
-  const snap = await newsRef.get();
+  const snap = await newsRef.orderBy('createdAt', 'desc').get();
   // console.log(snap.docs, 'snap.docs');
   // const article = snap.docs;
-  const articles = snap.docs.map((doc) => {
+  const news = snap.docs.map((doc) => {
     // console.log(doc.data().body.content, 'doc.data().body.content');
     // return { id: doc.id, body: doc.data() };
-    return { id: doc.id };
+    // console.log(doc.data(), 'doc.data()');
+    // console.log(doc, 'doc');
+    return doc.data();
+
     // const news = doc.data();
     // console.log(news, 'news');
   });
-  // console.log(articles, 'article');
+  console.log(news, 'news');
   return {
-    props: { articles },
+    props: { news },
   };
 };
 

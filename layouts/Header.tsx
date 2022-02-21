@@ -27,7 +27,7 @@ import { signOut } from '@firebase/auth';
 import { auth } from '../utils/firebase';
 import Link from 'next/link';
 
-const googleLogout = () => {
+const logout = () => {
   signOut(auth)
     .then(() => {
       alert(`ログアウト完了`);
@@ -184,7 +184,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                               </div>
                               <div className="bg-gray-100 px-5 py-6 sm:py-4 sm:px-6">
                                 <button
-                                  onClick={googleLogout}
+                                  onClick={logout}
                                   className="flex items-center justify-center"
                                 >
                                   <i className="mr-1.5 leading-none">

@@ -1,6 +1,6 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/Link';
+import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/solid';
 import { BookmarkIcon } from '@heroicons/react/solid';
 import { StarIcon } from '@heroicons/react/solid';
@@ -14,63 +14,69 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
     setReviewModal(true);
   };
 
-  const [storyLineLength, setStoryLineLength] = useState(1);
-  const [drawinglineLength, setDrawingLineLength] = useState(1);
-  const [voiceActorlineLength, setVoiceActorLineLength] = useState(1);
-  const [musiclineLength, setMusicLineLength] = useState(1);
-  const [characterlineLength, setCharacterLineLength] = useState(1);
-  const [scoreAverage, setScoreAverage] = useState(1);
+  const [storyScore, setStoryScore] = useState(0);
+  const [drawingScore, setDrawingScore] = useState(0);
+  const [voiceActorScore, setVoiceActorScore] = useState(0);
+  const [musicScore, setMusicScore] = useState(0);
+  const [characterScore, setCharacterScore] = useState(0);
+  const [scoreAverage, setScoreAverage] = useState<number | string>(0);
 
-  const changeStoryLineLength = (e: any) => {
-    let changeValue = e.target.value;
-    setStoryLineLength(changeValue);
-    changeScoreAverage();
-  };
-  const changeDrawingLineLength = (e: any) => {
-    let changeValue = e.target.value;
-    setDrawingLineLength(changeValue);
-    changeScoreAverage();
-  };
-  const changeVoiceActorLineLength = (e: any) => {
-    let changeValue = e.target.value;
-    setVoiceActorLineLength(changeValue);
-    changeScoreAverage();
-  };
-  const changeMusiclineLength = (e: any) => {
-    let changeValue = e.target.value;
-    setMusicLineLength(changeValue);
-    changeScoreAverage();
-  };
-  const changeCharacterlineLength = (e: any) => {
-    let changeValue = e.target.value;
-    setCharacterLineLength(changeValue);
-    changeScoreAverage();
-  };
+  const scoreArray = [
+    storyScore,
+    drawingScore,
+    voiceActorScore,
+    musicScore,
+    characterScore,
+  ];
+
+  useEffect(() => {
+    if (
+      (0 <= storyScore && storyScore < 1) ||
+      (0 <= drawingScore && drawingScore < 1) ||
+      (0 <= voiceActorScore && voiceActorScore < 1) ||
+      (0 <= musicScore && musicScore < 1) ||
+      (0 <= characterScore && characterScore < 1)
+    ) {
+      setScoreAverage('-');
+      console.log(scoreAverage, 'scoreAverage');
+      console.log(storyScore, 'storyScore');
+      console.log(drawingScore, 'drawingScore');
+      console.log(voiceActorScore, 'voiceActorScore');
+      console.log(musicScore, 'musicScore');
+      console.log(characterScore, 'characterScore');
+    } else {
+      changeScoreAverage();
+    }
+  }, scoreArray);
+
   const changeScoreAverage = () => {
-    const result =
-      Math.floor(
-        ((Number(storyLineLength) +
-          Number(drawinglineLength) +
-          Number(voiceActorlineLength) +
-          Number(musiclineLength) +
-          Number(characterlineLength)) /
-          5) *
-          10
-      ) / 10;
-    setScoreAverage(result);
+    const sum = (numbers: number[], initialValue: number = 0) =>
+      numbers.reduce(
+        (accumulator: number, currentValue: number) =>
+          accumulator + currentValue,
+        initialValue
+      );
+    const average = (numbers: number[]) => sum(numbers) / numbers.length;
+    // console.log(parseFloat(average(scoreArray).toFixed(1)), 'average');
+    // console.log(typeof scoreArray.length, 'scoreArray.length');
+    setScoreAverage(parseFloat(average(scoreArray).toFixed(1)));
   };
 
   return (
     <>
       {/* <ul className="grid grid-cols-5 gap-4 justify-items-center mb-8"> */}
-      {/* <ul className="grid grid-cols-5 gap-4 justify-items-center mb-8">
+      <ul className="mb-8 grid grid-cols-5 justify-items-center gap-4">
         {anime?.map((item: Anime) => (
-          <li key={item.title}>
+          <li key={item.title} className="flex flex-col justify-between">
             <div className="mb-2">
               <Link href="/anime">
                 <a className="block leading-none">
                   <Image
-                    src="/images/hiroaka.png"
+                    src={
+                      'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
+                      `${item.title}` +
+                      '.jpeg'
+                    }
                     height={338}
                     width={242}
                     alt=""
@@ -78,40 +84,40 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
                 </a>
               </Link>
             </div>
-            <h3 className="text-center mb-2 font-bold">
+            <h3 className="mb-2 text-center font-bold">
               <Link href="/">
                 <a>{item.title}</a>
               </Link>
             </h3>
-            <div className="grid grid-cols-3 gap-2 justify-items-center items-center">
+            <div className="grid grid-cols-3 items-center justify-items-center gap-2">
               <div className="w-full">
                 <button className="w-full" onClick={modalOpen}>
-                  <a className="bg-watch bg-no-repeat h-full w-full inline-block text-center bg-yellow py-2">
-                    <EyeIcon className="h-5 w-5 mx-auto" />
-                    <span className="inline-block w-full h-full">100</span>
+                  <a className="bg-watch inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
+                    <EyeIcon className="mx-auto h-5 w-5" />
+                    <span className="inline-block h-full w-full">100</span>
                   </a>
                 </button>
               </div>
               <div className="w-full">
                 <button className="w-full">
-                  <a className="bg-bookMark bg-no-repeat h-full w-full inline-block text-center bg-yellow py-2">
-                    <BookmarkIcon className="h-5 w-5 mx-auto" />
-                    <span className="inline-block w-full h-full">100</span>
+                  <a className="bg-bookMark inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
+                    <BookmarkIcon className="mx-auto h-5 w-5" />
+                    <span className="inline-block h-full w-full">100</span>
                   </a>
                 </button>
               </div>
               <div className="w-full">
                 <Link href="/anime">
-                  <a className="bg-star bg-no-repeat h-full w-full inline-block text-center text-yellow py-2 bg-buttonBlack">
-                    <StarIcon className="h-5 w-5 text-yellow mx-auto" />
-                    <span className="inline-block w-full h-full">5.0</span>
+                  <a className="bg-star inline-block h-full w-full bg-buttonBlack bg-no-repeat py-2 text-center text-yellow">
+                    <StarIcon className="mx-auto h-5 w-5 text-yellow" />
+                    <span className="inline-block h-full w-full">5.0</span>
                   </a>
                 </Link>
               </div>
             </div>
           </li>
         ))}
-      </ul> */}
+      </ul>
       <Transition.Root show={reviewModal} as={Fragment}>
         <Dialog
           as="div"
@@ -177,16 +183,18 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
                         <p className="w-2/12">
                           物語
                           <br />
-                          {storyLineLength}
+                          {storyScore}
                         </p>
                         <input
                           type="range"
                           id="story"
-                          min="1"
+                          min="0"
                           max="5"
                           step="0.5"
-                          defaultValue={storyLineLength}
-                          onChange={changeStoryLineLength}
+                          defaultValue={storyScore}
+                          onChange={(e) =>
+                            setStoryScore(Number(e.target.value))
+                          }
                           className="w-10/12"
                         />
                       </li>
@@ -194,16 +202,18 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
                         <p className="w-2/12">
                           作画
                           <br />
-                          {drawinglineLength}
+                          {drawingScore}
                         </p>
                         <input
                           type="range"
                           id="story"
-                          min="1"
+                          min="0"
                           max="5"
                           step="0.5"
-                          defaultValue={drawinglineLength}
-                          onChange={changeDrawingLineLength}
+                          defaultValue={drawingScore}
+                          onChange={(e) =>
+                            setDrawingScore(Number(e.target.value))
+                          }
                           className="w-10/12"
                         />
                       </li>
@@ -211,16 +221,18 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
                         <p className="w-2/12">
                           声優
                           <br />
-                          {voiceActorlineLength}
+                          {voiceActorScore}
                         </p>
                         <input
                           type="range"
                           id="story"
-                          min="1"
+                          min="0"
                           max="5"
                           step="0.5"
-                          defaultValue={voiceActorlineLength}
-                          onChange={changeVoiceActorLineLength}
+                          defaultValue={voiceActorScore}
+                          onChange={(e) =>
+                            setVoiceActorScore(Number(e.target.value))
+                          }
                           className="w-10/12"
                         />
                       </li>
@@ -228,16 +240,18 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
                         <p className="w-2/12">
                           音楽
                           <br />
-                          {musiclineLength}
+                          {musicScore}
                         </p>
                         <input
                           type="range"
                           id="story"
-                          min="1"
+                          min="0"
                           max="5"
                           step="0.5"
-                          defaultValue={musiclineLength}
-                          onChange={changeMusiclineLength}
+                          defaultValue={musicScore}
+                          onChange={(e) =>
+                            setMusicScore(Number(e.target.value))
+                          }
                           className="w-10/12"
                         />
                       </li>
@@ -245,16 +259,18 @@ const Card = ({ anime }: { anime: Anime[] | undefined }) => {
                         <p className="w-2/12">
                           キャラ
                           <br />
-                          {characterlineLength}
+                          {characterScore}
                         </p>
                         <input
                           type="range"
                           id="story"
-                          min="1"
+                          min="0"
                           max="5"
                           step="0.5"
-                          defaultValue={characterlineLength}
-                          onChange={changeCharacterlineLength}
+                          defaultValue={characterScore}
+                          onChange={(e) =>
+                            setCharacterScore(Number(e.target.value))
+                          }
                           className="w-10/12"
                         />
                       </li>

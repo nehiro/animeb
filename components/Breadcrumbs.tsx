@@ -1,11 +1,11 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
-import Link from 'next/Link';
+import Link from 'next/link';
 import React from 'react';
 
 const Breadcrumbs = () => {
   return (
     <section className="bg-breadcrumbs py-1">
-      <ul className="container flex items-center text-sm space-x-1">
+      <ul className="container flex items-center space-x-1 text-sm">
         <li>
           <Link href="/">
             <a>TOP</a>

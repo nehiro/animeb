@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/Link';
+import Link from 'next/link';
 
 const StreamingService = () => {
   const streamingServices = [
@@ -71,13 +71,13 @@ const StreamingService = () => {
     },
   ];
   return (
-    <ul className="grid grid-cols-gridResponsive gap-4 justify-items-start">
+    <ul className="grid-cols-gridResponsive grid justify-items-start gap-4">
       {streamingServices.map((item) => (
         <li key={item.label}>
           <Link href={item.href}>
-            <a className="grid grid-cols-gridstreaming items-center grid-rows-1">
+            <a className="grid-cols-gridstreaming grid grid-rows-1 items-center">
               {item.icon}
-              <span className="inline-block ml-4">
+              <span className="ml-4 inline-block">
                 {item.label}で鑑賞できるアニメ
               </span>
             </a>

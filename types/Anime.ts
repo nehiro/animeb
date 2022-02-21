@@ -1,10 +1,10 @@
 export type Anime = {
-  id: string | null;
+  id?: string | null;
   doing: boolean | null;
   media: string | null;
   firstTime: boolean | null;
   season: number | null;
-  title: string | null;
+  title: string;
   ruby: string | null;
   url: string | null;
   pv: string | null;

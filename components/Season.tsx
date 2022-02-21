@@ -1,4 +1,4 @@
-import Link from 'next/Link';
+import Link from 'next/link';
 import React from 'react';
 
 const Season = () => {
@@ -138,11 +138,11 @@ const Season = () => {
   ];
   return (
     <div className="container">
-      <ul className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 gap-x-12 justify-items-start mb-8">
+      <ul className="mb-8 grid grid-cols-1 justify-items-start gap-y-8 gap-x-12 lg:grid-cols-2">
         {seasonList.map((item) => (
           <li
             key={item.label}
-            className="flex items-center justify-between w-full"
+            className="flex w-full items-center justify-between"
           >
             <Link href={item.href}>
               <a className="block px-4 font-bold">{item.label}</a>

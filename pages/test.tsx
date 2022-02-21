@@ -20,6 +20,15 @@ interface ItemType {
   name: string;
 }
 
+const sum = (numbers: number[], initialValue: number = 0) =>
+  numbers.reduce(
+    (accumulator: number, currentValue: number) => accumulator + currentValue,
+    initialValue
+  );
+const average = (numbers: number[]) => sum(numbers) / numbers.length;
+
+console.log(parseFloat(average([5, 1.5, 5, 5, 5]).toFixed(1)), 'average');
+
 const test = () => {
   // Add a new document with a generated id
   const newRef = doc(collection(db, `posts`));

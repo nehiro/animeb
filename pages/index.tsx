@@ -15,6 +15,7 @@ import Timeline from '../components/Timeline';
 import UserItem from '../components/UserItem';
 import Profile from '../components/Profile';
 import Link from 'next/link';
+import { Anime } from '../types/Anime';
 
 const Home = () => {
   //アニメ管理
@@ -90,7 +91,17 @@ const Home = () => {
         {/* <ul>{animesMap}</ul> */}
 
         {/* <ul id="animeTitle">{animeMap}</ul> */}
-        <Card anime={animes}></Card>
+        <ul className="mb-8 grid grid-cols-6 justify-items-center gap-4">
+          {animes?.map((anime) => (
+            <li
+              key={anime.title}
+              className="flex w-full flex-col justify-between"
+            >
+              <Card anime={anime}></Card>
+            </li>
+          ))}
+        </ul>
+
         <Button>もっと見る</Button>
       </BackGroundGray>
       {/* <BackGroundWhite>

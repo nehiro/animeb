@@ -37,6 +37,12 @@ const Index = ({ news }: { news: News[] }) => {
           </li>
         ))}
       </ul>
+      <Link href="news/newsForm">
+        <a>
+          <p>新規作成</p>
+        </a>
+      </Link>
+
       {/* <Tiptap editable={false} content={content}></Tiptap> */}
     </>
   );

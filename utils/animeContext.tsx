@@ -22,7 +22,7 @@ export const AnimeProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   async function getAllAnimeTitles() {
-    const url = 'http://localhost:3000/api/animes';
+    const url = '/api/animes';
     const response = await fetch(url, {
       method: 'GET',
     });

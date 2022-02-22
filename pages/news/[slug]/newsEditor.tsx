@@ -54,7 +54,7 @@ const NewsEditor = ({ news }: { news: News }) => {
       body: data.body,
       updatedAt: Date.now(),
     }).then(() => {
-      reset();
+      // reset();
       alert('編集完了');
     });
   };

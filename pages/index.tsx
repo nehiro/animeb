@@ -91,7 +91,7 @@ const Home = () => {
         {/* <ul>{animesMap}</ul> */}
 
         {/* <ul id="animeTitle">{animeMap}</ul> */}
-        <ul className="mb-8 grid grid-cols-6 justify-items-center gap-4">
+        <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {animes?.map((anime) => (
             <li
               key={anime.title}

@@ -1,4 +1,11 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  InputHTMLAttributes,
+} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/solid';
@@ -9,17 +16,16 @@ import { ExclamationIcon, XIcon } from '@heroicons/react/outline';
 import { Anime } from '../../types/Anime';
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Switch } from '@headlessui/react';
+import SwitchButton from '../SwitchButton';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 const Card = ({ anime }: { anime: Anime | undefined }) => {
-  const [enabled, setEnabled] = useState(false);
-  console.log(enabled);
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, control } = useForm();
   const [reviewModal, setReviewModal] = useState(false);
   const modalOpen = () => {
     setReviewModal(true);
@@ -30,7 +36,8 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
   const [voiceActorScore, setVoiceActorScore] = useState<number>(0);
   const [musicScore, setMusicScore] = useState<number>(0);
   const [characterScore, setCharacterScore] = useState<number>(0);
-  const [scoreAverage, setScoreAverage] = useState<number | string>(0);
+  const [scoreAverage, setScoreAverage] = useState<number | string>();
+  console.log(scoreAverage);
 
   const scoreArray = [
     storyScore,
@@ -82,15 +89,47 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
     setScoreAverage(parseFloat(average(scoreArray).toFixed(1)).toFixed(1));
   };
   const onSubmit = (data: any) => {
-    console.log(data);
-    console.log('送信');
+    console.log(data, '送信');
   };
+
+  const reviewHandles = [
+    {
+      heading: '物語',
+      headingE: 'storyScore',
+      value: storyScore,
+      function: setStoryScore,
+    },
+    {
+      heading: '作画',
+      headingE: 'drawingScore',
+      value: drawingScore,
+      function: setDrawingScore,
+    },
+    {
+      heading: '声優',
+      headingE: 'voiceActorScore',
+      value: voiceActorScore,
+      function: setVoiceActorScore,
+    },
+    {
+      heading: '音楽',
+      headingE: 'musicScore',
+      value: musicScore,
+      function: setMusicScore,
+    },
+    {
+      heading: 'キャラ',
+      headingE: 'characterScore',
+      value: characterScore,
+      function: setCharacterScore,
+    },
+  ];
 
   return (
     <>
-      <div className="relative mb-2 h-72">
+      <div className="mb-2">
         <Link href={`/animes/${anime?.title}`}>
-          <a className="block leading-none">
+          <a className="relative block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72">
             <Image
               src={
                 'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
@@ -198,150 +237,50 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
                         >
                           {scoreAverage}
                         </li>
-                        <input
-                          type="text"
-                          {...register('scoreAverage')}
-                          className="hidden"
-                          value={scoreAverage}
-                        />
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            物語
-                            <br />
-                            {storyScore === 0 ? '-' : storyScore.toFixed(1)}
-                          </p>
-                          <Slider
-                            min={0}
-                            max={5}
-                            step={0.5}
-                            value={storyScore}
-                            onChange={(value) => setStoryScore(Number(value))}
-                            handleStyle={{
-                              borderColor: '#FFD400',
-                              height: 20,
-                              width: 20,
-                              marginTop: -7,
-                              backgroundColor: '#FFD400',
-                            }}
-                            railStyle={{ backgroundColor: 'white', height: 6 }}
-                            trackStyle={{
-                              backgroundColor: '#FFD400',
-                              height: 6,
-                            }}
-                          />
-                        </li>
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            作画
-                            <br />
-                            {drawingScore === 0 ? '-' : drawingScore.toFixed(1)}
-                          </p>
-                          <Slider
-                            min={0}
-                            max={5}
-                            step={0.5}
-                            value={drawingScore}
-                            onChange={(value) => setDrawingScore(Number(value))}
-                            handleStyle={{
-                              borderColor: '#FFD400',
-                              height: 20,
-                              width: 20,
-                              marginTop: -7,
-                              backgroundColor: '#FFD400',
-                            }}
-                            railStyle={{ backgroundColor: 'white', height: 6 }}
-                            trackStyle={{
-                              backgroundColor: '#FFD400',
-                              height: 6,
-                            }}
-                          />
-                        </li>
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            声優
-                            <br />
-                            {voiceActorScore === 0
-                              ? '-'
-                              : voiceActorScore.toFixed(1)}
-                          </p>
-                          <Slider
-                            min={0}
-                            max={5}
-                            step={0.5}
-                            value={voiceActorScore}
-                            onChange={(value) =>
-                              setVoiceActorScore(Number(value))
-                            }
-                            handleStyle={{
-                              borderColor: '#FFD400',
-                              height: 20,
-                              width: 20,
-                              marginTop: -7,
-                              backgroundColor: '#FFD400',
-                            }}
-                            railStyle={{ backgroundColor: 'white', height: 6 }}
-                            trackStyle={{
-                              backgroundColor: '#FFD400',
-                              height: 6,
-                            }}
-                          />
-                        </li>
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            音楽
-                            <br />
-                            {musicScore === 0 ? '-' : musicScore.toFixed(1)}
-                          </p>
-                          <Slider
-                            min={0}
-                            max={5}
-                            step={0.5}
-                            value={musicScore}
-                            onChange={(value) => setMusicScore(Number(value))}
-                            handleStyle={{
-                              borderColor: '#FFD400',
-                              height: 20,
-                              width: 20,
-                              marginTop: -7,
-                              backgroundColor: '#FFD400',
-                            }}
-                            railStyle={{ backgroundColor: 'white', height: 6 }}
-                            trackStyle={{
-                              backgroundColor: '#FFD400',
-                              height: 6,
-                            }}
-                          />
-                        </li>
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            キャラ
-                            <br />
-                            {characterScore === 0
-                              ? '-'
-                              : characterScore.toFixed(1)}
-                          </p>
-                          <Slider
-                            min={0}
-                            max={5}
-                            step={0.5}
-                            value={characterScore}
-                            onChange={(value) =>
-                              setCharacterScore(Number(value))
-                            }
-                            handleStyle={{
-                              borderColor: '#FFD400',
-                              height: 20,
-                              width: 20,
-                              marginTop: -7,
-                              backgroundColor: '#FFD400',
-                            }}
-                            railStyle={{ backgroundColor: 'white', height: 6 }}
-                            trackStyle={{
-                              backgroundColor: '#FFD400',
-                              height: 6,
-                            }}
-                          />
-                        </li>
+
+                        {reviewHandles.map((reviewHandle) => (
+                          <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                            <p className="mr-4 w-1/5">
+                              {reviewHandle.heading}
+                              <br />
+                              {reviewHandle.value === 0
+                                ? '-'
+                                : reviewHandle.value?.toFixed(1)}
+                            </p>
+                            <Controller
+                              name={reviewHandle.headingE}
+                              control={control}
+                              render={({ field }) => (
+                                <Slider
+                                  min={0}
+                                  max={5}
+                                  step={0.5}
+                                  onBlur={field.onBlur}
+                                  onChange={field.onChange}
+                                  // value={reviewHandle.value}
+                                  // onChange={(value) =>
+                                  //   reviewHandle.function(Number(value))
+                                  // }
+                                  handleStyle={{
+                                    borderColor: '#FFD400',
+                                    height: 20,
+                                    width: 20,
+                                    marginTop: -7,
+                                    backgroundColor: '#FFD400',
+                                  }}
+                                  railStyle={{
+                                    backgroundColor: 'white',
+                                    height: 6,
+                                  }}
+                                  trackStyle={{
+                                    backgroundColor: '#FFD400',
+                                    height: 6,
+                                  }}
+                                ></Slider>
+                              )}
+                            ></Controller>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </div>
@@ -359,72 +298,15 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
                     />
                   </div>
                   <div className="flex items-center justify-start px-4">
-                    <Switch
-                      checked={enabled}
-                      onChange={setEnabled}
-                      className={classNames(
-                        enabled ? 'bg-indigo-600' : 'bg-gray-200',
-                        'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-                      )}
-                    >
-                      <span className="sr-only">Use setting</span>
-                      <span
-                        className={classNames(
-                          enabled ? 'translate-x-5' : 'translate-x-0',
-                          'pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                        )}
-                      >
-                        <span
-                          className={classNames(
-                            enabled
-                              ? 'opacity-0 duration-100 ease-out'
-                              : 'opacity-100 duration-200 ease-in',
-                            'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity'
-                          )}
-                          aria-hidden="true"
-                        >
-                          <svg
-                            className="h-3 w-3 text-gray-400"
-                            fill="none"
-                            viewBox="0 0 12 12"
-                          >
-                            <path
-                              d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
-                              stroke="currentColor"
-                              strokeWidth={2}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </span>
-                        <span
-                          className={classNames(
-                            enabled
-                              ? 'opacity-100 duration-200 ease-in'
-                              : 'opacity-0 duration-100 ease-out',
-                            'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity'
-                          )}
-                          aria-hidden="true"
-                        >
-                          <svg
-                            className="h-3 w-3 text-indigo-600"
-                            fill="currentColor"
-                            viewBox="0 0 12 12"
-                          >
-                            <path d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z" />
-                          </svg>
-                        </span>
-                      </span>
-                    </Switch>
+                    <Controller
+                      name="spoiler"
+                      control={control}
+                      defaultValue={false}
+                      render={({ field }) => <SwitchButton {...field} />}
+                    />
                     <p className="text-xs text-red-600">
                       レビュー内容にネタバレが含まれている場合はこちらをチェックしてください。
                     </p>
-                    <input
-                      type="checkbox"
-                      {...register('spoiler')}
-                      className="hidden"
-                      value={enabled === true ? 'true' : 'false'}
-                    />
                   </div>
                   <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <button

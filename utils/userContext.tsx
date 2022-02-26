@@ -7,11 +7,15 @@ import {
   onSnapshot,
 } from '@firebase/firestore';
 import { createContext, FC, useContext, useEffect, useState } from 'react';
+import { userLists } from '../lib/getList';
+import { userReviews } from '../lib/getReviews';
 import {
   subscribeFollowerUsers,
   subscribeFollowUsers,
   subscribeLikes,
 } from '../lib/user';
+import { List } from '../types/List';
+import { RevieData } from '../types/ReviewData';
 import { User } from '../types/User';
 import { auth, db } from './firebase';
 
@@ -22,6 +26,8 @@ type AuthContextProps = {
   followUsers?: User[];
   likeIds?: string[];
   loading: boolean;
+  reviews?: RevieData[];
+  lists?: List[];
 };
 
 //箱を定義
@@ -32,6 +38,8 @@ const AuthContext = createContext<AuthContextProps>({
   followUsers: undefined,
   followerUsers: undefined,
   likeIds: undefined,
+  reviews: undefined,
+  lists: undefined,
 });
 //箱の中を詰める
 export const AuthProvider: FC = ({ children }) => {
@@ -45,6 +53,9 @@ export const AuthProvider: FC = ({ children }) => {
   //いいねしているIDたち→string[]
   const [likeIds, setLikeIds] = useState<string[]>();
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [reviews, setReviews] = useState<RevieData[]>();
+  const [lists, setLists] = useState<List[]>();
 
   //呼び出されたら一度だけレンダリング
   useEffect(() => {
@@ -103,8 +114,14 @@ export const AuthProvider: FC = ({ children }) => {
       );
       unsubscribes.push(subscribeLikes(user.uid, (ids) => setLikeIds(ids)));
 
+      const reviews = userReviews(user.uid, (reviews) => setReviews(reviews));
+
+      const lists = userLists(user.uid, (lists) => setLists(lists));
+
       return () => {
         unsubscribes.forEach((unsubscribe) => unsubscribe());
+        reviews;
+        lists;
       };
     }
   }, [user]);
@@ -118,6 +135,8 @@ export const AuthProvider: FC = ({ children }) => {
         followUsers,
         likeIds,
         followerUsers,
+        reviews,
+        lists,
       }}
     >
       {children}

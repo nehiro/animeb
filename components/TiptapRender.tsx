@@ -1,59 +1,64 @@
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent, JSONContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import { collection, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { db, storage } from '../utils/firebase';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { lowlight } from 'lowlight/lib/common.js';
+import { Noop } from 'react-hook-form';
+import Link from '@tiptap/extension-link';
 
 const TiptapRender = ({
-  editable = true,
-  content = '<p>hello</p>',
+  value,
+  onChange,
+  onBlur,
 }: {
-  editable: boolean;
-  content: { content: object[] } | string;
+  value: { content: object[] };
+  onChange: (data: '' | JSONContent) => void;
+  onBlur: Noop;
 }) => {
-  // classの連結
-  const classNames = (...classes: (string | boolean | undefined)[]) =>
-    classes.filter(Boolean).join(' ');
-
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         codeBlock: false,
+        heading: {
+          levels: [1, 2, 3],
+        },
       }),
       CodeBlockLowlight.configure({
         lowlight,
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'max-h-20 rounded',
+          class: 'w-full rounded-lg',
         },
       }),
+      Link.configure({
+        openOnClick: true,
+      }),
     ],
-    content,
+    // content: 'xxx',
+    onUpdate({ editor }) {
+      onChange(editor.isEmpty ? '' : editor.getJSON());
+    },
     editorProps: {
-      editable: () => editable,
-      attributes: {
-        class:
-          'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none border rounded-sm',
-      },
+      editable: () => false,
     },
   });
 
-  // 例外処理
+  useEffect(() => {
+    editor?.commands.setContent(value);
+  }, [value, editor]);
+
   if (!editor) {
     return null;
   }
-
-  // console.log(editable);
-  // console.log(content, 'content');
   return (
-    <div className="container">
-      <EditorContent editor={editor} />
-    </div>
+    <>
+      <EditorContent onBlur={onBlur} editor={editor} />
+    </>
   );
 };
 

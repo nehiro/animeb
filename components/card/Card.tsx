@@ -19,15 +19,64 @@ import 'rc-slider/assets/index.css';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Switch } from '@headlessui/react';
 import SwitchButton from '../SwitchButton';
+import {
+  collection,
+  collectionGroup,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
+import { db } from '../../utils/firebase';
+import { useAuth } from '../../utils/userContext';
+import { RevieData } from '../../types/ReviewData';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 const Card = ({ anime }: { anime: Anime | undefined }) => {
+  const { user, reviews, lists } = useAuth();
+  //reviewしているかどうか
+  const reviewedRef = reviews?.find((review) => review.title === anime?.title);
+  const reviewed = () => {
+    return reviewedRef;
+  };
+  // console.log(reviews, 'reviews');
+  const review = reviewedRef?.review;
+  const tag = reviewedRef?.tag;
+  const spoiler = reviewedRef?.spoiler;
+  // const storyScoree = reviewedRef?.storyScore;
+  // const drawingScoree = reviewedRef?.drawingScore;
+  // const voiceActorScoree = reviewedRef?.voiceActorScore;
+  // const musicScoree = reviewedRef?.musicScore;
+  // const characterScoree = reviewedRef?.characterScore;
+
+  //listしているかどうか
+  const listed = () => {
+    return lists?.find((list) => list.title === anime?.title);
+  };
+  // console.log(lists, 'lists');
+  //titleがレビューにいくつあるか
+  const reviewCount = () => {
+    const ref = collectionGroup(db, `reviews`);
+    const q = query(ref, where('title', '==', anime?.title));
+    // console.log(q, 'q');
+  };
+  reviewCount();
+
+  //rhf使用
   const { register, handleSubmit, reset, control } = useForm();
+  //レビューのモーダル
   const [reviewModal, setReviewModal] = useState(false);
   const modalOpen = () => {
+    if (!user) {
+      alert('ログインしてください');
+      return;
+    }
     setReviewModal(true);
   };
 
@@ -37,7 +86,7 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
   const [musicScore, setMusicScore] = useState<number>(0);
   const [characterScore, setCharacterScore] = useState<number>(0);
   const [scoreAverage, setScoreAverage] = useState<number | string>();
-  console.log(scoreAverage);
+  // console.log(scoreAverage);
 
   const scoreArray = [
     storyScore,
@@ -46,6 +95,16 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
     musicScore,
     characterScore,
   ];
+
+  //  useEffect(() => {
+  //    if (reviewedRef) {
+  //      setStoryScore(reviewedRef?.storyScore);
+  //      setDrawingScore(reviewedRef?.drawingScore);
+  //      setVoiceActorScore(reviewedRef?.voiceActorScore);
+  //      setMusicScore(reviewedRef?.musicScore);
+  //      setCharacterScore(reviewedRef?.characterScore);
+  //    }
+  //  }, []);
 
   useEffect(() => {
     if (
@@ -56,18 +115,23 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
       (0 <= characterScore && characterScore < 1)
     ) {
       if (0 <= storyScore && storyScore < 1) {
+        console.log(storyScore);
         setStoryScore(0);
       }
       if (0 <= drawingScore && drawingScore < 1) {
+        console.log(drawingScore);
         setDrawingScore(0);
       }
       if (0 <= voiceActorScore && voiceActorScore < 1) {
+        console.log(voiceActorScore);
         setVoiceActorScore(0);
       }
       if (0 <= musicScore && musicScore < 1) {
+        console.log(musicScore);
         setMusicScore(0);
       }
       if (0 <= characterScore && characterScore < 1) {
+        console.log(characterScore);
         setCharacterScore(0);
       }
       setScoreAverage('-');
@@ -88,8 +152,55 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
     // console.log(typeof scoreArray.length, 'scoreArray.length');
     setScoreAverage(parseFloat(average(scoreArray).toFixed(1)).toFixed(1));
   };
-  const onSubmit = (data: any) => {
-    console.log(data, '送信');
+  const onSubmit = (data: RevieData) => {
+    const idRef = doc(collection(db, `users/${user?.uid}/reviews`));
+    const id = idRef.id;
+    const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
+    setDoc(ref, {
+      id: id,
+      title: anime?.title,
+      storyScore: data.storyScore,
+      drawingScore: data.drawingScore,
+      voiceActorScore: data.voiceActorScore,
+      musicScore: data.musicScore,
+      characterScore: data.characterScore,
+      review: data.review,
+      spoiler: data.spoiler,
+      tag: data.tag,
+      createAt: Date.now(),
+    });
+    // console.log(data, 'data');
+    alert(`${anime?.title}のレビューを登録しました`);
+  };
+  //リストに登録する
+  const listButton = () => {
+    if (!user) {
+      alert('ログインしてください');
+      return;
+    }
+    const idRef = doc(collection(db, `users/${user?.uid}/reviews`));
+    const id = idRef.id;
+    const ref = doc(db, `users/${user?.uid}/lists/${id}`);
+    setDoc(ref, {
+      id: id,
+      title: anime?.title,
+      createAt: Date.now(),
+    }).then(() => {
+      alert(`${anime?.title}を観たいリストに登録しました`);
+    });
+  };
+  //リストから外す
+  const unlistButton = () => {
+    if (!user) {
+      alert('ログインしてください');
+      return;
+    }
+    const id = lists?.find((listTitle) => listTitle.title === anime?.title)?.id;
+    // console.log(id);
+    const ref = doc(db, `users/${user?.uid}/lists/${id}`);
+    deleteDoc(ref).then(() => {
+      alert(`${anime?.title}を観たいリストから外しました`);
+    });
   };
 
   const reviewHandles = [
@@ -124,7 +235,6 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
       function: setCharacterScore,
     },
   ];
-
   return (
     <>
       <div className="mb-2">
@@ -151,27 +261,45 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
       <div className="grid grid-cols-3 items-center justify-items-center gap-2">
         <div className="w-full">
           <button className="w-full" onClick={modalOpen}>
-            <a className="bg-watch inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
-              <EyeIcon className="mx-auto h-5 w-5" />
-              <span className="inline-block h-full w-full">100</span>
-            </a>
+            {reviewed() ? (
+              <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
+                <EyeIcon className="mx-auto h-5 w-5" />
+                <span className="inline-block h-full w-full">100</span>
+              </a>
+            ) : (
+              <a className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
+                <EyeIcon className="mx-auto h-5 w-5 text-amber-400" />
+                <span className="inline-block h-full w-full text-amber-400">
+                  100
+                </span>
+              </a>
+            )}
           </button>
         </div>
         <div className="w-full">
-          <button className="w-full">
-            <a className="bg-bookMark inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
-              <BookmarkIcon className="mx-auto h-5 w-5" />
-              <span className="inline-block h-full w-full">100</span>
-            </a>
-          </button>
+          {listed() ? (
+            <button className="w-full" onClick={() => unlistButton()}>
+              <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
+                <BookmarkIcon className="mx-auto h-5 w-5" />
+                <span className="inline-block h-full w-full">100</span>
+              </span>
+            </button>
+          ) : (
+            <button className="w-full" onClick={() => listButton()}>
+              <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
+                <BookmarkIcon className="mx-auto h-5 w-5 text-amber-400" />
+                <span className="inline-block h-full w-full text-amber-400">
+                  100
+                </span>
+              </span>
+            </button>
+          )}
         </div>
         <div className="w-full">
-          <Link href="/anime">
-            <a className="bg-star inline-block h-full w-full bg-buttonBlack bg-no-repeat py-2 text-center text-yellow">
-              <StarIcon className="mx-auto h-5 w-5 text-yellow" />
-              <span className="inline-block h-full w-full">5.0</span>
-            </a>
-          </Link>
+          <span className="inline-block h-full w-full bg-buttonBlack bg-no-repeat py-2 text-center text-yellow">
+            <StarIcon className="mx-auto h-5 w-5 text-yellow" />
+            <span className="inline-block h-full w-full">5.0</span>
+          </span>
         </div>
       </div>
 
@@ -250,6 +378,7 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
                             <Controller
                               name={reviewHandle.headingE}
                               control={control}
+                              // defaultValue={reviewHandle.value}
                               render={({ field }) => (
                                 <Slider
                                   min={0}
@@ -289,19 +418,21 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
                       {...register('review')}
                       placeholder="無記入でも投稿できます"
                       className="w-full border-l border-gray-200"
+                      defaultValue={review}
                     ></textarea>
                     <input
                       {...register('tag')}
                       type="text"
                       className="w-full border-l border-gray-200"
                       placeholder="タグを1つ入力"
+                      defaultValue={tag}
                     />
                   </div>
                   <div className="flex items-center justify-start px-4">
                     <Controller
                       name="spoiler"
                       control={control}
-                      defaultValue={false}
+                      defaultValue={spoiler ? spoiler : false}
                       render={({ field }) => <SwitchButton {...field} />}
                     />
                     <p className="text-xs text-red-600">

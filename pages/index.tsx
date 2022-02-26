@@ -33,7 +33,7 @@ const Home = () => {
   // console.log(animesMap, 'animesMap');
 
   // followとuser管理
-  const { user, loading } = useAuth();
+  const { user, loading, reviews } = useAuth();
   const { data: users } = useSWR('users', async () => {
     const ref = collection(db, 'users');
     const snap = await getDocs(ref);
@@ -102,7 +102,7 @@ const Home = () => {
           ))}
         </ul>
 
-        <Button>もっと見る</Button>
+        {/* <Button>もっと見る</Button> */}
       </BackGroundGray>
       {/* <BackGroundWhite>
         <TopTitle>注目のアニメ</TopTitle>

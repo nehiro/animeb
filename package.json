@@ -14,6 +14,7 @@
     "@heroicons/react": "^1.0.3",
     "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.68",
     "@tiptap/extension-image": "^2.0.0-beta.25",
+    "@tiptap/extension-link": "^2.0.0-beta.36",
     "@tiptap/react": "^2.0.0-beta.107",
     "@tiptap/starter-kit": "^2.0.0-beta.180",
     "@types/react-modal": "^3.13.1",

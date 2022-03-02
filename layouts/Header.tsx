@@ -108,7 +108,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
               className="relative hidden h-10 max-w-xl flex-1 items-center justify-between rounded-full bg-white px-4 md:flex"
               onClick={() => setIsOpen(true)}
             >
-              <p>キーワードで検索</p>
+              <p>タイトル検索</p>
               <SearchIcon className="inline-block h-5 w-5 text-gray-500" />
             </button>
             <div className="flex justify-between">

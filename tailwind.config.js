@@ -49,6 +49,15 @@ module.exports = {
       gridTemplateColumns: {
         user: '48px 1fr 1fr',
       },
+      backgroundImage: (theme) => ({
+        no1: "url('/images/gold.svg')",
+        no2: "url('/images/silver.svg')",
+        no3: "url('/images/bronze.svg')",
+      }),
+      backgroundSize: {
+        '50%': '50%',
+        16: '4rem',
+      },
     },
     container: {
       center: true,
@@ -65,6 +74,11 @@ module.exports = {
       decimal: 'decimal',
       lowerLatin: 'lower-latin',
     },
+    minHeight: { 100: '100px' },
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+  variants: {
+    backgroundColor: ['first', 'last', 'even'],
+    backgroundImage: ['first', 'last', 'even'],
+  },
 };

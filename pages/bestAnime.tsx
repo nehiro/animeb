@@ -34,12 +34,23 @@ const BestAnime = () => {
     }
   }, [user?.ranking]);
 
-  console.log(user?.ranking);
+  // console.log(user?.ranking);
 
   const [ranking, setRanking] = useState<UserRanking[]>([]);
+  console.log(ranking);
+  console.log(ranking.map((item) => item.title));
+  console.log(ranking.map((item) => item.id));
+  // const title = ranking.map((item) => item.title);
+  // const id = ranking.map((item) => item.id);
 
   const bestAnimeSet = async () => {
     await updateDoc(doc(db, `users/${user?.uid}`), {
+      // ranking: [
+      //   {
+      //     title: title,
+      //     id: id,
+      //   },
+      // ],
       ranking,
     }).then(() => alert('ベストアニメを登録しました'));
   };
@@ -61,7 +72,7 @@ const BestAnime = () => {
         <SubpageTitle>ベストアニメ設定</SubpageTitle>
         <p className="mb-4 text-center">ドラッグ&ドロップで並び替え</p>
         <ReactSortable
-          className="mb-4 grid h-40 min-w-200 grid-cols-3 gap-4 border-2"
+          className="mb-4 grid h-60 min-w-200 grid-cols-3 gap-4 border-2 border-dotted bg-amber-50 p-4"
           list={ranking}
           setList={setRanking}
           group={choiced}
@@ -75,16 +86,71 @@ const BestAnime = () => {
             </li>
           ) : (
             ranking.map((item) => (
-              <li key={item.id}>
-                <div className="relative h-24 w-20">
-                  <Image src={item.image} alt="" layout="fill"></Image>
+              <li
+                key={item.id}
+                className="flex justify-center bg-16 bg-left bg-no-repeat first:bg-no1 last:bg-no3 even:bg-no2"
+              >
+                <div className="relative h-full w-1/2">
+                  <Image
+                    src={
+                      'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
+                      `${item.title}` +
+                      '.jpg'
+                    }
+                    layout="fill"
+                    className="object-contain"
+                    alt=""
+                  />
                 </div>
-                {item.title}
+                {/* <p>{item.title}</p> */}
               </li>
             ))
           )}
         </ReactSortable>
-        <div className="text-center">
+        {/* {user?.ranking.length === 0 ? (
+          <ReactSortable
+            className="mb-4 grid h-40 min-w-200 grid-cols-3 gap-4 border-2"
+            list={ranking}
+            setList={setRanking}
+            group={noChoiced}
+            animation={200}
+            delay={2}
+            tag="ul"
+          >
+            <li className="col-span-3 flex items-center justify-center">
+              作品が選ばれていません。
+            </li>
+          </ReactSortable>
+        ) : (
+          <ReactSortable
+            className="mb-4 grid h-40 min-w-200 grid-cols-3 gap-4 border-2"
+            list={ranking}
+            setList={setRanking}
+            group={choiced}
+            animation={200}
+            delay={2}
+            tag="ul"
+          >
+            {ranking.map((item) => (
+              <li key={item.id}>
+                <div className="relative h-24 w-20">
+                  <Image
+                    src={
+                      'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
+                      `${item.title}` +
+                      '.jpg'
+                    }
+                    layout="fill"
+                    className="object-cover"
+                    alt=""
+                  />
+                </div>
+                {item.title}
+              </li>
+            ))}
+          </ReactSortable>
+        )} */}
+        <div className="mb-8 text-center">
           <button
             className="relative mx-auto inline-block rounded-full bg-buttonBlack py-3 px-12 text-white"
             onClick={bestAnimeSet}
@@ -92,7 +158,7 @@ const BestAnime = () => {
             保存する
           </button>
         </div>
-        <BackGroundGray>
+        {/* <BackGroundGray>
           <form
             action=""
             className="relative mx-auto mb-12 hidden h-10 max-w-xl flex-1 items-center rounded-full bg-white md:flex"
@@ -106,10 +172,10 @@ const BestAnime = () => {
               <SearchIcon className="absolute top-0 bottom-0 right-3 m-auto inline-block h-5 w-5 text-gray-500" />
             </button>
           </form>
-        </BackGroundGray>
+        </BackGroundGray> */}
 
         <WatchedAnimes></WatchedAnimes>
-        <Button>さらに表示する</Button>
+        {/* <Button>さらに表示する</Button> */}
       </BackGroundWhite>
 
       <Breadcrumbs />

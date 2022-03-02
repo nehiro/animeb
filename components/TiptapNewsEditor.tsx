@@ -39,7 +39,6 @@ const TiptapNewsEditor = ({
         openOnClick: false,
       }),
     ],
-    // content: 'xxx',
     onUpdate({ editor }) {
       onChange(editor.isEmpty ? '' : editor.getJSON());
     },
@@ -54,6 +53,9 @@ const TiptapNewsEditor = ({
   useEffect(() => {
     editor?.commands.setContent(value);
   }, [value, editor]);
+
+  // console.log(editor?.commands.setContent(value));
+  console.log(value);
 
   // classの連結
   const classNames = (...classes: (string | boolean | undefined)[]) =>
@@ -97,91 +99,123 @@ const TiptapNewsEditor = ({
       .setLink({ href: url })
       .run();
   }, [editor]);
-
+  if (!editor) {
+    return null;
+  }
   const editorFunctions = [
     {
-      function: 'toggleHeading({ level: 1 })',
-      activeName: "'heading', { level: 1 }",
+      function: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('heading', { level: 1 }) &&
+          'bg-purple font-bold text-white'
+      ),
       icon: 'ri-h-1',
     },
     {
-      function: 'toggleHeading({ level: 2 })',
-      activeName: "'heading', { level: 2 }",
+      function: () => editor?.chain().focus().toggleHeading({ level: 2 }).run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('heading', { level: 2 }) &&
+          'bg-purple font-bold text-white'
+      ),
       icon: 'ri-h-2',
     },
     {
-      function: 'toggleHeading({ level: 3 })',
-      activeName: "'heading', { level: 3 }",
+      function: () => editor?.chain().focus().toggleHeading({ level: 3 }).run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('heading', { level: 3 }) &&
+          'bg-purple font-bold text-white'
+      ),
       icon: 'ri-h-3',
     },
     {
-      function: 'toggleBold()',
-      activeName: 'bold',
+      function: () => editor?.chain().focus().toggleBold().run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('bold') && 'bg-purple font-bold text-white'
+      ),
       icon: 'ri-bold',
     },
     {
-      function: 'toggleBulletList()',
-      activeName: 'bulletList',
+      function: () => editor?.chain().focus().toggleBulletList().run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('bulletList') && 'bg-purple font-bold text-white'
+      ),
       icon: 'ri-list-unordered',
     },
     {
-      function: 'toggleOrderedList()',
-      activeName: 'orderedList',
+      function: () => editor?.chain().focus().toggleOrderedList().run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('orderedList') && 'bg-purple font-bold text-white'
+      ),
       icon: 'ri-list-ordered',
     },
     {
-      function: 'toggleBlockquote()',
-      activeName: 'blockquote',
+      function: () => editor?.chain().focus().toggleBlockquote().run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('blockquote') && 'bg-purple font-bold text-white'
+      ),
       icon: 'ri-indent-increase',
     },
     {
-      function: 'toggleItalic()',
-      activeName: 'italic',
+      function: () => editor?.chain().focus().toggleItalic().run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('italic') && 'bg-purple font-bold text-white'
+      ),
       icon: 'ri-italic',
     },
     {
-      function: 'toggleStrike()',
-      activeName: 'strike',
+      function: () => editor?.chain().focus().toggleStrike().run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('strike') && 'bg-purple font-bold text-white'
+      ),
       icon: 'ri-strikethrough-2',
     },
     {
-      function: 'toggleCodeBlock()',
-      activeName: 'codeBlock',
+      function: () => editor?.chain().focus().toggleCodeBlock().run(),
+      activeName: classNames(
+        'p-2',
+        editor.isActive('codeBlock') && 'bg-purple font-bold text-white'
+      ),
       icon: 'ri-code-view',
     },
     {
-      function: 'setLink()',
-      activeName: 'link',
+      function: setLink,
+      activeName: classNames(
+        'p-2',
+        editor.isActive('link') && 'bg-purple font-bold text-white'
+      ),
       icon: 'ri-link',
     },
     {
-      function: 'unsetLink()',
-      activeName: 'link',
+      function: () => editor?.chain().focus().unsetLink().run(),
+      activeName: undefined,
       icon: 'ri-link-unlink',
     },
   ];
 
-  if (!editor) {
-    return null;
-  }
   return (
     <>
       <div className="grid grid-cols-7">
-        {/* {editorFunctions.map((editorFunction) => 
+        {editorFunctions.map((editorFunction) => (
           <button
-          onClick={() =>
-            editor.chain().focus().`${editorFunction.function}`.run()
-          }
-          className={
-            editor.isActive(`${editorFunction.activeName}`) ? 'is-active' : ''
-          }
-          type="button"
-        >
-          <i className={`${editorFunction.icon}`}></i>
-        </button>
-        )} */}
+            key={editorFunction.icon}
+            onClick={editorFunction.function}
+            className={editorFunction.activeName}
+            type="button"
+          >
+            <i className={editorFunction.icon}></i>
+          </button>
+        ))}
 
-        <button
+        {/* <button
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
@@ -306,7 +340,7 @@ const TiptapNewsEditor = ({
           type="button"
         >
           <i className="ri-link-unlink"></i>
-        </button>
+        </button> */}
         <label className="p-2 text-center">
           <i className="ri-image-add-line"></i>
           <input className="hidden" type="file" onChange={uploadImage} />

@@ -1,4 +1,5 @@
-export type RevieData = {
+export type ReviewData = {
+  id: string;
   title: string;
   storyScore: number;
   drawingScore: number;

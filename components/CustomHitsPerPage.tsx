@@ -21,7 +21,7 @@ const HitsPerPage = ({
 }) => {
   return (
     <Listbox value={currentRefinement} onChange={(value) => refine(value)}>
-      {({ open }) => (
+      {/* {({ open }) => (
         <div className="flex items-center space-x-2">
           <Listbox.Label className="block text-sm font-medium text-gray-700">
             表示件数
@@ -85,7 +85,7 @@ const HitsPerPage = ({
             </Transition>
           </div>
         </div>
-      )}
+      )} */}
     </Listbox>
   );
 };

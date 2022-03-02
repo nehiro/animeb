@@ -1,9 +1,19 @@
 import { Fragment, useEffect, useState } from 'react';
+import Head from 'next/head';
 import { Dialog, Transition } from '@headlessui/react';
-// import { videoIndex, videoIndexAsc } from '../algolia/client';
 import { Video } from '../types/Video';
 import { debounce } from 'debounce';
 import { SearchIndex } from 'algoliasearch/lite';
+import { useRouter } from 'next/router';
+import { SearchState } from 'react-instantsearch-core';
+import { InstantSearch } from 'react-instantsearch-dom';
+import CustomHits from './CustomHits';
+import CustomHitsPerPage from './CustomHitsPerPage';
+import CustomPagination from './CustomPagination';
+import CustomSearchBox from './CustomSearchBox';
+import Layout from '../layouts/Layout';
+import { searchClient } from '../pages/api/client';
+import { XIcon } from '@heroicons/react/outline';
 
 type SearchRespons = {
   nbHits: number;
@@ -16,33 +26,32 @@ type Props = {
 };
 
 const SearchModal = ({ isOpen, onClose }: Props) => {
-  //   const [index, setIndex] = useState<SearchIndex>(videoIndex);
-  //   const [searchResult, setSearchResult] = useState<SearchRespons>();
-  //   const search = debounce((value: string) => {
-  //     index.search<Video>(value).then(({ nbHits, hits }) => {
-  //       setSearchResult({
-  //         nbHits,
-  //         hits,
-  //       });
-  //     });
-  //   }, 500);
-
-  //   const changeIndex = (value: string) => {
-  //     switch (value) {
-  //       case 'desc':
-  //         setIndex(videoIndex);
-  //         break;
-  //       case 'asc':
-  //         setIndex(videoIndexAsc);
-  //         break;
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     search('');
-  //   }, [index]);
+  const router = useRouter();
+  const updateQueryParams = (state: SearchState) => {
+    router.push(
+      {
+        query: {
+          q: state.query || [],
+          hitsPerPage: state.hitsPerPage || [],
+          page: state.page || [],
+          sortBy: state.sortBy || [],
+          ...state.refinementList,
+        },
+      },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
+  };
   return (
     <>
+      <Head>
+        <link
+          href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+          rel="stylesheet"
+        />
+      </Head>
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog
           as="div"
@@ -61,8 +70,6 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
             >
               <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
             </Transition.Child>
-
-            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="hidden sm:inline-block sm:h-screen sm:align-middle"
               aria-hidden="true"
@@ -78,16 +85,59 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <div className="inline-block transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle">
-                <div className="mt-5 sm:mt-6">
+              <div className="my-8 inline-block w-full max-w-lg transform overflow-hidden rounded-lg bg-gray-100 p-6 px-4 pt-5 pb-4 text-left align-middle shadow-xl transition-all">
+                {/* <div className="absolute top-2 right-0 block pt-4 pr-4 sm:hidden">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
-                    onClick={onClose}
+                    className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    onClick={() => onClose()}
                   >
-                    Go back to dashboard
+                    <span>閉じる</span>
+                    <XIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
-                </div>
+                </div> */}
+                <InstantSearch
+                  onSearchStateChange={updateQueryParams}
+                  searchClient={searchClient}
+                  indexName="animes"
+                >
+                  <div className="mb-2 flex items-center justify-between">
+                    <CustomSearchBox
+                      defaultRefinement={router.query.q as string}
+                    />
+                    <button
+                      type="button"
+                      className="block rounded-md text-xl text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:hidden"
+                      onClick={() => onClose()}
+                    >
+                      <i className="ri-eye-close-line"></i>
+                    </button>
+                  </div>
+
+                  <CustomHits />
+                  <CustomPagination
+                    defaultRefinement={Number(router.query.page) || 1}
+                  />
+                  <CustomHitsPerPage
+                    items={[
+                      {
+                        value: 5,
+                        label: '5',
+                      },
+                      {
+                        value: 20,
+                        label: '20',
+                      },
+                      {
+                        value: 50,
+                        label: '50',
+                      },
+                    ]}
+                    defaultRefinement={
+                      Number(router.query.hitsPerPage as string) || 5
+                    }
+                  />
+                </InstantSearch>
               </div>
             </Transition.Child>
           </div>

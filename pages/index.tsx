@@ -92,14 +92,16 @@ const Home = () => {
 
         {/* <ul id="animeTitle">{animeMap}</ul> */}
         <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {animes?.map((anime) => (
-            <li
-              key={anime.title}
-              className="flex w-full flex-col justify-between"
-            >
-              <Card anime={anime}></Card>
-            </li>
-          ))}
+          {animes
+            ?.filter((anime) => anime.year === 2022 && anime.quarter === 4)
+            .map((anime) => (
+              <li
+                key={anime.title}
+                className="flex w-full flex-col justify-between"
+              >
+                <Card anime={anime}></Card>
+              </li>
+            ))}
         </ul>
 
         {/* <Button>もっと見る</Button> */}

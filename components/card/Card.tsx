@@ -5,6 +5,7 @@ import React, {
   useState,
   forwardRef,
   InputHTMLAttributes,
+  useCallback,
 } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -32,53 +33,17 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
 import { useAuth } from '../../utils/userContext';
-import { RevieData } from '../../types/ReviewData';
+import { ReviewData } from '../../types/ReviewData';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const Card = ({ anime }: { anime: Anime | undefined }) => {
+const Card = ({ anime }: { anime: Anime }) => {
   const { user, reviews, lists } = useAuth();
   //reviewしているかどうか
   const reviewedRef = reviews?.find((review) => review.title === anime?.title);
-  const reviewed = () => {
-    return reviewedRef;
-  };
-  // console.log(reviews, 'reviews');
-  const review = reviewedRef?.review;
-  const tag = reviewedRef?.tag;
-  const spoiler = reviewedRef?.spoiler;
-  // const storyScoree = reviewedRef?.storyScore;
-  // const drawingScoree = reviewedRef?.drawingScore;
-  // const voiceActorScoree = reviewedRef?.voiceActorScore;
-  // const musicScoree = reviewedRef?.musicScore;
-  // const characterScoree = reviewedRef?.characterScore;
-
-  //listしているかどうか
-  const listed = () => {
-    return lists?.find((list) => list.title === anime?.title);
-  };
-  // console.log(lists, 'lists');
-  //titleがレビューにいくつあるか
-  const reviewCount = () => {
-    const ref = collectionGroup(db, `reviews`);
-    const q = query(ref, where('title', '==', anime?.title));
-    // console.log(q, 'q');
-  };
-  reviewCount();
-
-  //rhf使用
-  const { register, handleSubmit, reset, control } = useForm();
-  //レビューのモーダル
-  const [reviewModal, setReviewModal] = useState(false);
-  const modalOpen = () => {
-    if (!user) {
-      alert('ログインしてください');
-      return;
-    }
-    setReviewModal(true);
-  };
+  console.log(reviewedRef, 'reviewedRef');
 
   const [storyScore, setStoryScore] = useState<number>(0);
   const [drawingScore, setDrawingScore] = useState<number>(0);
@@ -96,15 +61,11 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
     characterScore,
   ];
 
-  //  useEffect(() => {
-  //    if (reviewedRef) {
-  //      setStoryScore(reviewedRef?.storyScore);
-  //      setDrawingScore(reviewedRef?.drawingScore);
-  //      setVoiceActorScore(reviewedRef?.voiceActorScore);
-  //      setMusicScore(reviewedRef?.musicScore);
-  //      setCharacterScore(reviewedRef?.characterScore);
-  //    }
-  //  }, []);
+  // console.log(storyScore, anime?.title, 'storyScore');
+  // console.log(drawingScore, anime?.title, 'drawingScore');
+  // console.log(voiceActorScore, anime?.title, 'voiceActorScore');
+  // console.log(musicScore, anime?.title, 'musicScore');
+  // console.log(characterScore, anime?.title, 'characterScore');
 
   useEffect(() => {
     if (
@@ -115,23 +76,23 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
       (0 <= characterScore && characterScore < 1)
     ) {
       if (0 <= storyScore && storyScore < 1) {
-        console.log(storyScore);
+        // console.log(storyScore);
         setStoryScore(0);
       }
       if (0 <= drawingScore && drawingScore < 1) {
-        console.log(drawingScore);
+        // console.log(drawingScore);
         setDrawingScore(0);
       }
       if (0 <= voiceActorScore && voiceActorScore < 1) {
-        console.log(voiceActorScore);
+        // console.log(voiceActorScore);
         setVoiceActorScore(0);
       }
       if (0 <= musicScore && musicScore < 1) {
-        console.log(musicScore);
+        // console.log(musicScore);
         setMusicScore(0);
       }
       if (0 <= characterScore && characterScore < 1) {
-        console.log(characterScore);
+        // console.log(characterScore);
         setCharacterScore(0);
       }
       setScoreAverage('-');
@@ -139,7 +100,35 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
       changeScoreAverage();
     }
   }, scoreArray);
+  useEffect(() => {
+    if (reviewedRef) {
+      setStoryScore(reviewedRef?.storyScore as number);
+      setDrawingScore(reviewedRef?.drawingScore as number);
+      setVoiceActorScore(reviewedRef?.voiceActorScore as number);
+      setMusicScore(reviewedRef?.musicScore as number);
+      setCharacterScore(reviewedRef?.characterScore as number);
+    }
+  }, [reviewedRef]);
 
+  //listしているかどうか
+  const listed = () => {
+    return lists?.find((list) => list.title === anime?.title);
+  };
+  // console.log(lists, 'lists');
+
+  //rhf使用
+  const { register, handleSubmit, reset, control } = useForm();
+  //レビューのモーダル
+  const [reviewModal, setReviewModal] = useState(false);
+  const modalOpen = () => {
+    if (!user) {
+      alert('ログインしてください');
+      return;
+    }
+    setReviewModal(true);
+  };
+
+  //average取得
   const changeScoreAverage = () => {
     const sum = (numbers: number[], initialValue: number = 0) =>
       numbers.reduce(
@@ -152,25 +141,42 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
     // console.log(typeof scoreArray.length, 'scoreArray.length');
     setScoreAverage(parseFloat(average(scoreArray).toFixed(1)).toFixed(1));
   };
-  const onSubmit = (data: RevieData) => {
-    const idRef = doc(collection(db, `users/${user?.uid}/reviews`));
-    const id = idRef.id;
-    const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
-    setDoc(ref, {
-      id: id,
-      title: anime?.title,
-      storyScore: data.storyScore,
-      drawingScore: data.drawingScore,
-      voiceActorScore: data.voiceActorScore,
-      musicScore: data.musicScore,
-      characterScore: data.characterScore,
-      review: data.review,
-      spoiler: data.spoiler,
-      tag: data.tag,
-      createAt: Date.now(),
-    });
-    // console.log(data, 'data');
-    alert(`${anime?.title}のレビューを登録しました`);
+  const onSubmit = (data: ReviewData) => {
+    if (!reviewedRef) {
+      const idRef = doc(collection(db, `users/${user?.uid}/reviews`));
+      const id = idRef.id;
+      const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
+      setDoc(ref, {
+        id: id,
+        title: anime?.title,
+        storyScore: data.storyScore,
+        drawingScore: data.drawingScore,
+        voiceActorScore: data.voiceActorScore,
+        musicScore: data.musicScore,
+        characterScore: data.characterScore,
+        review: data.review,
+        spoiler: data.spoiler,
+        tag: data.tag,
+        createAt: Date.now(),
+      });
+      // console.log(data, 'data');
+      alert(`${anime?.title}のレビューを登録しました`);
+    } else {
+      const id = reviews?.find((review) => review.title === anime?.title)?.id;
+      const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
+      updateDoc(ref, {
+        storyScore: data.storyScore,
+        drawingScore: data.drawingScore,
+        voiceActorScore: data.voiceActorScore,
+        musicScore: data.musicScore,
+        characterScore: data.characterScore,
+        review: data.review,
+        spoiler: data.spoiler,
+        tag: data.tag,
+        updatedAt: Date.now(),
+      });
+      alert(`${anime?.title}のレビューを更新しました`);
+    }
   };
   //リストに登録する
   const listButton = () => {
@@ -200,6 +206,21 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
     const ref = doc(db, `users/${user?.uid}/lists/${id}`);
     deleteDoc(ref).then(() => {
       alert(`${anime?.title}を観たいリストから外しました`);
+    });
+  };
+  //reviewを消す
+  const deleteReviweButton = () => {
+    if (!user) {
+      alert('ログインしてください');
+      return;
+    }
+    const id = reviews?.find((review) => review.title === anime?.title)?.id;
+    // console.log(id);
+    const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
+    deleteDoc(ref).then(() => {
+      // reset();
+      alert(`${anime?.title}のレビューを削除しました`);
+      setReviewModal(false);
     });
   };
 
@@ -235,20 +256,43 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
       function: setCharacterScore,
     },
   ];
+
+  // const [height, setHeight] = useState(null);
+  // const [width, setWidth] = useState(null);
+  // const img = useCallback((node) => {
+  //   if (node !== null) {
+  //     setHeight(node.getBoundingClientRect().height);
+  //     setWidth(node.getBoundingClientRect().width);
+  //   }
+  // }, []);
+  // console.log(height, 'height');
+  // console.log(width, 'width');
+  // const heightWidth = () => {
+  //   if (height < width) {
+  //     return 'object-contein';
+  //   } else {
+  //     return 'object-cover';
+  //   }
+  // };
   return (
     <>
       <div className="mb-2">
         <Link href={`/animes/${anime?.title}`}>
-          <a className="relative block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72">
+          <a
+            className="relative block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72"
+            // ref={img}
+          >
             <Image
               src={
                 'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
                 `${anime?.title}` +
-                '.jpeg'
+                '.jpg'
               }
               layout="fill"
               className="object-cover"
+              // className={heightWidth()}
               alt=""
+              // ref={img}
             />
           </a>
         </Link>
@@ -261,7 +305,7 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
       <div className="grid grid-cols-3 items-center justify-items-center gap-2">
         <div className="w-full">
           <button className="w-full" onClick={modalOpen}>
-            {reviewed() ? (
+            {reviewedRef ? (
               <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
                 <EyeIcon className="mx-auto h-5 w-5" />
                 <span className="inline-block h-full w-full">100</span>
@@ -309,7 +353,7 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
           className="fixed inset-0 z-50 overflow-y-auto"
           onClose={modalOpen}
         >
-          <div className="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+          <div className="min-h-screen flex items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -378,14 +422,16 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
                             <Controller
                               name={reviewHandle.headingE}
                               control={control}
-                              // defaultValue={reviewHandle.value}
+                              defaultValue={reviewHandle.value}
                               render={({ field }) => (
                                 <Slider
                                   min={0}
                                   max={5}
                                   step={0.5}
+                                  value={field.value}
                                   onBlur={field.onBlur}
                                   onChange={field.onChange}
+                                  // defaultValue={reviewHandle.value}
                                   // value={reviewHandle.value}
                                   // onChange={(value) =>
                                   //   reviewHandle.function(Number(value))
@@ -418,43 +464,62 @@ const Card = ({ anime }: { anime: Anime | undefined }) => {
                       {...register('review')}
                       placeholder="無記入でも投稿できます"
                       className="w-full border-l border-gray-200"
-                      defaultValue={review}
+                      defaultValue={reviewedRef?.review}
                     ></textarea>
                     <input
                       {...register('tag')}
                       type="text"
                       className="w-full border-l border-gray-200"
                       placeholder="タグを1つ入力"
-                      defaultValue={tag}
+                      defaultValue={reviewedRef?.tag}
                     />
                   </div>
                   <div className="flex items-center justify-start px-4">
                     <Controller
                       name="spoiler"
                       control={control}
-                      defaultValue={spoiler ? spoiler : false}
+                      defaultValue={
+                        reviewedRef?.spoiler ? reviewedRef?.spoiler : false
+                      }
                       render={({ field }) => <SwitchButton {...field} />}
                     />
                     <p className="text-xs text-red-600">
                       レビュー内容にネタバレが含まれている場合はこちらをチェックしてください。
                     </p>
                   </div>
-                  <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                    <button
-                      type="submit"
-                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                      // onClick={() => setReviewModal(false)}
-                    >
-                      投稿
-                    </button>
-                    <button
-                      type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
-                      onClick={() => setReviewModal(false)}
-                    >
-                      キャンセル
-                    </button>
-                  </div>
+                  {!reviewedRef ? (
+                    <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                      <button
+                        type="submit"
+                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                      >
+                        投稿
+                      </button>
+                      <button
+                        type="button"
+                        className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+                        onClick={() => setReviewModal(false)}
+                      >
+                        キャンセル
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                      <button
+                        type="submit"
+                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                      >
+                        更新
+                      </button>
+                      <button
+                        type="button"
+                        className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+                        onClick={() => deleteReviweButton()}
+                      >
+                        削除
+                      </button>
+                    </div>
+                  )}
                 </form>
               </div>
             </Transition.Child>

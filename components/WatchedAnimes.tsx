@@ -43,7 +43,7 @@ const WatchedAnimes = () => {
   const [watchedAnimes, setWatchedAnimes] = useState<WatchedAnime[]>([]);
 
   const WatchedAnimes = () => {
-    const ref = collection(db, `users/${user?.uid}/watchedAnimes`);
+    const ref = collection(db, `users/${user?.uid}/reviews`);
     // console.log(ref, 'ref');
     return onSnapshot(ref, async (snap) => {
       // console.log(snap, 'snap');
@@ -76,13 +76,13 @@ const WatchedAnimes = () => {
   };
 
   const getWatchedAnimes = async (id: string): Promise<WatchedAnime> => {
-    const ref = doc(db, `users/${user?.uid}/watchedAnimes/${id}`);
+    const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
     const snap = await getDoc(ref);
     // console.log(snap, 'snap');
     return snap.data() as WatchedAnime;
   };
 
-  // console.log(watchedAnimes, 'watchedAnimes');
+  console.log(watchedAnimes, 'watchedAnimes');
 
   if (user === undefined) {
     return null;
@@ -91,7 +91,7 @@ const WatchedAnimes = () => {
   return (
     <>
       <ReactSortable
-        className="mb-4 grid grid-cols-5 gap-4"
+        className="mb-4 grid min-h-100 grid-cols-3 justify-items-center gap-4 border-2 border-dotted bg-amber-50 p-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
         list={watchedAnimes}
         setList={setWatchedAnimes}
         group="bestAnime"
@@ -99,17 +99,28 @@ const WatchedAnimes = () => {
         delay={2}
         tag="ul"
       >
-        {watchedAnimes ? (
+        {watchedAnimes.length ? (
           watchedAnimes?.map((item) => (
-            <li key={item.id}>
-              <div className="relative h-24 w-20">
-                <Image src={item.image} alt="" layout="fill" />
+            <li key={item.id} className="w-full text-center">
+              <div className="relative mb-2 h-52 w-full">
+                <Image
+                  src={
+                    'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
+                    `${item.title}` +
+                    '.jpg'
+                  }
+                  layout="fill"
+                  className="object-contain"
+                  alt=""
+                />
               </div>
               {item.title}
             </li>
           ))
         ) : (
-          <li>作品がありません。</li>
+          <li className="col-span-6 flex items-center justify-center">
+            レビュー済みの作品がありません。
+          </li>
         )}
       </ReactSortable>
       {/* <ul>

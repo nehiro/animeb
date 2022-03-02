@@ -1,5 +1,5 @@
 export type WatchedAnime = {
   id: string;
-  image: string;
+  // image: string;
   title: string;
 };

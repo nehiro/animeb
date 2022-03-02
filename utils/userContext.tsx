@@ -15,7 +15,7 @@ import {
   subscribeLikes,
 } from '../lib/user';
 import { List } from '../types/List';
-import { RevieData } from '../types/ReviewData';
+import { ReviewData } from '../types/ReviewData';
 import { User } from '../types/User';
 import { auth, db } from './firebase';
 
@@ -26,7 +26,7 @@ type AuthContextProps = {
   followUsers?: User[];
   likeIds?: string[];
   loading: boolean;
-  reviews?: RevieData[];
+  reviews?: ReviewData[];
   lists?: List[];
 };
 
@@ -54,7 +54,7 @@ export const AuthProvider: FC = ({ children }) => {
   const [likeIds, setLikeIds] = useState<string[]>();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [reviews, setReviews] = useState<RevieData[]>();
+  const [reviews, setReviews] = useState<ReviewData[]>();
   const [lists, setLists] = useState<List[]>();
 
   //呼び出されたら一度だけレンダリング

@@ -1,7 +1,13 @@
 import { BookmarkIcon, EyeIcon, StarIcon } from '@heroicons/react/solid';
 import { ChatAltIcon, HashtagIcon } from '@heroicons/react/outline';
 import Image from 'next/image';
-import React, { ReactElement } from 'react';
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import AnimeTag from '../../components/AnimeTag';
 import BackGroundGray from '../../components/BackGroundGray';
 import BackGroundWhite from '../../components/BackGroundWhite';
@@ -46,7 +52,17 @@ const AnimeWork = (animeTitle: AnimeName) => {
     }
   };
 
-  // console.log(animeInfo);
+  const [height, setHeight] = useState(null);
+  const [width, setWidth] = useState(null);
+  const div = useCallback((node) => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+      setWidth(node.getBoundingClientRect().width);
+    }
+  }, []);
+  console.log(height, 'height');
+  console.log(width, 'width');
+
   return (
     <>
       <Breadcrumbs />
@@ -57,12 +73,12 @@ const AnimeWork = (animeTitle: AnimeName) => {
         </div>
         <div className="flex justify-start">
           <div className="mr-4 min-w-200 max-w-242">
-            <div className="mb-2">
+            <div className="mb-2" ref={div}>
               <Image
                 src={
                   'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
                   `${animeInfo?.title}` +
-                  '.jpeg'
+                  '.jpg'
                 }
                 height={338}
                 width={242}

@@ -148,9 +148,7 @@ const Editor = ({ news }: { news: News }) => {
                           {...register('category', {
                             required: true,
                           })}
-                          defaultChecked={checked()}
-                          // defaultChecked={news.category === 'notice'}
-                          // defaultChecked={news.category === 'function'}
+                          defaultChecked={news.category === notification.id}
                           value={notification.id}
                           type="radio"
                           className="h-4 w-4 border-gray-300 text-indigo-400 focus:ring-indigo-400"

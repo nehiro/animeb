@@ -7,6 +7,7 @@ export type ReviewData = {
   musicScore: number;
   characterScore: number;
   review: string;
-  spoiler: true;
+  spoiler: boolean;
   tag: string;
+  createAt: number;
 };

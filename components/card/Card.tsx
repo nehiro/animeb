@@ -1,49 +1,61 @@
-import React, {
-  Fragment,
-  useEffect,
-  useRef,
-  useState,
-  forwardRef,
-  InputHTMLAttributes,
-  useCallback,
-} from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/solid';
 import { BookmarkIcon } from '@heroicons/react/solid';
 import { StarIcon } from '@heroicons/react/solid';
 import { Dialog, Transition } from '@headlessui/react';
-import { ExclamationIcon, XIcon } from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/outline';
 import { Anime } from '../../types/Anime';
-import Slider, { Range } from 'rc-slider';
+import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { Switch } from '@headlessui/react';
+import { useForm, Controller } from 'react-hook-form';
 import SwitchButton from '../SwitchButton';
-import {
-  collection,
-  collectionGroup,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  query,
-  setDoc,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import { collection, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
 import { useAuth } from '../../utils/userContext';
 import { ReviewData } from '../../types/ReviewData';
+import { deleteReviweButton, listButton, unlistButton } from '../../lib/card';
+import Tag from '../Tag';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
+
+type Card = {
+  title: string;
+  storyScore: number;
+  drawingScore: number;
+  voiceActorScore: number;
+  musicScore: number;
+  characterScore: number;
+  review: string;
+  spoiler: boolean;
+  tag: string;
+};
 
 const Card = ({ anime }: { anime: Anime }) => {
   const { user, reviews, lists } = useAuth();
   //reviewしているかどうか
   const reviewedRef = reviews?.find((review) => review.title === anime?.title);
   console.log(reviewedRef, 'reviewedRef');
+  //listしているかどうか
+  const listed = () => {
+    return lists?.find((list) => list.title === anime?.title);
+  };
+  //rhf使用
+  const { register, handleSubmit, reset, control, watch } = useForm<Card>({
+    defaultValues: {
+      storyScore: reviewedRef?.storyScore,
+      drawingScore: reviewedRef?.drawingScore,
+      voiceActorScore: reviewedRef?.voiceActorScore,
+      musicScore: reviewedRef?.musicScore,
+      characterScore: reviewedRef?.characterScore,
+      review: reviewedRef?.review,
+      tag: reviewedRef?.tag,
+      spoiler: reviewedRef?.spoiler,
+    },
+  });
 
   const [storyScore, setStoryScore] = useState<number>(0);
   const [drawingScore, setDrawingScore] = useState<number>(0);
@@ -53,71 +65,91 @@ const Card = ({ anime }: { anime: Anime }) => {
   const [scoreAverage, setScoreAverage] = useState<number | string>();
   // console.log(scoreAverage);
 
-  const scoreArray = [
-    storyScore,
-    drawingScore,
-    voiceActorScore,
-    musicScore,
-    characterScore,
-  ];
-
-  // console.log(storyScore, anime?.title, 'storyScore');
-  // console.log(drawingScore, anime?.title, 'drawingScore');
-  // console.log(voiceActorScore, anime?.title, 'voiceActorScore');
-  // console.log(musicScore, anime?.title, 'musicScore');
-  // console.log(characterScore, anime?.title, 'characterScore');
-
-  useEffect(() => {
-    if (
-      (0 <= storyScore && storyScore < 1) ||
-      (0 <= drawingScore && drawingScore < 1) ||
-      (0 <= voiceActorScore && voiceActorScore < 1) ||
-      (0 <= musicScore && musicScore < 1) ||
-      (0 <= characterScore && characterScore < 1)
-    ) {
-      if (0 <= storyScore && storyScore < 1) {
-        // console.log(storyScore);
-        setStoryScore(0);
-      }
-      if (0 <= drawingScore && drawingScore < 1) {
-        // console.log(drawingScore);
-        setDrawingScore(0);
-      }
-      if (0 <= voiceActorScore && voiceActorScore < 1) {
-        // console.log(voiceActorScore);
-        setVoiceActorScore(0);
-      }
-      if (0 <= musicScore && musicScore < 1) {
-        // console.log(musicScore);
-        setMusicScore(0);
-      }
-      if (0 <= characterScore && characterScore < 1) {
-        // console.log(characterScore);
-        setCharacterScore(0);
-      }
-      setScoreAverage('-');
-    } else {
-      changeScoreAverage();
-    }
-  }, scoreArray);
   useEffect(() => {
     if (reviewedRef) {
-      setStoryScore(reviewedRef?.storyScore as number);
-      setDrawingScore(reviewedRef?.drawingScore as number);
-      setVoiceActorScore(reviewedRef?.voiceActorScore as number);
-      setMusicScore(reviewedRef?.musicScore as number);
-      setCharacterScore(reviewedRef?.characterScore as number);
+      setStoryScore(reviewedRef?.storyScore);
+      setDrawingScore(reviewedRef?.drawingScore);
+      setVoiceActorScore(reviewedRef?.voiceActorScore);
+      setMusicScore(reviewedRef?.musicScore);
+      setCharacterScore(reviewedRef?.characterScore);
     }
   }, [reviewedRef]);
 
-  //listしているかどうか
-  const listed = () => {
-    return lists?.find((list) => list.title === anime?.title);
-  };
-  // console.log(lists, 'lists');
+  // const scoreArray = [
+  //   storyScore,
+  //   drawingScore,
+  //   voiceActorScore,
+  //   musicScore,
+  //   characterScore,
+  // ];
 
-  //rhf使用
-  const { register, handleSubmit, reset, control } = useForm();
+  // const reviewHandles = [
+  //   {
+  //     heading: '物語',
+  //     headingE: 'storyScore',
+  //     value: storyScore,
+  //     function: setStoryScore,
+  //   },
+  //   {
+  //     heading: '作画',
+  //     headingE: 'drawingScore',
+  //     value: drawingScore,
+  //     function: setDrawingScore,
+  //   },
+  //   {
+  //     heading: '声優',
+  //     headingE: 'voiceActorScore',
+  //     value: voiceActorScore,
+  //     function: setVoiceActorScore,
+  //   },
+  //   {
+  //     heading: '音楽',
+  //     headingE: 'musicScore',
+  //     value: musicScore,
+  //     function: setMusicScore,
+  //   },
+  //   {
+  //     heading: 'キャラ',
+  //     headingE: 'characterScore',
+  //     value: characterScore,
+  //     function: setCharacterScore,
+  //   },
+  // ];
+
+  // useEffect(() => {
+  //   if (
+  //     (0 <= storyScore && storyScore < 1) ||
+  //     (0 <= drawingScore && drawingScore < 1) ||
+  //     (0 <= voiceActorScore && voiceActorScore < 1) ||
+  //     (0 <= musicScore && musicScore < 1) ||
+  //     (0 <= characterScore && characterScore < 1)
+  //   ) {
+  //     if (0 <= storyScore && storyScore < 1) {
+  //       // console.log(storyScore);
+  //       setStoryScore(0);
+  //     }
+  //     if (0 <= drawingScore && drawingScore < 1) {
+  //       // console.log(drawingScore);
+  //       setDrawingScore(0);
+  //     }
+  //     if (0 <= voiceActorScore && voiceActorScore < 1) {
+  //       // console.log(voiceActorScore);
+  //       setVoiceActorScore(0);
+  //     }
+  //     if (0 <= musicScore && musicScore < 1) {
+  //       // console.log(musicScore);
+  //       setMusicScore(0);
+  //     }
+  //     if (0 <= characterScore && characterScore < 1) {
+  //       // console.log(characterScore);
+  //       setCharacterScore(0);
+  //     }
+  //     setScoreAverage('-');
+  //   } else {
+  //     changeScoreAverage();
+  //   }
+  // }, scoreArray);
+
   //レビューのモーダル
   const [reviewModal, setReviewModal] = useState(false);
   const modalOpen = () => {
@@ -129,18 +161,26 @@ const Card = ({ anime }: { anime: Anime }) => {
   };
 
   //average取得
-  const changeScoreAverage = () => {
+  const scores = watch([
+    'storyScore',
+    'drawingScore',
+    'voiceActorScore',
+    'musicScore',
+    'characterScore',
+  ]);
+  const getAverage = (scores: number[]) => {
     const sum = (numbers: number[], initialValue: number = 0) =>
       numbers.reduce(
         (accumulator: number, currentValue: number) =>
+          // accumulator + (currentValue || 0),
           accumulator + currentValue,
         initialValue
       );
     const average = (numbers: number[]) => sum(numbers) / numbers.length;
-    // console.log(parseFloat(average(scoreArray).toFixed(1)), 'average');
-    // console.log(typeof scoreArray.length, 'scoreArray.length');
-    setScoreAverage(parseFloat(average(scoreArray).toFixed(1)).toFixed(1));
+    return Number(parseFloat(average(scores).toFixed(1)).toFixed(1));
   };
+
+  //review登録
   const onSubmit = (data: ReviewData) => {
     if (!reviewedRef) {
       const idRef = doc(collection(db, `users/${user?.uid}/reviews`));
@@ -178,110 +218,12 @@ const Card = ({ anime }: { anime: Anime }) => {
       alert(`${anime?.title}のレビューを更新しました`);
     }
   };
-  //リストに登録する
-  const listButton = () => {
-    if (!user) {
-      alert('ログインしてください');
-      return;
-    }
-    const idRef = doc(collection(db, `users/${user?.uid}/reviews`));
-    const id = idRef.id;
-    const ref = doc(db, `users/${user?.uid}/lists/${id}`);
-    setDoc(ref, {
-      id: id,
-      title: anime?.title,
-      createAt: Date.now(),
-    }).then(() => {
-      alert(`${anime?.title}を観たいリストに登録しました`);
-    });
-  };
-  //リストから外す
-  const unlistButton = () => {
-    if (!user) {
-      alert('ログインしてください');
-      return;
-    }
-    const id = lists?.find((listTitle) => listTitle.title === anime?.title)?.id;
-    // console.log(id);
-    const ref = doc(db, `users/${user?.uid}/lists/${id}`);
-    deleteDoc(ref).then(() => {
-      alert(`${anime?.title}を観たいリストから外しました`);
-    });
-  };
-  //reviewを消す
-  const deleteReviweButton = () => {
-    if (!user) {
-      alert('ログインしてください');
-      return;
-    }
-    const id = reviews?.find((review) => review.title === anime?.title)?.id;
-    // console.log(id);
-    const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
-    deleteDoc(ref).then(() => {
-      // reset();
-      alert(`${anime?.title}のレビューを削除しました`);
-      setReviewModal(false);
-    });
-  };
 
-  const reviewHandles = [
-    {
-      heading: '物語',
-      headingE: 'storyScore',
-      value: storyScore,
-      function: setStoryScore,
-    },
-    {
-      heading: '作画',
-      headingE: 'drawingScore',
-      value: drawingScore,
-      function: setDrawingScore,
-    },
-    {
-      heading: '声優',
-      headingE: 'voiceActorScore',
-      value: voiceActorScore,
-      function: setVoiceActorScore,
-    },
-    {
-      heading: '音楽',
-      headingE: 'musicScore',
-      value: musicScore,
-      function: setMusicScore,
-    },
-    {
-      heading: 'キャラ',
-      headingE: 'characterScore',
-      value: characterScore,
-      function: setCharacterScore,
-    },
-  ];
-
-  // const [height, setHeight] = useState(null);
-  // const [width, setWidth] = useState(null);
-  // const img = useCallback((node) => {
-  //   if (node !== null) {
-  //     setHeight(node.getBoundingClientRect().height);
-  //     setWidth(node.getBoundingClientRect().width);
-  //   }
-  // }, []);
-  // console.log(height, 'height');
-  // console.log(width, 'width');
-  // const heightWidth = () => {
-  //   if (height < width) {
-  //     return 'object-contein';
-  //   } else {
-  //     return 'object-cover';
-  //   }
-  // };
   return (
     <>
       <div className="mb-2">
         <Link href={`/animes/${anime?.title}`}>
-          <a
-            className="relative block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72"
-            // ref={img}
-          >
+          <a className="relative block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72">
             <Image
               src={
                 'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
@@ -290,9 +232,7 @@ const Card = ({ anime }: { anime: Anime }) => {
               }
               layout="fill"
               className="object-cover"
-              // className={heightWidth()}
               alt=""
-              // ref={img}
             />
           </a>
         </Link>
@@ -322,14 +262,20 @@ const Card = ({ anime }: { anime: Anime }) => {
         </div>
         <div className="w-full">
           {listed() ? (
-            <button className="w-full" onClick={() => unlistButton()}>
+            <button
+              className="w-full"
+              onClick={() => unlistButton({ anime, user, lists })}
+            >
               <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
                 <BookmarkIcon className="mx-auto h-5 w-5" />
                 <span className="inline-block h-full w-full">100</span>
               </span>
             </button>
           ) : (
-            <button className="w-full" onClick={() => listButton()}>
+            <button
+              className="w-full"
+              onClick={() => listButton({ anime, user })}
+            >
               <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
                 <BookmarkIcon className="mx-auto h-5 w-5 text-amber-400" />
                 <span className="inline-block h-full w-full text-amber-400">
@@ -403,22 +349,234 @@ const Card = ({ anime }: { anime: Anime }) => {
                         {anime?.title}のレビュー
                       </Dialog.Title>
                       <ul className="bg-buttonBlack p-4 text-white">
-                        <li
-                          onChange={changeScoreAverage}
-                          className="border-b border-gray-500 pb-2 text-2xl"
-                        >
-                          {scoreAverage}
+                        <li className="border-b border-gray-500 pb-2 text-2xl">
+                          {getAverage(scores)}
+                          <br />
+                          {typeof getAverage(scores)}
+                        </li>
+                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                          <p className="mr-4 w-1/5">
+                            物語
+                            <br />
+                            {watch('storyScore', storyScore) < 1
+                              ? '-'
+                              : watch('storyScore', storyScore)}
+                            <br />
+                            {typeof watch('storyScore', storyScore)}
+                          </p>
+                          <Controller
+                            name={'storyScore'}
+                            control={control}
+                            defaultValue={storyScore}
+                            render={({ field }) => (
+                              <Slider
+                                min={0}
+                                max={5}
+                                step={0.5}
+                                value={field.value}
+                                onBlur={field.onBlur}
+                                onChange={field.onChange}
+                                handleStyle={{
+                                  borderColor: '#FFD400',
+                                  height: 20,
+                                  width: 20,
+                                  marginTop: -7,
+                                  backgroundColor: '#FFD400',
+                                }}
+                                railStyle={{
+                                  backgroundColor: 'white',
+                                  height: 6,
+                                }}
+                                trackStyle={{
+                                  backgroundColor: '#FFD400',
+                                  height: 6,
+                                }}
+                              ></Slider>
+                            )}
+                          ></Controller>
+                        </li>
+                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                          <p className="mr-4 w-1/5">
+                            作画
+                            <br />
+                            {watch('drawingScore', drawingScore) < 1
+                              ? '-'
+                              : watch('drawingScore', drawingScore)}
+                            <br />
+                            {typeof watch('drawingScore', drawingScore)}
+                          </p>
+                          <Controller
+                            name={'drawingScore'}
+                            control={control}
+                            defaultValue={drawingScore}
+                            render={({ field }) => (
+                              <Slider
+                                min={0}
+                                max={5}
+                                step={0.5}
+                                value={field.value}
+                                onBlur={field.onBlur}
+                                onChange={field.onChange}
+                                handleStyle={{
+                                  borderColor: '#FFD400',
+                                  height: 20,
+                                  width: 20,
+                                  marginTop: -7,
+                                  backgroundColor: '#FFD400',
+                                }}
+                                railStyle={{
+                                  backgroundColor: 'white',
+                                  height: 6,
+                                }}
+                                trackStyle={{
+                                  backgroundColor: '#FFD400',
+                                  height: 6,
+                                }}
+                              ></Slider>
+                            )}
+                          ></Controller>
+                        </li>
+                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                          <p className="mr-4 w-1/5">
+                            声優
+                            <br />
+                            {watch('voiceActorScore', voiceActorScore) < 1
+                              ? '-'
+                              : watch('voiceActorScore', voiceActorScore)}
+                            <br />
+                            {typeof watch('voiceActorScore', voiceActorScore)}
+                          </p>
+                          <Controller
+                            name={'voiceActorScore'}
+                            control={control}
+                            defaultValue={voiceActorScore}
+                            render={({ field }) => (
+                              <Slider
+                                min={0}
+                                max={5}
+                                step={0.5}
+                                value={field.value}
+                                onBlur={field.onBlur}
+                                onChange={field.onChange}
+                                handleStyle={{
+                                  borderColor: '#FFD400',
+                                  height: 20,
+                                  width: 20,
+                                  marginTop: -7,
+                                  backgroundColor: '#FFD400',
+                                }}
+                                railStyle={{
+                                  backgroundColor: 'white',
+                                  height: 6,
+                                }}
+                                trackStyle={{
+                                  backgroundColor: '#FFD400',
+                                  height: 6,
+                                }}
+                              ></Slider>
+                            )}
+                          ></Controller>
+                        </li>
+                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                          <p className="mr-4 w-1/5">
+                            音楽
+                            <br />
+                            {watch('musicScore', musicScore) < 1
+                              ? '-'
+                              : watch('musicScore', musicScore)}
+                            <br />
+                            {typeof watch('musicScore', musicScore)}
+                          </p>
+                          <Controller
+                            name={'musicScore'}
+                            control={control}
+                            defaultValue={musicScore}
+                            render={({ field }) => (
+                              <Slider
+                                min={0}
+                                max={5}
+                                step={0.5}
+                                value={field.value}
+                                onBlur={field.onBlur}
+                                onChange={field.onChange}
+                                handleStyle={{
+                                  borderColor: '#FFD400',
+                                  height: 20,
+                                  width: 20,
+                                  marginTop: -7,
+                                  backgroundColor: '#FFD400',
+                                }}
+                                railStyle={{
+                                  backgroundColor: 'white',
+                                  height: 6,
+                                }}
+                                trackStyle={{
+                                  backgroundColor: '#FFD400',
+                                  height: 6,
+                                }}
+                              ></Slider>
+                            )}
+                          ></Controller>
+                        </li>
+                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                          <p className="mr-4 w-1/5">
+                            キャラ
+                            <br />
+                            {watch('characterScore', characterScore) < 1
+                              ? '-'
+                              : watch('characterScore', characterScore)}
+                            <br />
+                            {typeof watch('characterScore', characterScore)}
+                          </p>
+                          <Controller
+                            name={'characterScore'}
+                            control={control}
+                            defaultValue={characterScore}
+                            render={({ field }) => (
+                              <Slider
+                                min={0}
+                                max={5}
+                                step={0.5}
+                                value={field.value}
+                                onBlur={field.onBlur}
+                                onChange={field.onChange}
+                                handleStyle={{
+                                  borderColor: '#FFD400',
+                                  height: 20,
+                                  width: 20,
+                                  marginTop: -7,
+                                  backgroundColor: '#FFD400',
+                                }}
+                                railStyle={{
+                                  backgroundColor: 'white',
+                                  height: 6,
+                                }}
+                                trackStyle={{
+                                  backgroundColor: '#FFD400',
+                                  height: 6,
+                                }}
+                              ></Slider>
+                            )}
+                          ></Controller>
                         </li>
 
-                        {reviewHandles.map((reviewHandle) => (
+                        {/* {reviewHandles.map((reviewHandle) => (
                           <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
                             <p className="mr-4 w-1/5">
                               {reviewHandle.heading}
                               <br />
-                              {reviewHandle.value === 0
+                              {!watch(reviewHandle.headingE, reviewHandle.value)
                                 ? '-'
-                                : reviewHandle.value?.toFixed(1)}
-                            </p>
+                                : watch(
+                                    reviewHandle.headingE,
+                                    reviewHandle.value
+                                  ).toFixed(1)}
+                              <br />
+                              {typeof watch(reviewHandle.headingE)}
+                              {/* {reviewHandle.value === 0
+                                ? '-'
+                                : reviewHandle.value?.toFixed(1)} */}
+                        {/* </p>
                             <Controller
                               name={reviewHandle.headingE}
                               control={control}
@@ -455,7 +613,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                               )}
                             ></Controller>
                           </li>
-                        ))}
+                        ))} */}
                       </ul>
                     </div>
                   </div>
@@ -464,23 +622,21 @@ const Card = ({ anime }: { anime: Anime }) => {
                       {...register('review')}
                       placeholder="無記入でも投稿できます"
                       className="w-full border-l border-gray-200"
-                      defaultValue={reviewedRef?.review}
+                      // defaultValue={reviewedRef?.review}
                     ></textarea>
                     <input
                       {...register('tag')}
                       type="text"
                       className="w-full border-l border-gray-200"
                       placeholder="タグを1つ入力"
-                      defaultValue={reviewedRef?.tag}
+                      // defaultValue={reviewedRef?.tag}
                     />
                   </div>
                   <div className="flex items-center justify-start px-4">
                     <Controller
                       name="spoiler"
                       control={control}
-                      defaultValue={
-                        reviewedRef?.spoiler ? reviewedRef?.spoiler : false
-                      }
+                      // defaultValue={reviewedRef?.spoiler}
                       render={({ field }) => <SwitchButton {...field} />}
                     />
                     <p className="text-xs text-red-600">
@@ -514,7 +670,14 @@ const Card = ({ anime }: { anime: Anime }) => {
                       <button
                         type="button"
                         className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
-                        onClick={() => deleteReviweButton()}
+                        onClick={() =>
+                          deleteReviweButton({
+                            anime,
+                            setReviewModal,
+                            user,
+                            reviews,
+                          })
+                        }
                       >
                         削除
                       </button>

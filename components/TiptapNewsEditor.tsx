@@ -52,7 +52,7 @@ const TiptapNewsEditor = ({
 
   useEffect(() => {
     editor?.commands.setContent(value);
-  }, [value, editor]);
+  }, [editor]);
 
   // console.log(editor?.commands.setContent(value));
   console.log(value);
@@ -214,133 +214,6 @@ const TiptapNewsEditor = ({
             <i className={editorFunction.icon}></i>
           </button>
         ))}
-
-        {/* <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-          className={classNames(
-            'p-2',
-            editor.isActive('heading', { level: 1 }) &&
-              'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-h-1"></i>
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          className={classNames(
-            'p-2',
-            editor.isActive('heading', { level: 2 }) &&
-              'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-h-2"></i>
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          className={classNames(
-            'p-2',
-            editor.isActive('heading', { level: 3 }) &&
-              'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-h-3"></i>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={classNames(
-            'p-2',
-            editor.isActive('bold') && 'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-bold"></i>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={classNames(
-            'p-2',
-            editor.isActive('bulletList') && 'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-list-unordered"></i>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={classNames(
-            'p-2',
-            editor.isActive('orderedList') && 'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-list-ordered"></i>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={classNames(
-            'p-2',
-            editor.isActive('blockquote') && 'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-indent-increase"></i>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={classNames(
-            'p-2',
-            editor.isActive('italic') && 'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-italic"></i>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={classNames(
-            'p-2',
-            editor.isActive('strike') && 'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-strikethrough-2"></i>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          className={classNames(
-            'p-2',
-            editor.isActive('codeBlock') && 'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-code-view"></i>
-        </button>
-        <button
-          onClick={setLink}
-          className={classNames(
-            'p-2',
-            editor.isActive('link') && 'bg-purple font-bold text-white'
-          )}
-          type="button"
-        >
-          <i className="ri-link"></i>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().unsetLink().run()}
-          disabled={!editor.isActive('link')}
-          type="button"
-        >
-          <i className="ri-link-unlink"></i>
-        </button> */}
         <label className="p-2 text-center">
           <i className="ri-image-add-line"></i>
           <input className="hidden" type="file" onChange={uploadImage} />

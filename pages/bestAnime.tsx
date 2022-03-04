@@ -27,30 +27,29 @@ const BestAnime = () => {
   }, []);
 
   useEffect(() => {
-    if (user?.ranking) {
-      setRanking(user.ranking);
+    if (user?.ranking.length) {
+      console.log('rankingあり');
+      setRankingData(user.ranking);
     } else {
-      setRanking([]);
+      console.log('空');
+      setRankingData([]);
     }
   }, [user?.ranking]);
 
   // console.log(user?.ranking);
 
-  const [ranking, setRanking] = useState<UserRanking[]>([]);
-  console.log(ranking);
-  console.log(ranking.map((item) => item.title));
-  console.log(ranking.map((item) => item.id));
-  // const title = ranking.map((item) => item.title);
-  // const id = ranking.map((item) => item.id);
+  const [rankingData, setRankingData] = useState<UserRanking[]>([]);
+  // console.log(rankingData, 'rankingData');
+  const ranking = rankingData.map((item) => {
+    return {
+      title: item.title,
+      id: item.id,
+    };
+  });
+  console.log(ranking, 'ranking');
 
   const bestAnimeSet = async () => {
     await updateDoc(doc(db, `users/${user?.uid}`), {
-      // ranking: [
-      //   {
-      //     title: title,
-      //     id: id,
-      //   },
-      // ],
       ranking,
     }).then(() => alert('ベストアニメを登録しました'));
   };
@@ -73,19 +72,19 @@ const BestAnime = () => {
         <p className="mb-4 text-center">ドラッグ&ドロップで並び替え</p>
         <ReactSortable
           className="mb-4 grid h-60 min-w-200 grid-cols-3 gap-4 border-2 border-dotted bg-amber-50 p-4"
-          list={ranking}
-          setList={setRanking}
+          list={rankingData}
+          setList={setRankingData}
           group={choiced}
           animation={200}
           delay={2}
           tag="ul"
         >
-          {ranking.length === 0 ? (
+          {rankingData.length === 0 ? (
             <li className="col-span-3 flex items-center justify-center">
               作品が選ばれていません。
             </li>
           ) : (
-            ranking.map((item) => (
+            rankingData.map((item) => (
               <li
                 key={item.id}
                 className="flex justify-center bg-16 bg-left bg-no-repeat first:bg-no1 last:bg-no3 even:bg-no2"

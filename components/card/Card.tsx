@@ -43,21 +43,6 @@ const Card = ({ anime }: { anime: Anime }) => {
   const listed = () => {
     return lists?.find((list) => list.title === anime?.title);
   };
-  //rhf使用
-  const { register, handleSubmit, reset, control, watch } = useForm<Card>({
-    defaultValues: {
-      title: reviewedRef?.title,
-      storyScore: reviewedRef?.storyScore,
-      drawingScore: reviewedRef?.drawingScore,
-      voiceActorScore: reviewedRef?.voiceActorScore,
-      musicScore: reviewedRef?.musicScore,
-      characterScore: reviewedRef?.characterScore,
-      review: reviewedRef?.review,
-      tag: reviewedRef?.tag,
-      spoiler: reviewedRef?.spoiler,
-    },
-  });
-
   const [storyScore, setStoryScore] = useState<number>(0);
   const [drawingScore, setDrawingScore] = useState<number>(0);
   const [voiceActorScore, setVoiceActorScore] = useState<number>(0);
@@ -75,81 +60,20 @@ const Card = ({ anime }: { anime: Anime }) => {
       setCharacterScore(reviewedRef?.characterScore);
     }
   }, [reviewedRef]);
-
-  // const scoreArray = [
-  //   storyScore,
-  //   drawingScore,
-  //   voiceActorScore,
-  //   musicScore,
-  //   characterScore,
-  // ];
-
-  // const reviewHandles = [
-  //   {
-  //     heading: '物語',
-  //     headingE: 'storyScore',
-  //     value: storyScore,
-  //     function: setStoryScore,
-  //   },
-  //   {
-  //     heading: '作画',
-  //     headingE: 'drawingScore',
-  //     value: drawingScore,
-  //     function: setDrawingScore,
-  //   },
-  //   {
-  //     heading: '声優',
-  //     headingE: 'voiceActorScore',
-  //     value: voiceActorScore,
-  //     function: setVoiceActorScore,
-  //   },
-  //   {
-  //     heading: '音楽',
-  //     headingE: 'musicScore',
-  //     value: musicScore,
-  //     function: setMusicScore,
-  //   },
-  //   {
-  //     heading: 'キャラ',
-  //     headingE: 'characterScore',
-  //     value: characterScore,
-  //     function: setCharacterScore,
-  //   },
-  // ];
-
-  // useEffect(() => {
-  //   if (
-  //     (0 <= storyScore && storyScore < 1) ||
-  //     (0 <= drawingScore && drawingScore < 1) ||
-  //     (0 <= voiceActorScore && voiceActorScore < 1) ||
-  //     (0 <= musicScore && musicScore < 1) ||
-  //     (0 <= characterScore && characterScore < 1)
-  //   ) {
-  //     if (0 <= storyScore && storyScore < 1) {
-  //       // console.log(storyScore);
-  //       setStoryScore(0);
-  //     }
-  //     if (0 <= drawingScore && drawingScore < 1) {
-  //       // console.log(drawingScore);
-  //       setDrawingScore(0);
-  //     }
-  //     if (0 <= voiceActorScore && voiceActorScore < 1) {
-  //       // console.log(voiceActorScore);
-  //       setVoiceActorScore(0);
-  //     }
-  //     if (0 <= musicScore && musicScore < 1) {
-  //       // console.log(musicScore);
-  //       setMusicScore(0);
-  //     }
-  //     if (0 <= characterScore && characterScore < 1) {
-  //       // console.log(characterScore);
-  //       setCharacterScore(0);
-  //     }
-  //     setScoreAverage('-');
-  //   } else {
-  //     changeScoreAverage();
-  //   }
-  // }, scoreArray);
+  //rhf使用
+  const { register, handleSubmit, reset, control, watch } = useForm<Card>({
+    defaultValues: {
+      title: reviewedRef?.title,
+      storyScore: reviewedRef?.storyScore,
+      drawingScore: reviewedRef?.drawingScore,
+      voiceActorScore: reviewedRef?.voiceActorScore,
+      musicScore: reviewedRef?.musicScore,
+      characterScore: reviewedRef?.characterScore,
+      review: reviewedRef?.review,
+      tag: reviewedRef?.tag,
+      spoiler: reviewedRef?.spoiler,
+    },
+  });
 
   //レビューのモーダル
   const [reviewModal, setReviewModal] = useState(false);

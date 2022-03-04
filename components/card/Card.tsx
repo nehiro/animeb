@@ -46,6 +46,7 @@ const Card = ({ anime }: { anime: Anime }) => {
   //rhf使用
   const { register, handleSubmit, reset, control, watch } = useForm<Card>({
     defaultValues: {
+      title: reviewedRef?.title,
       storyScore: reviewedRef?.storyScore,
       drawingScore: reviewedRef?.drawingScore,
       voiceActorScore: reviewedRef?.voiceActorScore,
@@ -367,7 +368,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                           <Controller
                             name={'storyScore'}
                             control={control}
-                            defaultValue={storyScore}
+                            // defaultValue={storyScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -408,7 +409,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                           <Controller
                             name={'drawingScore'}
                             control={control}
-                            defaultValue={drawingScore}
+                            // defaultValue={drawingScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -449,7 +450,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                           <Controller
                             name={'voiceActorScore'}
                             control={control}
-                            defaultValue={voiceActorScore}
+                            // defaultValue={voiceActorScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -490,7 +491,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                           <Controller
                             name={'musicScore'}
                             control={control}
-                            defaultValue={musicScore}
+                            // defaultValue={musicScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -531,7 +532,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                           <Controller
                             name={'characterScore'}
                             control={control}
-                            defaultValue={characterScore}
+                            // defaultValue={characterScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}

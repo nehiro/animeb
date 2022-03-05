@@ -59,21 +59,63 @@ const Card = ({ anime }: { anime: Anime }) => {
       setMusicScore(reviewedRef?.musicScore);
       setCharacterScore(reviewedRef?.characterScore);
     }
+    reset(reviewedRef);
   }, [reviewedRef]);
   //rhf使用
-  const { register, handleSubmit, reset, control, watch } = useForm<Card>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<Card>({
     defaultValues: {
       title: reviewedRef?.title,
-      storyScore: reviewedRef?.storyScore,
-      drawingScore: reviewedRef?.drawingScore,
-      voiceActorScore: reviewedRef?.voiceActorScore,
-      musicScore: reviewedRef?.musicScore,
-      characterScore: reviewedRef?.characterScore,
-      review: reviewedRef?.review,
-      tag: reviewedRef?.tag,
-      spoiler: reviewedRef?.spoiler,
+      storyScore: 0,
+      drawingScore: 0,
+      voiceActorScore: 0,
+      musicScore: 0,
+      characterScore: 0,
+      review: '',
+      tag: '',
+      spoiler: false,
     },
   });
+
+  // useEffect(() => {
+  //   if (
+  //     (0 <= storyScore && storyScore < 1) ||
+  //     (0 <= drawingScore && drawingScore < 1) ||
+  //     (0 <= voiceActorScore && voiceActorScore < 1) ||
+  //     (0 <= musicScore && musicScore < 1) ||
+  //     (0 <= characterScore && characterScore < 1)
+  //   ) {
+  //     if (0 <= storyScore && storyScore < 1) {
+  //       // console.log(storyScore);
+  //       setStoryScore(0);
+  //     }
+  //     if (0 <= drawingScore && drawingScore < 1) {
+  //       // console.log(drawingScore);
+  //       setDrawingScore(0);
+  //     }
+  //     if (0 <= voiceActorScore && voiceActorScore < 1) {
+  //       // console.log(voiceActorScore);
+  //       setVoiceActorScore(0);
+  //     }
+  //     if (0 <= musicScore && musicScore < 1) {
+  //       // console.log(musicScore);
+  //       setMusicScore(0);
+  //     }
+  //     if (0 <= characterScore && characterScore < 1) {
+  //       // console.log(characterScore);
+  //       setCharacterScore(0);
+  //     }
+  //     setScoreAverage('-');
+  //   } else {
+  //     changeScoreAverage();
+  //   }
+  // }, scoreArray);
 
   //レビューのモーダル
   const [reviewModal, setReviewModal] = useState(false);
@@ -94,16 +136,31 @@ const Card = ({ anime }: { anime: Anime }) => {
     'characterScore',
   ]);
   const getAverage = (scores: number[]) => {
-    const sum = (numbers: number[], initialValue: number = 0) =>
-      numbers.reduce(
-        (accumulator: number, currentValue: number) =>
-          // accumulator + (currentValue || 0),
-          accumulator + currentValue,
-        initialValue
-      );
-    const average = (numbers: number[]) => sum(numbers) / numbers.length;
-    return Number(parseFloat(average(scores).toFixed(1)).toFixed(1));
+    if (
+      watch('storyScore', storyScore) < 1 ||
+      watch('drawingScore', drawingScore) < 1 ||
+      watch('voiceActorScore', voiceActorScore) < 1 ||
+      watch('musicScore', musicScore) < 1 ||
+      watch('characterScore', characterScore) < 1
+    ) {
+      return '-';
+    } else {
+      const sum = (numbers: number[], initialValue: number = 0) =>
+        numbers.reduce(
+          (accumulator: number, currentValue: number) =>
+            accumulator + currentValue,
+          initialValue
+        );
+      const average = (numbers: number[]) => sum(numbers) / numbers.length;
+      return parseFloat(average(scores).toFixed(1)).toFixed(1);
+    }
   };
+
+  // useEffect(() => {
+  //   if (watch('storyScore', storyScore) < 1) {
+  //     setStoryScore(0);
+  //   }
+  // }, [storyScore]);
 
   //review登録
   const onSubmit = (data: ReviewData) => {
@@ -276,8 +333,8 @@ const Card = ({ anime }: { anime: Anime }) => {
                       <ul className="bg-buttonBlack p-4 text-white">
                         <li className="border-b border-gray-500 pb-2 text-2xl">
                           {getAverage(scores)}
-                          <br />
-                          {typeof getAverage(scores)}
+                          {/* <br />
+                          {typeof getAverage(scores)} */}
                         </li>
                         <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
                           <p className="mr-4 w-1/5">
@@ -285,14 +342,14 @@ const Card = ({ anime }: { anime: Anime }) => {
                             <br />
                             {watch('storyScore', storyScore) < 1
                               ? '-'
-                              : watch('storyScore', storyScore)}
-                            <br />
-                            {typeof watch('storyScore', storyScore)}
+                              : watch('storyScore', storyScore).toFixed(1)}
+                            {/* <br />
+                            {typeof watch('storyScore', storyScore)} */}
                           </p>
                           <Controller
                             name={'storyScore'}
                             control={control}
-                            // defaultValue={storyScore}
+                            defaultValue={reviewedRef?.storyScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -326,14 +383,14 @@ const Card = ({ anime }: { anime: Anime }) => {
                             <br />
                             {watch('drawingScore', drawingScore) < 1
                               ? '-'
-                              : watch('drawingScore', drawingScore)}
-                            <br />
-                            {typeof watch('drawingScore', drawingScore)}
+                              : watch('drawingScore', drawingScore).toFixed(1)}
+                            {/* <br />
+                            {typeof watch('drawingScore', drawingScore)} */}
                           </p>
                           <Controller
                             name={'drawingScore'}
                             control={control}
-                            // defaultValue={drawingScore}
+                            defaultValue={reviewedRef?.drawingScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -367,14 +424,17 @@ const Card = ({ anime }: { anime: Anime }) => {
                             <br />
                             {watch('voiceActorScore', voiceActorScore) < 1
                               ? '-'
-                              : watch('voiceActorScore', voiceActorScore)}
-                            <br />
-                            {typeof watch('voiceActorScore', voiceActorScore)}
+                              : watch(
+                                  'voiceActorScore',
+                                  voiceActorScore
+                                ).toFixed(1)}
+                            {/* <br />
+                            {typeof watch('voiceActorScore', voiceActorScore)} */}
                           </p>
                           <Controller
                             name={'voiceActorScore'}
                             control={control}
-                            // defaultValue={voiceActorScore}
+                            defaultValue={reviewedRef?.voiceActorScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -408,14 +468,14 @@ const Card = ({ anime }: { anime: Anime }) => {
                             <br />
                             {watch('musicScore', musicScore) < 1
                               ? '-'
-                              : watch('musicScore', musicScore)}
-                            <br />
-                            {typeof watch('musicScore', musicScore)}
+                              : watch('musicScore', musicScore).toFixed(1)}
+                            {/* <br />
+                            {typeof watch('musicScore', musicScore)} */}
                           </p>
                           <Controller
                             name={'musicScore'}
                             control={control}
-                            // defaultValue={musicScore}
+                            defaultValue={reviewedRef?.musicScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -449,14 +509,16 @@ const Card = ({ anime }: { anime: Anime }) => {
                             <br />
                             {watch('characterScore', characterScore) < 1
                               ? '-'
-                              : watch('characterScore', characterScore)}
-                            <br />
-                            {typeof watch('characterScore', characterScore)}
+                              : watch('characterScore', characterScore).toFixed(
+                                  1
+                                )}
+                            {/* <br />
+                            {typeof watch('characterScore', characterScore)} */}
                           </p>
                           <Controller
                             name={'characterScore'}
                             control={control}
-                            // defaultValue={characterScore}
+                            defaultValue={reviewedRef?.characterScore}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -547,21 +609,21 @@ const Card = ({ anime }: { anime: Anime }) => {
                       {...register('review')}
                       placeholder="無記入でも投稿できます"
                       className="w-full border-l border-gray-200"
-                      // defaultValue={reviewedRef?.review}
+                      defaultValue={reviewedRef?.review}
                     ></textarea>
                     <input
                       {...register('tag')}
                       type="text"
                       className="w-full border-l border-gray-200"
                       placeholder="タグを1つ入力"
-                      // defaultValue={reviewedRef?.tag}
+                      defaultValue={reviewedRef?.tag}
                     />
                   </div>
                   <div className="flex items-center justify-start px-4">
                     <Controller
                       name="spoiler"
                       control={control}
-                      // defaultValue={reviewedRef?.spoiler}
+                      defaultValue={reviewedRef?.spoiler}
                       render={({ field }) => <SwitchButton {...field} />}
                     />
                     <p className="text-xs text-red-600">

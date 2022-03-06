@@ -11,12 +11,19 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { useForm, Controller } from 'react-hook-form';
 import SwitchButton from '../SwitchButton';
-import { collection, doc, setDoc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import { db } from '../../utils/firebase';
 import { useAuth } from '../../utils/userContext';
 import { ReviewData } from '../../types/ReviewData';
 import { deleteReviweButton, listButton, unlistButton } from '../../lib/card';
 import Tag from '../Tag';
+import useSWR from 'swr';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -38,11 +45,19 @@ const Card = ({ anime }: { anime: Anime }) => {
   const { user, reviews, lists } = useAuth();
   //reviewしているかどうか
   const reviewedRef = reviews?.find((review) => review.title === anime?.title);
-  console.log(reviewedRef, 'reviewedRef');
+  // console.log(reviewedRef, 'reviewedRef');
   //listしているかどうか
   const listed = () => {
     return lists?.find((list) => list.title === anime?.title);
   };
+
+  //listsにあるタイトル
+  const listAnimes = useSWR('animes', async () => {
+    const ref = collection(db, 'animes');
+    const snap = await getDocs(ref);
+    return snap.docs.map((doc) => doc.data());
+  });
+
   const [storyScore, setStoryScore] = useState<number>(0);
   const [drawingScore, setDrawingScore] = useState<number>(0);
   const [voiceActorScore, setVoiceActorScore] = useState<number>(0);
@@ -157,10 +172,16 @@ const Card = ({ anime }: { anime: Anime }) => {
   };
 
   // useEffect(() => {
-  //   if (watch('storyScore', storyScore) < 1) {
+  //   if (watch('storyScore') < 1) {
   //     setStoryScore(0);
+  //     console.log('上');
+  //     console.log(storyScore);
+  //   } else {
+  //     setStoryScore(watch('storyScore'));
+  //     console.log('下');
+  //     console.log(storyScore);
   //   }
-  // }, [storyScore]);
+  // }, [watch('storyScore')]);
 
   //review登録
   const onSubmit = (data: ReviewData) => {
@@ -256,7 +277,7 @@ const Card = ({ anime }: { anime: Anime }) => {
           ) : (
             <button
               className="w-full"
-              onClick={() => listButton({ anime, user })}
+              onClick={() => listButton({ anime, user, listAnimes })}
             >
               <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
                 <BookmarkIcon className="mx-auto h-5 w-5 text-amber-400" />

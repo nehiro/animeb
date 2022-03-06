@@ -4,11 +4,11 @@ import {
   UserGroupIcon,
   UsersIcon,
 } from '@heroicons/react/solid';
+import { list } from 'firebase/storage';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { ReactElement, useEffect } from 'react';
 import Card from '../../components/card/Card';
-import ListedCard from '../../components/card/ListedCard';
 import Layout from '../../layouts/Layout';
 import MyPageSubHeader from '../../layouts/MyPageSubHeader';
 import { useAnime } from '../../utils/animeContext';
@@ -47,6 +47,10 @@ const MyPage = () => {
       current: false,
     },
   ];
+
+  const newLists = animes?.filter((anime) => {
+    return lists?.find((listTitle) => listTitle.title === anime.title);
+  });
 
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
@@ -92,12 +96,12 @@ const MyPage = () => {
       <section>
         <div className="container py-4">
           <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {lists?.map((list) => (
+            {newLists?.map((newList) => (
               <li
-                key={list.title}
+                key={newList.title}
                 className="flex w-full flex-col justify-between"
               >
-                <ListedCard list={list}></ListedCard>
+                <Card anime={newList}></Card>
               </li>
             ))}
           </ul>

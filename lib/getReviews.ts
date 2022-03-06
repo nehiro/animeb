@@ -1,10 +1,10 @@
 import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
-import { RevieData } from '../types/ReviewData';
+import { ReviewData } from '../types/ReviewData';
 import { db } from '../utils/firebase';
 
 export const userReviews = (
   uid: string,
-  callback: (reviews: RevieData[]) => void
+  callback: (reviews: ReviewData[]) => void
 ) => {
   const ref = collection(db, `users/${uid}/reviews`);
   // console.log(ref, 'ref');
@@ -22,9 +22,9 @@ export const userReviews = (
   });
 };
 
-const getReviwes = async (id: string, uid: string): Promise<RevieData> => {
+const getReviwes = async (id: string, uid: string): Promise<ReviewData> => {
   const ref = doc(db, `users/${uid}/reviews/${id}`);
   const snap = await getDoc(ref);
   // console.log(snap, 'snap');
-  return snap.data() as RevieData;
+  return snap.data() as ReviewData;
 };

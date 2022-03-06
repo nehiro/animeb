@@ -47,7 +47,11 @@ const MyPage = () => {
     },
   ];
 
-  console.log(reviews);
+  // console.log(reviews);
+
+  const newReviews = animes?.filter((anime) => {
+    return reviews?.find((revirwTitle) => revirwTitle.title === anime.title);
+  });
 
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
@@ -93,12 +97,12 @@ const MyPage = () => {
       <section>
         <div className="container py-4">
           <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {animes?.map((anime) => (
+            {newReviews?.map((newReview) => (
               <li
-                key={anime.title}
+                key={newReview.title}
                 className="flex w-full flex-col justify-between"
               >
-                <Card anime={anime}></Card>
+                <Card anime={newReview}></Card>
               </li>
             ))}
           </ul>

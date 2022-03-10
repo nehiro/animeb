@@ -1,6 +1,7 @@
 export type ReviewData = {
   id: string;
   title: string;
+  isScore: boolean;
   storyScore: number;
   drawingScore: number;
   voiceActorScore: number;

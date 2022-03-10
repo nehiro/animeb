@@ -31,6 +31,7 @@ type DeleteReviweButton = {
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   user: User | null | undefined;
   reviews: ReviewData[] | undefined;
+  dbAnimes: any;
 };
 //リストに登録する
 export const listButton = async (props: ListButton) => {
@@ -108,11 +109,12 @@ export const unlistButton = async (props: UnlistButton) => {
   });
 };
 //reviewを消す
-export const deleteReviweButton = (props: DeleteReviweButton) => {
+export const deleteReviweButton = async (props: DeleteReviweButton) => {
   const user = props.user;
   const anime = props.anime;
   const reviews = props.reviews;
   const setReviewModal = props.setReviewModal;
+  const dbLists = props.dbAnimes.data;
   if (!user) {
     alert('ログインしてください');
     return;
@@ -124,5 +126,15 @@ export const deleteReviweButton = (props: DeleteReviweButton) => {
     // reset();
     alert(`${anime?.title}のレビューを削除しました`);
     setReviewModal(false);
+  });
+
+  const dbId = dbLists.find(
+    (dbList: { title: string }) => dbList.title === anime?.title
+  ).id;
+  // console.log(id, 'id');
+  // console.log('カウントダウン');
+  const animesIDRef = doc(db, `animes/${dbId}`);
+  await updateDoc(animesIDRef, {
+    reviewCount: increment(-1),
   });
 };

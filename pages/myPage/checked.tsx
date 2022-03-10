@@ -10,6 +10,7 @@ import Link from 'next/link';
 import React, { ReactElement, useEffect } from 'react';
 import Card from '../../components/card/Card';
 import Layout from '../../layouts/Layout';
+import LayoutNoNav from '../../layouts/LayoutNoNav';
 import MyPageSubHeader from '../../layouts/MyPageSubHeader';
 import { useAnime } from '../../utils/animeContext';
 import { auth } from '../../utils/firebase';
@@ -113,4 +114,4 @@ const MyPage = () => {
 
 export default MyPage;
 
-MyPage.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
+MyPage.getLayout = (page: ReactElement) => <LayoutNoNav>{page}</LayoutNoNav>;

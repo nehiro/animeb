@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/solid';
 import { BookmarkIcon } from '@heroicons/react/solid';
 import { StarIcon } from '@heroicons/react/solid';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, Transition, Disclosure } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Anime } from '../../types/Anime';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -15,6 +16,7 @@ import {
   collection,
   doc,
   getDocs,
+  increment,
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
@@ -31,6 +33,7 @@ function classNames(...classes: string[]) {
 
 type Card = {
   title: string;
+  isScore: boolean;
   storyScore: number;
   drawingScore: number;
   voiceActorScore: number;
@@ -71,11 +74,11 @@ const Card = ({ anime }: { anime: Anime }) => {
   )?.reviewCount;
   // console.log(reviewCount);
 
-  const [storyScore, setStoryScore] = useState<number>(0);
-  const [drawingScore, setDrawingScore] = useState<number>(0);
-  const [voiceActorScore, setVoiceActorScore] = useState<number>(0);
-  const [musicScore, setMusicScore] = useState<number>(0);
-  const [characterScore, setCharacterScore] = useState<number>(0);
+  const [storyScore, setStoryScore] = useState<number>();
+  const [drawingScore, setDrawingScore] = useState<number>();
+  const [voiceActorScore, setVoiceActorScore] = useState<number>();
+  const [musicScore, setMusicScore] = useState<number>();
+  const [characterScore, setCharacterScore] = useState<number>();
   const [scoreAverage, setScoreAverage] = useState<number | string>();
   // console.log(scoreAverage);
 
@@ -100,50 +103,17 @@ const Card = ({ anime }: { anime: Anime }) => {
   } = useForm<Card>({
     defaultValues: {
       title: reviewedRef?.title,
-      storyScore: 0,
-      drawingScore: 0,
-      voiceActorScore: 0,
-      musicScore: 0,
-      characterScore: 0,
+      isScore: true,
+      storyScore: 1,
+      drawingScore: 1,
+      voiceActorScore: 1,
+      musicScore: 1,
+      characterScore: 1,
       review: '',
       tag: '',
       spoiler: false,
     },
   });
-
-  // useEffect(() => {
-  //   if (
-  //     (0 <= storyScore && storyScore < 1) ||
-  //     (0 <= drawingScore && drawingScore < 1) ||
-  //     (0 <= voiceActorScore && voiceActorScore < 1) ||
-  //     (0 <= musicScore && musicScore < 1) ||
-  //     (0 <= characterScore && characterScore < 1)
-  //   ) {
-  //     if (0 <= storyScore && storyScore < 1) {
-  //       // console.log(storyScore);
-  //       setStoryScore(0);
-  //     }
-  //     if (0 <= drawingScore && drawingScore < 1) {
-  //       // console.log(drawingScore);
-  //       setDrawingScore(0);
-  //     }
-  //     if (0 <= voiceActorScore && voiceActorScore < 1) {
-  //       // console.log(voiceActorScore);
-  //       setVoiceActorScore(0);
-  //     }
-  //     if (0 <= musicScore && musicScore < 1) {
-  //       // console.log(musicScore);
-  //       setMusicScore(0);
-  //     }
-  //     if (0 <= characterScore && characterScore < 1) {
-  //       // console.log(characterScore);
-  //       setCharacterScore(0);
-  //     }
-  //     setScoreAverage('-');
-  //   } else {
-  //     changeScoreAverage();
-  //   }
-  // }, scoreArray);
 
   //レビューのモーダル
   const [reviewModal, setReviewModal] = useState(false);
@@ -164,38 +134,19 @@ const Card = ({ anime }: { anime: Anime }) => {
     'characterScore',
   ]);
   const getAverage = (scores: number[]) => {
-    if (
-      watch('storyScore', storyScore) < 1 ||
-      watch('drawingScore', drawingScore) < 1 ||
-      watch('voiceActorScore', voiceActorScore) < 1 ||
-      watch('musicScore', musicScore) < 1 ||
-      watch('characterScore', characterScore) < 1
-    ) {
-      return '-';
-    } else {
-      const sum = (numbers: number[], initialValue: number = 0) =>
-        numbers.reduce(
-          (accumulator: number, currentValue: number) =>
-            accumulator + currentValue,
-          initialValue
-        );
-      const average = (numbers: number[]) => sum(numbers) / numbers.length;
-      return parseFloat(average(scores).toFixed(1)).toFixed(1);
-    }
+    const sum = (numbers: number[], initialValue: number = 0) =>
+      numbers.reduce(
+        (accumulator: number, currentValue: number) =>
+          accumulator + currentValue,
+        initialValue
+      );
+    const average = (numbers: number[]) => sum(numbers) / numbers.length;
+    return parseFloat(average(scores).toFixed(1)).toFixed(1);
   };
 
-  useEffect(() => {
-    if (watch('storyScore') < 1) {
-      setStoryScore(0);
-      console.log(storyScore, '1以下');
-    } else {
-      setStoryScore(watch('storyScore'));
-      console.log(storyScore, '1以上');
-    }
-  }, [watch('storyScore')]);
-
   //review登録
-  const onSubmit = (data: ReviewData) => {
+  const onSubmit = async (data: ReviewData) => {
+    //userがreviewしているかどうか
     if (!reviewedRef) {
       const idRef = doc(collection(db, `users/${user?.uid}/reviews`));
       const id = idRef.id;
@@ -203,6 +154,7 @@ const Card = ({ anime }: { anime: Anime }) => {
       setDoc(ref, {
         id: id,
         title: anime?.title,
+        isScore: data.isScore,
         storyScore: data.storyScore,
         drawingScore: data.drawingScore,
         voiceActorScore: data.voiceActorScore,
@@ -219,6 +171,7 @@ const Card = ({ anime }: { anime: Anime }) => {
       const id = reviews?.find((review) => review.title === anime?.title)?.id;
       const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
       updateDoc(ref, {
+        isScore: data.isScore,
         storyScore: data.storyScore,
         drawingScore: data.drawingScore,
         voiceActorScore: data.voiceActorScore,
@@ -233,7 +186,61 @@ const Card = ({ anime }: { anime: Anime }) => {
     }
 
     //animesの処理
+    if (
+      dbAnimes.data !== undefined &&
+      dbAnimes.data.find((dbList) => dbList.title === anime?.title)
+    ) {
+      const id = dbAnimes.data.find(
+        (dbList) => dbList.title === anime?.title
+      )?.id;
+      // console.log(id, 'id');
+      // console.log('カウントアップ');
+      const animesIDRef = doc(db, `animes/${id}`);
+      await updateDoc(animesIDRef, {
+        reviewCount: increment(1),
+      });
+      // console.log(anime);
+    } else {
+      const animesIDRef = doc(collection(db, 'animes'));
+      const animesID = animesIDRef.id;
+      const animesRef = doc(db, `animes/${animesID}`);
+      await setDoc(animesRef, {
+        id: animesRef.id,
+        title: anime?.title,
+        createAt: Date.now(),
+        reviewCount: 1,
+        listCount: 0,
+      });
+    }
   };
+
+  // const scoreItems = [
+  //   {
+  //     heading: '物語',
+  //     headingE: 'storyScore',
+  //     state: storyScore,
+  //   },
+  //   {
+  //     heading: '作画',
+  //     headingE: 'drawingScore',
+  //     state: drawingScore,
+  //   },
+  //   {
+  //     heading: '声優',
+  //     headingE: 'voiceActorScore',
+  //     state: voiceActorScore,
+  //   },
+  //   {
+  //     heading: '音楽',
+  //     headingE: 'musicScore',
+  //     state: musicScore,
+  //   },
+  //   {
+  //     heading: 'キャラ',
+  //     headingE: 'characterScore',
+  //     state: characterScore,
+  //   },
+  // ];
 
   return (
     <>
@@ -349,384 +356,362 @@ const Card = ({ anime }: { anime: Anime }) => {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <div className="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle">
-                <div className="absolute top-0 right-0 hidden pt-2 pr-2 sm:block">
+                <div className="absolute top-0 right-0 block pt-4 pr-2">
                   <button
                     type="button"
                     className="text-white hover:text-yellow"
                     onClick={() => setReviewModal(false)}
                   >
-                    <span className="sr-only">Close</span>
+                    {/* <span className="sr-only">Close</span> */}
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="">
-                    <div className="mt-3 text-center sm:mt-0">
-                      <Dialog.Title
-                        as="h3"
-                        className="bg-purple py-2 px-12 text-lg font-medium leading-6 text-white"
-                      >
-                        {anime?.title}のレビュー
-                      </Dialog.Title>
-                      <ul className="bg-buttonBlack p-4 text-white">
-                        <li className="border-b border-gray-500 pb-2 text-2xl">
-                          {getAverage(scores)}
-                          {/* <br />
-                          {typeof getAverage(scores)} */}
-                        </li>
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            物語
-                            <br />
-                            {watch('storyScore', storyScore) < 1
-                              ? '-'
-                              : watch('storyScore', storyScore).toFixed(1)}
-                            {/* <br />
-                            {typeof watch('storyScore', storyScore)} */}
-                          </p>
-                          <Controller
-                            name={'storyScore'}
-                            control={control}
-                            defaultValue={reviewedRef?.storyScore}
-                            // rules={{
-                            //   validate: (value) =>
-                            //     value === 1 || '値は1のみです',
-                            // }}
-                            render={({ field }) => (
-                              <Slider
-                                min={0}
-                                max={5}
-                                step={0.5}
-                                value={field.value}
-                                onBlur={field.onBlur}
-                                onChange={field.onChange}
-                                handleStyle={{
-                                  borderColor: '#FFD400',
-                                  height: 20,
-                                  width: 20,
-                                  marginTop: -7,
-                                  backgroundColor: '#FFD400',
-                                }}
-                                railStyle={{
-                                  backgroundColor: 'white',
-                                  height: 6,
-                                }}
-                                trackStyle={{
-                                  backgroundColor: '#FFD400',
-                                  height: 6,
-                                }}
-                              ></Slider>
-                            )}
-                          ></Controller>
-                          {/* {errors.storyScore?.message} */}
-                        </li>
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            作画
-                            <br />
-                            {watch('drawingScore', drawingScore) < 1
-                              ? '-'
-                              : watch('drawingScore', drawingScore).toFixed(1)}
-                            {/* <br />
-                            {typeof watch('drawingScore', drawingScore)} */}
-                          </p>
-                          <Controller
-                            name={'drawingScore'}
-                            control={control}
-                            defaultValue={reviewedRef?.drawingScore}
-                            render={({ field }) => (
-                              <Slider
-                                min={0}
-                                max={5}
-                                step={0.5}
-                                value={field.value}
-                                onBlur={field.onBlur}
-                                onChange={field.onChange}
-                                handleStyle={{
-                                  borderColor: '#FFD400',
-                                  height: 20,
-                                  width: 20,
-                                  marginTop: -7,
-                                  backgroundColor: '#FFD400',
-                                }}
-                                railStyle={{
-                                  backgroundColor: 'white',
-                                  height: 6,
-                                }}
-                                trackStyle={{
-                                  backgroundColor: '#FFD400',
-                                  height: 6,
-                                }}
-                              ></Slider>
-                            )}
-                          ></Controller>
-                        </li>
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            声優
-                            <br />
-                            {watch('voiceActorScore', voiceActorScore) < 1
-                              ? '-'
-                              : watch(
-                                  'voiceActorScore',
-                                  voiceActorScore
-                                ).toFixed(1)}
-                            {/* <br />
-                            {typeof watch('voiceActorScore', voiceActorScore)} */}
-                          </p>
-                          <Controller
-                            name={'voiceActorScore'}
-                            control={control}
-                            defaultValue={reviewedRef?.voiceActorScore}
-                            render={({ field }) => (
-                              <Slider
-                                min={0}
-                                max={5}
-                                step={0.5}
-                                value={field.value}
-                                onBlur={field.onBlur}
-                                onChange={field.onChange}
-                                handleStyle={{
-                                  borderColor: '#FFD400',
-                                  height: 20,
-                                  width: 20,
-                                  marginTop: -7,
-                                  backgroundColor: '#FFD400',
-                                }}
-                                railStyle={{
-                                  backgroundColor: 'white',
-                                  height: 6,
-                                }}
-                                trackStyle={{
-                                  backgroundColor: '#FFD400',
-                                  height: 6,
-                                }}
-                              ></Slider>
-                            )}
-                          ></Controller>
-                        </li>
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            音楽
-                            <br />
-                            {watch('musicScore', musicScore) < 1
-                              ? '-'
-                              : watch('musicScore', musicScore).toFixed(1)}
-                            {/* <br />
-                            {typeof watch('musicScore', musicScore)} */}
-                          </p>
-                          <Controller
-                            name={'musicScore'}
-                            control={control}
-                            defaultValue={reviewedRef?.musicScore}
-                            render={({ field }) => (
-                              <Slider
-                                min={0}
-                                max={5}
-                                step={0.5}
-                                value={field.value}
-                                onBlur={field.onBlur}
-                                onChange={field.onChange}
-                                handleStyle={{
-                                  borderColor: '#FFD400',
-                                  height: 20,
-                                  width: 20,
-                                  marginTop: -7,
-                                  backgroundColor: '#FFD400',
-                                }}
-                                railStyle={{
-                                  backgroundColor: 'white',
-                                  height: 6,
-                                }}
-                                trackStyle={{
-                                  backgroundColor: '#FFD400',
-                                  height: 6,
-                                }}
-                              ></Slider>
-                            )}
-                          ></Controller>
-                        </li>
-                        <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                          <p className="mr-4 w-1/5">
-                            キャラ
-                            <br />
-                            {watch('characterScore', characterScore) < 1
-                              ? '-'
-                              : watch('characterScore', characterScore).toFixed(
-                                  1
-                                )}
-                            {/* <br />
-                            {typeof watch('characterScore', characterScore)} */}
-                          </p>
-                          <Controller
-                            name={'characterScore'}
-                            control={control}
-                            defaultValue={reviewedRef?.characterScore}
-                            render={({ field }) => (
-                              <Slider
-                                min={0}
-                                max={5}
-                                step={0.5}
-                                value={field.value}
-                                onBlur={field.onBlur}
-                                onChange={field.onChange}
-                                handleStyle={{
-                                  borderColor: '#FFD400',
-                                  height: 20,
-                                  width: 20,
-                                  marginTop: -7,
-                                  backgroundColor: '#FFD400',
-                                }}
-                                railStyle={{
-                                  backgroundColor: 'white',
-                                  height: 6,
-                                }}
-                                trackStyle={{
-                                  backgroundColor: '#FFD400',
-                                  height: 6,
-                                }}
-                              ></Slider>
-                            )}
-                          ></Controller>
-                        </li>
-
-                        {/* {reviewHandles.map((reviewHandle) => (
-                          <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
-                            <p className="mr-4 w-1/5">
-                              {reviewHandle.heading}
-                              <br />
-                              {!watch(reviewHandle.headingE, reviewHandle.value)
-                                ? '-'
-                                : watch(
-                                    reviewHandle.headingE,
-                                    reviewHandle.value
-                                  ).toFixed(1)}
-                              <br />
-                              {typeof watch(reviewHandle.headingE)}
-                              {/* {reviewHandle.value === 0
-                                ? '-'
-                                : reviewHandle.value?.toFixed(1)} */}
-                        {/* </p>
-                            <Controller
-                              name={reviewHandle.headingE}
-                              control={control}
-                              defaultValue={reviewHandle.value}
-                              render={({ field }) => (
-                                <Slider
-                                  min={0}
-                                  max={5}
-                                  step={0.5}
-                                  value={field.value}
-                                  onBlur={field.onBlur}
-                                  onChange={field.onChange}
-                                  // defaultValue={reviewHandle.value}
-                                  // value={reviewHandle.value}
-                                  // onChange={(value) =>
-                                  //   reviewHandle.function(Number(value))
-                                  // }
-                                  handleStyle={{
-                                    borderColor: '#FFD400',
-                                    height: 20,
-                                    width: 20,
-                                    marginTop: -7,
-                                    backgroundColor: '#FFD400',
-                                  }}
-                                  railStyle={{
-                                    backgroundColor: 'white',
-                                    height: 6,
-                                  }}
-                                  trackStyle={{
-                                    backgroundColor: '#FFD400',
-                                    height: 6,
-                                  }}
-                                ></Slider>
-                              )}
-                            ></Controller>
-                          </li>
-                        ))} */}
-                      </ul>
-                    </div>
+                  <div className="mt-3 text-center sm:mt-0">
+                    <Dialog.Title
+                      as="h3"
+                      className="bg-purple py-4 px-12 text-lg font-medium leading-6 text-white"
+                    >
+                      {anime?.title}のレビュー
+                    </Dialog.Title>
                   </div>
-                  <div className="px-4">
-                    <textarea
-                      {...register('review', {
-                        validate(value) {
-                          if (watch('spoiler') === true) {
-                            if (value) {
-                              return true;
+                  <div className="p-4">
+                    <div className="mb-2  space-y-6 divide-y divide-gray-200">
+                      <Controller
+                        name={'isScore'}
+                        control={control}
+                        defaultValue={reviewedRef?.isScore}
+                        render={({ field }) => (
+                          <Disclosure as="div">
+                            {({ open } = field.value) => (
+                              <>
+                                <div className={open ? 'bg-gray-200' : ''}>
+                                  <Disclosure.Button className="flex w-full items-center justify-between border px-3 py-2 text-left text-gray-400 ">
+                                    <span className="text-sm text-gray-500">
+                                      {open
+                                        ? 'スコアをつける'
+                                        : 'スコアをつけない'}
+                                    </span>
+                                    <span className="ml-6 flex h-5 items-center">
+                                      <ChevronDownIcon
+                                        className={classNames(
+                                          open ? '-rotate-180' : 'rotate-0',
+                                          'h-5 w-5 transform transition-all delay-100'
+                                        )}
+                                        aria-hidden="true"
+                                      />
+                                      {console.log(open, 'open')}
+                                    </span>
+                                  </Disclosure.Button>
+                                </div>
+                                <Disclosure.Panel as="div" className="">
+                                  <ul className="bg-buttonBlack p-4 text-center text-white">
+                                    <li className="border-b border-gray-500 pb-2 text-2xl">
+                                      {getAverage(scores)}
+                                    </li>
+                                    <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                                      <p className="mr-4 w-12">
+                                        物語
+                                        <br />
+                                        {watch(
+                                          'storyScore',
+                                          storyScore
+                                        ).toFixed(1)}
+                                      </p>
+                                      <Controller
+                                        name={'storyScore'}
+                                        control={control}
+                                        defaultValue={reviewedRef?.storyScore}
+                                        render={({ field }) => (
+                                          <Slider
+                                            min={1}
+                                            max={5}
+                                            step={0.5}
+                                            value={field.value}
+                                            onBlur={field.onBlur}
+                                            onChange={field.onChange}
+                                            handleStyle={{
+                                              borderColor: '#FFD400',
+                                              height: 20,
+                                              width: 20,
+                                              marginTop: -7,
+                                              backgroundColor: '#FFD400',
+                                            }}
+                                            railStyle={{
+                                              backgroundColor: 'white',
+                                              height: 6,
+                                            }}
+                                            trackStyle={{
+                                              backgroundColor: '#FFD400',
+                                              height: 6,
+                                            }}
+                                          ></Slider>
+                                        )}
+                                      ></Controller>
+                                    </li>
+                                    <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                                      <p className="mr-4 w-12">
+                                        作画
+                                        <br />
+                                        {watch(
+                                          'drawingScore',
+                                          drawingScore
+                                        ).toFixed(1)}
+                                      </p>
+                                      <Controller
+                                        name={'drawingScore'}
+                                        control={control}
+                                        defaultValue={reviewedRef?.drawingScore}
+                                        render={({ field }) => (
+                                          <Slider
+                                            min={1}
+                                            max={5}
+                                            step={0.5}
+                                            value={field.value}
+                                            onBlur={field.onBlur}
+                                            onChange={field.onChange}
+                                            handleStyle={{
+                                              borderColor: '#FFD400',
+                                              height: 20,
+                                              width: 20,
+                                              marginTop: -7,
+                                              backgroundColor: '#FFD400',
+                                            }}
+                                            railStyle={{
+                                              backgroundColor: 'white',
+                                              height: 6,
+                                            }}
+                                            trackStyle={{
+                                              backgroundColor: '#FFD400',
+                                              height: 6,
+                                            }}
+                                          ></Slider>
+                                        )}
+                                      ></Controller>
+                                    </li>
+                                    <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                                      <p className="mr-4 w-12">
+                                        声優
+                                        <br />
+                                        {watch(
+                                          'voiceActorScore',
+                                          voiceActorScore
+                                        ).toFixed(1)}
+                                      </p>
+                                      <Controller
+                                        name={'voiceActorScore'}
+                                        control={control}
+                                        defaultValue={
+                                          reviewedRef?.voiceActorScore
+                                        }
+                                        render={({ field }) => (
+                                          <Slider
+                                            min={1}
+                                            max={5}
+                                            step={0.5}
+                                            value={field.value}
+                                            onBlur={field.onBlur}
+                                            onChange={field.onChange}
+                                            handleStyle={{
+                                              borderColor: '#FFD400',
+                                              height: 20,
+                                              width: 20,
+                                              marginTop: -7,
+                                              backgroundColor: '#FFD400',
+                                            }}
+                                            railStyle={{
+                                              backgroundColor: 'white',
+                                              height: 6,
+                                            }}
+                                            trackStyle={{
+                                              backgroundColor: '#FFD400',
+                                              height: 6,
+                                            }}
+                                          ></Slider>
+                                        )}
+                                      ></Controller>
+                                    </li>
+                                    <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
+                                      <p className="mr-4 w-12">
+                                        音楽
+                                        <br />
+                                        {watch(
+                                          'musicScore',
+                                          musicScore
+                                        ).toFixed(1)}
+                                      </p>
+                                      <Controller
+                                        name={'musicScore'}
+                                        control={control}
+                                        defaultValue={reviewedRef?.musicScore}
+                                        render={({ field }) => (
+                                          <Slider
+                                            min={1}
+                                            max={5}
+                                            step={0.5}
+                                            value={field.value}
+                                            onBlur={field.onBlur}
+                                            onChange={field.onChange}
+                                            handleStyle={{
+                                              borderColor: '#FFD400',
+                                              height: 20,
+                                              width: 20,
+                                              marginTop: -7,
+                                              backgroundColor: '#FFD400',
+                                            }}
+                                            railStyle={{
+                                              backgroundColor: 'white',
+                                              height: 6,
+                                            }}
+                                            trackStyle={{
+                                              backgroundColor: '#FFD400',
+                                              height: 6,
+                                            }}
+                                          ></Slider>
+                                        )}
+                                      ></Controller>
+                                    </li>
+                                    <li className="flex items-center justify-around py-2 px-4 pb-0">
+                                      <p className="mr-4 w-12">
+                                        キャラ
+                                        <br />
+                                        {watch(
+                                          'characterScore',
+                                          characterScore
+                                        ).toFixed(1)}
+                                      </p>
+                                      <Controller
+                                        name={'characterScore'}
+                                        control={control}
+                                        defaultValue={
+                                          reviewedRef?.characterScore
+                                        }
+                                        render={({ field }) => (
+                                          <Slider
+                                            min={1}
+                                            max={5}
+                                            step={0.5}
+                                            value={field.value}
+                                            onBlur={field.onBlur}
+                                            onChange={field.onChange}
+                                            handleStyle={{
+                                              borderColor: '#FFD400',
+                                              height: 20,
+                                              width: 20,
+                                              marginTop: -7,
+                                              backgroundColor: '#FFD400',
+                                            }}
+                                            railStyle={{
+                                              backgroundColor: 'white',
+                                              height: 6,
+                                            }}
+                                            trackStyle={{
+                                              backgroundColor: '#FFD400',
+                                              height: 6,
+                                            }}
+                                          ></Slider>
+                                        )}
+                                      ></Controller>
+                                    </li>
+                                  </ul>
+                                </Disclosure.Panel>
+                              </>
+                            )}
+                          </Disclosure>
+                        )}
+                      ></Controller>
+                    </div>
+                    <div className="mb-2">
+                      <textarea
+                        {...register('review', {
+                          validate(value) {
+                            if (watch('spoiler') === true) {
+                              if (value) {
+                                return true;
+                              } else {
+                                return 'ネタバレがある場合、レビューは必須です';
+                              }
                             } else {
-                              return '必須です';
+                              return true;
                             }
-                          } else {
-                            return true;
-                          }
-                        },
-                      })}
-                      placeholder="無記入でも投稿できます"
-                      className="w-full border-l border-gray-200"
-                      defaultValue={reviewedRef?.review}
-                    ></textarea>
-                    <p className="text-red-600">{errors.review?.message}</p>
-                    {/* {console.log(watch('spoiler'))} */}
-                    <input
-                      {...register('tag')}
-                      type="text"
-                      className="w-full border-l border-gray-200"
-                      placeholder="タグを1つ入力"
-                      defaultValue={reviewedRef?.tag}
-                    />
-                  </div>
-                  <div className="flex items-center justify-start px-4">
-                    <Controller
-                      name="spoiler"
-                      control={control}
-                      defaultValue={reviewedRef?.spoiler}
-                      render={({ field }) => <SwitchButton {...field} />}
-                    />
-                    <p className="text-xs text-red-600">
-                      レビュー内容にネタバレが含まれている場合はこちらをチェックしてください。
-                    </p>
-                  </div>
-                  {!reviewedRef ? (
-                    <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                      <button
-                        type="submit"
-                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                      >
-                        投稿
-                      </button>
-                      <button
-                        type="button"
-                        className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
-                        onClick={() => setReviewModal(false)}
-                      >
-                        キャンセル
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                      <button
-                        type="submit"
-                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                      >
-                        更新
-                      </button>
-                      <button
-                        type="button"
-                        className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
-                        onClick={() =>
-                          deleteReviweButton({
-                            anime,
-                            setReviewModal,
-                            user,
-                            reviews,
-                          })
+                          },
+                        })}
+                        rows={5}
+                        placeholder={
+                          watch('spoiler')
+                            ? 'レビューを入力してください'
+                            : '無記入でも投稿できます'
                         }
-                      >
-                        削除
-                      </button>
+                        className="mb-2 block w-full border-l border-gray-200 text-sm"
+                        defaultValue={reviewedRef?.review}
+                      ></textarea>
                     </div>
-                  )}
+                    <div className="mb-2">
+                      <p className="mb-2 text-xs text-red-600">
+                        {errors.review?.message}
+                      </p>
+                      {/* {console.log(watch('spoiler'))} */}
+                      <input
+                        {...register('tag')}
+                        type="text"
+                        className="w-full border-l border-gray-200 text-sm"
+                        placeholder="タグを1つ追加できます"
+                        defaultValue={reviewedRef?.tag}
+                      />
+                    </div>
+                    <div className="flex items-center justify-start">
+                      <Controller
+                        name="spoiler"
+                        control={control}
+                        defaultValue={reviewedRef?.spoiler}
+                        render={({ field }) => <SwitchButton {...field} />}
+                      />
+                      <p className="ml-2 text-xs text-red-600">
+                        レビュー内容にネタバレが含まれている場合はこちらをチェックしてください。
+                      </p>
+                    </div>
+                    {!reviewedRef ? (
+                      <div className="mt-2 sm:flex sm:flex-row-reverse">
+                        <button
+                          type="submit"
+                          className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                        >
+                          投稿
+                        </button>
+                        <button
+                          type="button"
+                          className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+                          onClick={() => setReviewModal(false)}
+                        >
+                          キャンセル
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="mt-2 sm:flex sm:flex-row-reverse">
+                        <button
+                          type="submit"
+                          className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                        >
+                          更新
+                        </button>
+                        <button
+                          type="button"
+                          className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+                          onClick={() =>
+                            deleteReviweButton({
+                              anime,
+                              setReviewModal,
+                              user,
+                              reviews,
+                              dbAnimes,
+                            })
+                          }
+                        >
+                          削除
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </form>
               </div>
             </Transition.Child>

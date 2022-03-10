@@ -18,7 +18,7 @@ const LayoutNoNav = ({ children }: Props) => {
       <Header toggleSideNav={toggle} />
       <Nav open={open} toggle={toggle} />
       <main
-        className={`mt-14 transform transition ease-in-out duration-500 sm:duration-700 ${
+        className={`mt-14 transition-all duration-500 ease-in-out sm:duration-700 ${
           open ? ' ml-52' : ''
         }`}
       >

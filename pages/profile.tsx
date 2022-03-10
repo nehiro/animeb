@@ -14,6 +14,7 @@ import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
 import Modal from 'react-modal';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import LayoutNoNav from '../layouts/LayoutNoNav';
 
 //formの型
 interface IFormInput {
@@ -254,4 +255,4 @@ const Profile = () => {
 };
 
 export default Profile;
-Profile.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
+Profile.getLayout = (page: ReactElement) => <LayoutNoNav>{page}</LayoutNoNav>;

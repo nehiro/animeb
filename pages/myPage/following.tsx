@@ -9,6 +9,7 @@ import Link from 'next/link';
 import React, { ReactElement, useEffect } from 'react';
 import Following from '../../components/Following';
 import Layout from '../../layouts/Layout';
+import LayoutNoNav from '../../layouts/LayoutNoNav';
 import MyPageSubHeader from '../../layouts/MyPageSubHeader';
 import { auth } from '../../utils/firebase';
 import { useAuth } from '../../utils/userContext';
@@ -99,4 +100,4 @@ const MyPage = () => {
 
 export default MyPage;
 
-MyPage.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
+MyPage.getLayout = (page: ReactElement) => <LayoutNoNav>{page}</LayoutNoNav>;

@@ -28,7 +28,7 @@ const Nav = ({ open, toggle }: SideMenu) => {
       icon: <FireIcon className="h-5 w-5 text-purple" />,
     },
     {
-      href: '/releaseDate',
+      href: '/animes',
       label: '放送・配信時期',
       icon: <ClockIcon className="h-5 w-5 text-purple" />,
     },

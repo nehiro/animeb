@@ -18,13 +18,13 @@ import useSWR from 'swr';
 type ListButton = {
   anime: Anime;
   user: User | null | undefined;
-  listAnimes: any;
+  dbAnimes: any;
 };
-
 type UnlistButton = {
   anime: Anime;
   user: User | null | undefined;
   lists: List[] | undefined;
+  dbAnimes: any;
 };
 type DeleteReviweButton = {
   anime: Anime;
@@ -36,7 +36,7 @@ type DeleteReviweButton = {
 export const listButton = async (props: ListButton) => {
   const user = props.user;
   const anime = props.anime;
-  const dbLists = props.listAnimes.data;
+  const dbLists = props.dbAnimes.data;
   if (!user) {
     alert('ログインしてください');
     return;
@@ -54,6 +54,7 @@ export const listButton = async (props: ListButton) => {
 
   //listsの中にタイトルあるか
   if (
+    dbLists !== undefined &&
     dbLists.find((dbList: { title: string }) => dbList.title === anime?.title)
   ) {
     const id = dbLists.find(
@@ -80,10 +81,11 @@ export const listButton = async (props: ListButton) => {
   }
 };
 //リストから外す
-export const unlistButton = (props: UnlistButton) => {
+export const unlistButton = async (props: UnlistButton) => {
   const user = props.user;
   const anime = props.anime;
   const lists = props.lists;
+  const dbLists = props.dbAnimes.data;
   if (!user) {
     alert('ログインしてください');
     return;
@@ -93,6 +95,16 @@ export const unlistButton = (props: UnlistButton) => {
   const ref = doc(db, `users/${user?.uid}/lists/${id}`);
   deleteDoc(ref).then(() => {
     alert(`${anime?.title}を観たいリストから外しました`);
+  });
+
+  const dbId = dbLists.find(
+    (dbList: { title: string }) => dbList.title === anime?.title
+  ).id;
+  // console.log(id, 'id');
+  // console.log('カウントダウン');
+  const animesIDRef = doc(db, `animes/${dbId}`);
+  await updateDoc(animesIDRef, {
+    listCount: increment(-1),
   });
 };
 //reviewを消す
@@ -112,17 +124,5 @@ export const deleteReviweButton = (props: DeleteReviweButton) => {
     // reset();
     alert(`${anime?.title}のレビューを削除しました`);
     setReviewModal(false);
-  });
-};
-
-const updateCount = (
-  uid: string,
-  key: 'followCount' | 'followerCount',
-  num: number
-) => {
-  const ref = doc(db, `animes/${uid}`);
-  return updateDoc(ref, {
-    // ユニオン型の指定の仕方
-    [key]: increment(num),
   });
 };

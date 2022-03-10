@@ -43,20 +43,33 @@ type Card = {
 
 const Card = ({ anime }: { anime: Anime }) => {
   const { user, reviews, lists } = useAuth();
-  //reviewしているかどうか
+  //ログインユーザーがreviewしているかどうか
   const reviewedRef = reviews?.find((review) => review.title === anime?.title);
   // console.log(reviewedRef, 'reviewedRef');
-  //listしているかどうか
+  //ログインユーザーがlistしているかどうか
   const listed = () => {
     return lists?.find((list) => list.title === anime?.title);
   };
 
-  //listsにあるタイトル
-  const listAnimes = useSWR('animes', async () => {
+  //animesコレクションにあるタイトル
+  const dbAnimes = useSWR('animes', async () => {
     const ref = collection(db, 'animes');
     const snap = await getDocs(ref);
     return snap.docs.map((doc) => doc.data());
   });
+
+  // console.log(dbAnimes.data, 'dbAnimes');
+
+  //listCount取得
+  const listCount = dbAnimes?.data?.find(
+    (dbAnime) => dbAnime.title === anime.title
+  )?.listCount;
+  // console.log(listCount);
+  //reviweCount取得
+  const reviewCount = dbAnimes?.data?.find(
+    (dbAnime) => dbAnime.title === anime.title
+  )?.reviewCount;
+  // console.log(reviewCount);
 
   const [storyScore, setStoryScore] = useState<number>(0);
   const [drawingScore, setDrawingScore] = useState<number>(0);
@@ -171,17 +184,15 @@ const Card = ({ anime }: { anime: Anime }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (watch('storyScore') < 1) {
-  //     setStoryScore(0);
-  //     console.log('上');
-  //     console.log(storyScore);
-  //   } else {
-  //     setStoryScore(watch('storyScore'));
-  //     console.log('下');
-  //     console.log(storyScore);
-  //   }
-  // }, [watch('storyScore')]);
+  useEffect(() => {
+    if (watch('storyScore') < 1) {
+      setStoryScore(0);
+      console.log(storyScore, '1以下');
+    } else {
+      setStoryScore(watch('storyScore'));
+      console.log(storyScore, '1以上');
+    }
+  }, [watch('storyScore')]);
 
   //review登録
   const onSubmit = (data: ReviewData) => {
@@ -220,6 +231,8 @@ const Card = ({ anime }: { anime: Anime }) => {
       });
       alert(`${anime?.title}のレビューを更新しました`);
     }
+
+    //animesの処理
   };
 
   return (
@@ -251,13 +264,15 @@ const Card = ({ anime }: { anime: Anime }) => {
             {reviewedRef ? (
               <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
                 <EyeIcon className="mx-auto h-5 w-5" />
-                <span className="inline-block h-full w-full">100</span>
+                <span className="inline-block h-full w-full">
+                  {!reviewCount ? 0 : reviewCount}
+                </span>
               </a>
             ) : (
               <a className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
                 <EyeIcon className="mx-auto h-5 w-5 text-amber-400" />
                 <span className="inline-block h-full w-full text-amber-400">
-                  100
+                  {!reviewCount ? 0 : reviewCount}
                 </span>
               </a>
             )}
@@ -267,22 +282,24 @@ const Card = ({ anime }: { anime: Anime }) => {
           {listed() ? (
             <button
               className="w-full"
-              onClick={() => unlistButton({ anime, user, lists })}
+              onClick={() => unlistButton({ anime, user, lists, dbAnimes })}
             >
               <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
                 <BookmarkIcon className="mx-auto h-5 w-5" />
-                <span className="inline-block h-full w-full">100</span>
+                <span className="inline-block h-full w-full">
+                  {!listCount ? 0 : listCount}
+                </span>
               </span>
             </button>
           ) : (
             <button
               className="w-full"
-              onClick={() => listButton({ anime, user, listAnimes })}
+              onClick={() => listButton({ anime, user, dbAnimes })}
             >
               <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
                 <BookmarkIcon className="mx-auto h-5 w-5 text-amber-400" />
                 <span className="inline-block h-full w-full text-amber-400">
-                  100
+                  {!listCount ? 0 : listCount}
                 </span>
               </span>
             </button>
@@ -371,6 +388,10 @@ const Card = ({ anime }: { anime: Anime }) => {
                             name={'storyScore'}
                             control={control}
                             defaultValue={reviewedRef?.storyScore}
+                            // rules={{
+                            //   validate: (value) =>
+                            //     value === 1 || '値は1のみです',
+                            // }}
                             render={({ field }) => (
                               <Slider
                                 min={0}
@@ -397,6 +418,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                               ></Slider>
                             )}
                           ></Controller>
+                          {/* {errors.storyScore?.message} */}
                         </li>
                         <li className="flex items-center justify-around border-b border-gray-500 py-2 px-4">
                           <p className="mr-4 w-1/5">
@@ -627,11 +649,25 @@ const Card = ({ anime }: { anime: Anime }) => {
                   </div>
                   <div className="px-4">
                     <textarea
-                      {...register('review')}
+                      {...register('review', {
+                        validate(value) {
+                          if (watch('spoiler') === true) {
+                            if (value) {
+                              return true;
+                            } else {
+                              return '必須です';
+                            }
+                          } else {
+                            return true;
+                          }
+                        },
+                      })}
                       placeholder="無記入でも投稿できます"
                       className="w-full border-l border-gray-200"
                       defaultValue={reviewedRef?.review}
                     ></textarea>
+                    <p className="text-red-600">{errors.review?.message}</p>
+                    {/* {console.log(watch('spoiler'))} */}
                     <input
                       {...register('tag')}
                       type="text"

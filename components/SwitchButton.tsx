@@ -16,7 +16,7 @@ const SwitchButton = ({ ...field }) => {
           field.value ? 'bg-indigo-600' : 'bg-gray-200'
         } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out`}
       >
-        <span className="sr-only">ネタバレ</span>
+        {/* <span className="sr-only">ネタバレ</span> */}
         <span
           className={classNames(
             field.value ? 'translate-x-5' : 'translate-x-0',

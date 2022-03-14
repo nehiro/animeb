@@ -77,7 +77,13 @@ export const listButton = async (props: ListButton) => {
       title: anime?.title,
       createAt: Date.now(),
       reviewCount: 0,
+      unScoreReviewCount: 0,
       listCount: 1,
+      storyScore: 0,
+      drawingScore: 0,
+      voiceActorScore: 0,
+      musicScore: 0,
+      characterScore: 0,
     });
   }
 };
@@ -119,6 +125,7 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
     alert('ログインしてください');
     return;
   }
+  //自分のサブコレクションの処理
   const id = reviews?.find((review) => review.title === anime?.title)?.id;
   // console.log(id);
   const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
@@ -128,13 +135,35 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
     setReviewModal(false);
   });
 
+  //animesコレクションの処理
   const dbId = dbLists.find(
     (dbList: { title: string }) => dbList.title === anime?.title
   ).id;
+
+  const userReviewsRef = reviews?.find(
+    (review) => review.title === anime?.title
+  );
+  const userStoryScore = userReviewsRef?.storyScore;
+  const userDrawingScore = userReviewsRef?.drawingScore;
+  const userVoiceActorScore = userReviewsRef?.voiceActorScore;
+  const userMusicScore = userReviewsRef?.musicScore;
+  const userCharacterScore = userReviewsRef?.characterScore;
+  const userIsScore = userReviewsRef?.isScore;
   // console.log(id, 'id');
   // console.log('カウントダウン');
   const animesIDRef = doc(db, `animes/${dbId}`);
-  await updateDoc(animesIDRef, {
-    reviewCount: increment(-1),
-  });
+  if (userIsScore === true) {
+    await updateDoc(animesIDRef, {
+      storyScore: increment(-(userStoryScore as number)),
+      drawingScore: increment(-(userDrawingScore as number)),
+      voiceActorScore: increment(-(userVoiceActorScore as number)),
+      musicScore: increment(-(userMusicScore as number)),
+      characterScore: increment(-(userCharacterScore as number)),
+      reviewCount: increment(-1),
+    });
+  } else {
+    await updateDoc(animesIDRef, {
+      unScoreReviewCount: increment(-1),
+    });
+  }
 };

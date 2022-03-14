@@ -1,22 +1,30 @@
 import { Switch } from '@headlessui/react';
-import React from 'react';
+import React, { Ref } from 'react';
+import { ChangeHandler, ControllerRenderProps } from 'react-hook-form';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const SwitchButton = ({ ...field }) => {
+export type Fields = {
+  value: boolean;
+  onBlur: () => void;
+  onChange: (value: any) => void;
+  ref: React.Ref;
+};
+
+const SwitchButton = React.forwardRef(({ ...field }: Fields, ref) => {
   return (
     <>
       <Switch
         checked={field.value}
         onBlur={field.onBlur}
         onChange={field.onChange}
+        ref={field.ref}
         className={`${
           field.value ? 'bg-indigo-600' : 'bg-gray-200'
         } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out`}
       >
-        {/* <span className="sr-only">ネタバレ</span> */}
         <span
           className={classNames(
             field.value ? 'translate-x-5' : 'translate-x-0',
@@ -67,6 +75,6 @@ const SwitchButton = ({ ...field }) => {
       </Switch>
     </>
   );
-};
+});
 
 export default SwitchButton;

@@ -63,20 +63,7 @@ const Score = ({
 
   // console.log(dbAnimes.data, 'dbAnimes');
 
-  const [storyScore, setStoryScore] = useState<number>();
-  const [drawingScore, setDrawingScore] = useState<number>();
-  const [voiceActorScore, setVoiceActorScore] = useState<number>();
-  const [musicScore, setMusicScore] = useState<number>();
-  const [characterScore, setCharacterScore] = useState<number>();
-
   useEffect(() => {
-    if (reviewedRef) {
-      setStoryScore(reviewedRef?.storyScore);
-      setDrawingScore(reviewedRef?.drawingScore);
-      setVoiceActorScore(reviewedRef?.voiceActorScore);
-      setMusicScore(reviewedRef?.musicScore);
-      setCharacterScore(reviewedRef?.characterScore);
-    }
     reset(reviewedRef);
   }, [reviewedRef]);
   //rhf使用
@@ -435,7 +422,7 @@ const Score = ({
                           <p className="mr-4 w-12">
                             物語
                             <br />
-                            {watch('storyScore', storyScore).toFixed(1)}
+                            {watch('storyScore').toFixed(1)}
                           </p>
                           <Controller
                             name={'storyScore'}
@@ -472,7 +459,7 @@ const Score = ({
                           <p className="mr-4 w-12">
                             作画
                             <br />
-                            {watch('drawingScore', drawingScore).toFixed(1)}
+                            {watch('drawingScore').toFixed(1)}
                           </p>
                           <Controller
                             name={'drawingScore'}
@@ -509,9 +496,7 @@ const Score = ({
                           <p className="mr-4 w-12">
                             声優
                             <br />
-                            {watch('voiceActorScore', voiceActorScore).toFixed(
-                              1
-                            )}
+                            {watch('voiceActorScore').toFixed(1)}
                           </p>
                           <Controller
                             name={'voiceActorScore'}
@@ -548,7 +533,7 @@ const Score = ({
                           <p className="mr-4 w-12">
                             音楽
                             <br />
-                            {watch('musicScore', musicScore).toFixed(1)}
+                            {watch('musicScore').toFixed(1)}
                           </p>
                           <Controller
                             name={'musicScore'}
@@ -585,7 +570,7 @@ const Score = ({
                           <p className="mr-4 w-12">
                             キャラ
                             <br />
-                            {watch('characterScore', characterScore).toFixed(1)}
+                            {watch('characterScore').toFixed(1)}
                           </p>
                           <Controller
                             name={'characterScore'}

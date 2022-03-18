@@ -6,7 +6,7 @@ const AnotherAnime = () => {
   return (
     <div className="mb-8 grid grid-cols-2 gap-4">
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-        <Link href="/">
+        <Link href="/" key={item}>
           <a className="flex border p-4 leading-none">
             <div className="mr-4 min-w-200 max-w-242">
               <Image

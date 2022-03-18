@@ -4,7 +4,7 @@ import React from 'react';
 
 const Breadcrumbs = () => {
   return (
-    <section className="bg-breadcrumbs py-1">
+    <section className="bg-gray-100 py-1">
       <ul className="container flex items-center space-x-1 text-sm">
         <li>
           <Link href="/">

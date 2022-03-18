@@ -73,7 +73,7 @@ const Index = ({ news }: { news: News[] }) => {
           </ul>
         </div>
         <div className="text-right">
-          <Link href="news/newsForm">
+          <Link href="/news/newsForm">
             <a>
               <button
                 type="button"

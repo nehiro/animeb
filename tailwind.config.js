@@ -10,7 +10,6 @@ module.exports = {
         purple: '#7F80F3',
         yellow: '#FFD400',
         lightYellow: '#FFEC8F',
-        bgGray: '#F8F8F8',
         breadcrumbs: '#efefef',
         buttonBlack: '#505050',
         google: '#dc4e40',

@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import { Head } from 'next/document';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import React, { ReactElement } from 'react';
 import { adminDB } from '../../firebase/server';

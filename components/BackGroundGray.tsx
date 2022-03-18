@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -7,7 +7,7 @@ interface Props {
 
 const BackGroundGray = ({ children }: Props) => {
   return (
-    <section className="bg-bgGray py-12">
+    <section className="bg-gray-50 py-12">
       <div className="container">{children}</div>
     </section>
   );

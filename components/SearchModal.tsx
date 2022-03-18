@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useState } from 'react';
-import Head from 'next/head';
 import { Dialog, Transition } from '@headlessui/react';
 import { Video } from '../types/Video';
 import { debounce } from 'debounce';
@@ -46,19 +45,13 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
   };
   return (
     <>
-      <Head>
-        <link
-          href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-          rel="stylesheet"
-        />
-      </Head>
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog
           as="div"
           className="fixed inset-0 z-50 overflow-y-auto"
           onClose={onClose}
         >
-          <div className="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+          <div className="min-h-screen flex items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"

@@ -28,7 +28,7 @@ const Account = () => {
         <ul>
           <li>
             <Link href="/accountSetting">
-              <a className="mb-4 flex items-center justify-between rounded border bg-bgGray py-2 px-4">
+              <a className="mb-4 flex items-center justify-between rounded border bg-gray-50 py-2 px-4">
                 メールアドレス
                 <div>
                   <span className="mr-4">{user?.email}</span>
@@ -39,7 +39,7 @@ const Account = () => {
           </li>
           <li>
             <Link href="/accountSetting">
-              <a className="mb-4 flex items-center justify-between rounded border bg-bgGray py-2 px-4">
+              <a className="mb-4 flex items-center justify-between rounded border bg-gray-50 py-2 px-4">
                 性別
                 <div>
                   <span className="mr-4">
@@ -52,7 +52,7 @@ const Account = () => {
           </li>
           <li>
             <Link href="/accountSetting">
-              <a className="mb-12 flex items-center justify-between rounded border bg-bgGray py-2 px-4">
+              <a className="mb-12 flex items-center justify-between rounded border bg-gray-50 py-2 px-4">
                 生年月日
                 <div>
                   <span className="mr-4">{user?.bd ? user?.bd : '未設定'}</span>
@@ -63,7 +63,7 @@ const Account = () => {
           </li>
           <li>
             <Link href="/delete">
-              <a className="flex items-center justify-between rounded border bg-bgGray py-2 px-4">
+              <a className="flex items-center justify-between rounded border bg-gray-50 py-2 px-4">
                 退会する
                 <ChevronRightIcon className="inline-block h-6 w-6" />
               </a>

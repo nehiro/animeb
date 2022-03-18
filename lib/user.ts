@@ -57,9 +57,12 @@ export const subscribeFollowerUsers = (
   const q = query(ref, where('id', '==', uid));
   return onSnapshot(q, async (snap) => {
     const tasks = snap.docs.map((doc) => {
+      // console.log(doc.id, 'doc.id');
       return getUser(doc.ref.parent.parent?.id as string);
     });
+    // console.log(tasks, 'tasks');
     const users = await Promise.all(tasks);
+    // console.log(users, 'users');
     callback(users);
   });
 };

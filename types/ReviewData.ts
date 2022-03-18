@@ -11,4 +11,5 @@ export type ReviewData = {
   spoiler: boolean;
   tag: string;
   createAt: number;
+  updatedAt: number;
 };

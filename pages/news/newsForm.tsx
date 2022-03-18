@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import { Head } from 'next/document';
 import React, { ReactElement, useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';

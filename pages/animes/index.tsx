@@ -25,12 +25,12 @@ const Index = ({ paths }: { paths: Anime[] }) => {
   ));
   return (
     <>
-      <Head>
+      {/* <Head>
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css"
         ></link>
-      </Head>
+      </Head> */}
       <ul>{animesMap}</ul>
     </>
   );

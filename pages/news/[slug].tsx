@@ -29,7 +29,7 @@ const Slug = ({ news }: { news: News }) => {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <link
           href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
           rel="stylesheet"
@@ -38,7 +38,7 @@ const Slug = ({ news }: { news: News }) => {
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css"
         ></link>
-      </Head>
+      </Head> */}
       <Breadcrumbs></Breadcrumbs>
       <div className="relative overflow-hidden bg-white py-16">
         <div className="hidden lg:absolute lg:inset-y-0 lg:block lg:h-full lg:w-full">

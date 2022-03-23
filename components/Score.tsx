@@ -202,6 +202,7 @@ const Score = ({
         (dbList) => dbList.title === anime?.title
       )?.id;
       const animesIDRef = doc(db, `animes/${id}`);
+      const animesUserRef = doc(db, `animes/${id}/reviews/${user?.uid}`);
       if (userReviewsRef) {
         //過去true
         if (userIsScore === true) {
@@ -221,6 +222,19 @@ const Score = ({
               musicScore: increment(data.musicScore),
               characterScore: increment(data.characterScore),
             });
+            console.log('一つ目');
+            await updateDoc(animesUserRef, {
+              isScore: data.isScore,
+              storyScore: data.storyScore,
+              drawingScore: data.drawingScore,
+              voiceActorScore: data.voiceActorScore,
+              musicScore: data.musicScore,
+              characterScore: data.characterScore,
+              review: data.review,
+              spoiler: data.spoiler,
+              tag: data.tag,
+              createAt: Date.now(),
+            });
           } else {
             //今回false
             await updateDoc(animesIDRef, {
@@ -231,6 +245,19 @@ const Score = ({
               characterScore: increment(-(userCharacterScore as number)),
               reviewCount: increment(-1),
               unScoreReviewCount: increment(1),
+            });
+            console.log('二つ目');
+            await updateDoc(animesUserRef, {
+              isScore: data.isScore,
+              storyScore: 1,
+              drawingScore: 1,
+              voiceActorScore: 1,
+              musicScore: 1,
+              characterScore: 1,
+              review: data.review,
+              spoiler: data.spoiler,
+              tag: data.tag,
+              createAt: Date.now(),
             });
           }
         } else {
@@ -246,8 +273,29 @@ const Score = ({
               reviewCount: increment(1),
               unScoreReviewCount: increment(-1),
             });
+            console.log('3つ目');
+            await updateDoc(animesUserRef, {
+              isScore: data.isScore,
+              storyScore: data.storyScore,
+              drawingScore: data.drawingScore,
+              voiceActorScore: data.voiceActorScore,
+              musicScore: data.musicScore,
+              characterScore: data.characterScore,
+              review: data.review,
+              spoiler: data.spoiler,
+              tag: data.tag,
+              createAt: Date.now(),
+            });
+          } else {
+            //今回もfalse:何もしない
+            console.log('4つ目');
+            await updateDoc(animesUserRef, {
+              review: data.review,
+              spoiler: data.spoiler,
+              tag: data.tag,
+              createAt: Date.now(),
+            });
           }
-          //今回もfalse:何もしない
         }
       } else {
         //自分がレビューしていなかったら
@@ -260,9 +308,36 @@ const Score = ({
             characterScore: increment(data.characterScore),
             reviewCount: increment(1),
           });
+          console.log('5つ目');
+          await setDoc(animesUserRef, {
+            uid: user?.uid,
+            isScore: data.isScore,
+            storyScore: data.storyScore,
+            drawingScore: data.drawingScore,
+            voiceActorScore: data.voiceActorScore,
+            musicScore: data.musicScore,
+            characterScore: data.characterScore,
+            review: data.review,
+            spoiler: data.spoiler,
+            tag: data.tag,
+            createAt: Date.now(),
+          });
         } else {
           await updateDoc(animesIDRef, {
             unScoreReviewCount: increment(1),
+          });
+          console.log('6つ目');
+          await updateDoc(animesUserRef, {
+            isScore: data.isScore,
+            storyScore: 1,
+            drawingScore: 1,
+            voiceActorScore: 1,
+            musicScore: 1,
+            characterScore: 1,
+            review: data.review,
+            spoiler: data.spoiler,
+            tag: data.tag,
+            createAt: Date.now(),
           });
         }
       }
@@ -273,6 +348,7 @@ const Score = ({
       const animesID = animesIDRef.id;
       const animesRef = doc(db, `animes/${animesID}`);
       const isScore = data.isScore;
+      const animesUserRef = doc(db, `animes/${animesID}/reviews/${user?.uid}`);
       if (isScore === true) {
         await setDoc(animesRef, {
           id: animesRef.id,
@@ -288,6 +364,20 @@ const Score = ({
           characterScore: data.characterScore,
           // tag: data.tag ? data.tag : null,
         });
+        console.log('7つ目');
+        await setDoc(animesUserRef, {
+          uid: user?.uid,
+          isScore: data.isScore,
+          storyScore: data.storyScore,
+          drawingScore: data.drawingScore,
+          voiceActorScore: data.voiceActorScore,
+          musicScore: data.musicScore,
+          characterScore: data.characterScore,
+          review: data.review,
+          spoiler: data.spoiler,
+          tag: data.tag,
+          createAt: Date.now(),
+        });
       } else {
         await setDoc(animesRef, {
           id: animesRef.id,
@@ -302,6 +392,20 @@ const Score = ({
           musicScore: 0,
           characterScore: 0,
           // tag: data.tag ? data.tag : null,
+        });
+        console.log('8つ目');
+        await setDoc(animesUserRef, {
+          uid: user?.uid,
+          isScore: data.isScore,
+          storyScore: 1,
+          drawingScore: 1,
+          voiceActorScore: 1,
+          musicScore: 1,
+          characterScore: 1,
+          review: data.review,
+          spoiler: data.spoiler,
+          tag: data.tag,
+          createAt: Date.now(),
         });
       }
     }

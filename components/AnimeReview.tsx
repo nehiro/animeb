@@ -22,12 +22,19 @@ const AnimeReview = (props: { title: string }) => {
   const title = props.title;
 
   const [reviews, setReviews] = useState<ReviewData[]>();
+  // console.log(reviews, 'reviews');
 
   const subscribeReviews = (callback: (reviews: ReviewData[]) => void) => {
     const ref = collectionGroup(db, `reviews`);
-    const animeTitles = query(ref, where('title', '==', title));
+    const animeTitles = query(
+      ref,
+      where('title', '==', title),
+      orderBy('createAt', 'desc')
+    );
     return onSnapshot(animeTitles, async (snap) => {
       const tasks = snap.docs.map((doc) => {
+        // console.log(doc.ref.parent.parent?.id, 'id');
+        console.log(doc.data());
         return doc.data();
       });
       const allReviews = await Promise.all(tasks);
@@ -57,7 +64,6 @@ const AnimeReview = (props: { title: string }) => {
     return y + '-' + m + '-' + d;
   };
 
-  //  {reviews.map((review) => (review.spoiler ? <p>あり</p> : <p>なし</p>))}
   return (
     <div>
       <Tab.Group>
@@ -87,9 +93,10 @@ const AnimeReview = (props: { title: string }) => {
                     <div>
                       <h3>ユーザーネーム</h3>
                       <p>
-                        {item.updatedAt
+                        {dateFormat(item.createAt)}
+                        {/* {item.updatedAt
                           ? dateFormat(item.updatedAt)
-                          : dateFormat(item.createAt)}
+                          : dateFormat(item.createAt)} */}
                       </p>
                     </div>
                   </div>
@@ -99,7 +106,18 @@ const AnimeReview = (props: { title: string }) => {
                         <StarIcon className="mx-auto h-5 w-5 text-yellow" />
                       </li>
                     </ul>
-                    <div className="mr-8 text-2xl text-yellow">5.0</div>
+                    <div className="mr-8 text-2xl text-yellow">
+                      {item.isScore
+                        ? (
+                            (item.storyScore +
+                              item.characterScore +
+                              item.drawingScore +
+                              item.voiceActorScore +
+                              item.musicScore) /
+                            5
+                          ).toFixed(1)
+                        : '-'}
+                    </div>
                     <div className="border-ts col-span-2 flex items-center">
                       <Link href="/">
                         <a className="mr-4 flex items-center">

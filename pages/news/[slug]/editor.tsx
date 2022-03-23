@@ -101,7 +101,7 @@ const Editor = ({ news }: { news: News }) => {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <link
           href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
           rel="stylesheet"
@@ -110,7 +110,7 @@ const Editor = ({ news }: { news: News }) => {
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css"
         ></link>
-      </Head>
+      </Head> */}
       <div className="relative overflow-hidden bg-white py-16">
         <div className="relative px-4 sm:px-6 lg:px-8">
           <div className="prose prose-lg prose-indigo mx-auto mt-6">

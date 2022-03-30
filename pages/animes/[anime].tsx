@@ -63,6 +63,17 @@ const AnimeWork = (animeTitle: AnimeName) => {
     return snap.docs.map((doc) => doc.data());
   });
 
+  const animeId = dbAnimes?.data?.find(
+    (dbAnime) => dbAnime.title === animeTitle.name
+  )?.id;
+  const reviewDatas = () => {
+    const animeRef = collection(db, `animes/${animeId}/reviews`);
+    return onSnapshot(animeRef, async (snap) => {
+      const datas = snap.docs.map((doc) => doc.data());
+      console.log(datas);
+    });
+  };
+
   //レビューのモーダル
   const [reviewModal, setReviewModal] = useState(false);
   const modalOpen = () => {

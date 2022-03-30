@@ -2,6 +2,7 @@ import { Tab } from '@headlessui/react';
 import { ChatAltIcon, HeartIcon } from '@heroicons/react/outline';
 import { StarIcon } from '@heroicons/react/solid';
 import {
+  collection,
   collectionGroup,
   getDocs,
   onSnapshot,
@@ -31,10 +32,11 @@ const AnimeReview = (props: { title: string }) => {
       where('title', '==', title),
       orderBy('createAt', 'desc')
     );
+    // const ref = collection(db,`animes//reviews`)
     return onSnapshot(animeTitles, async (snap) => {
       const tasks = snap.docs.map((doc) => {
         // console.log(doc.ref.parent.parent?.id, 'id');
-        console.log(doc.data());
+        // console.log(doc.data());
         return doc.data();
       });
       const allReviews = await Promise.all(tasks);

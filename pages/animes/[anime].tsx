@@ -48,9 +48,6 @@ import { Tab } from '@headlessui/react';
 type AnimeName = {
   name: string;
 };
-// type ShowMore = {
-//   animeInfo.cast.length
-// };
 
 const AnimeWork = (animeTitle: AnimeName) => {
   // console.log(animeTitle, 'animeTitle');
@@ -66,13 +63,6 @@ const AnimeWork = (animeTitle: AnimeName) => {
   const animeId = dbAnimes?.data?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
   )?.id;
-  const reviewDatas = () => {
-    const animeRef = collection(db, `animes/${animeId}/reviews`);
-    return onSnapshot(animeRef, async (snap) => {
-      const datas = snap.docs.map((doc) => doc.data());
-      console.log(datas);
-    });
-  };
 
   //レビューのモーダル
   const [reviewModal, setReviewModal] = useState(false);
@@ -463,26 +453,26 @@ const AnimeWork = (animeTitle: AnimeName) => {
         </h2>
         <p className="tracking-wider">{animeInfo?.summary}</p>
       </BackGroundGray>
-      <BackGroundWhite>
+      {/* <BackGroundWhite>
         <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
           視聴可能な動画配信サービス
         </h2>
-        {/* <StreamingService /> */}
-      </BackGroundWhite>
-      <BackGroundGray>
+        <StreamingService />
+      </BackGroundWhite> */}
+      {/* <BackGroundGray>
         <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
           <HashtagIcon className="mr-2 h-5 w-5" />
           {animeInfo?.title}によく使用されているタグ
         </h2>
-        <AnimeTag title={animeTitle.name} />
-      </BackGroundGray>
+        <AnimeTag animeId={animeId} />
+      </BackGroundGray> */}
       <BackGroundWhite>
         <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
           <ChatAltIcon className="mr-2 h-5 w-5" />
           {animeInfo?.title}
           に投稿された感想・評価
         </h2>
-        <AnimeReview title={animeTitle.name} />
+        <AnimeReview animeId={animeId} />
       </BackGroundWhite>
       {/* <BackGroundGray>
         <h2 className="mb-8 flex items-center justify-center text-xl font-bold">

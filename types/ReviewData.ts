@@ -1,5 +1,5 @@
 export type ReviewData = {
-  id: string;
+  uid: string;
   title: string;
   isScore: boolean;
   storyScore: number;

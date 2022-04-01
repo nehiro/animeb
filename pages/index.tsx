@@ -42,9 +42,9 @@ const Home = () => {
 
   if (loading) return null;
 
-  if (user === undefined) {
-    return null;
-  }
+  // if (user === undefined) {
+  //   return null;
+  // }
 
   return (
     <>
@@ -56,37 +56,6 @@ const Home = () => {
           alt=""
           priority
         />
-        {/* <Image
-          src="/images/ota-green.png"
-          width={50}
-          height={42}
-          alt=""
-          priority
-        />
-        <Image
-          src="/images/ota-pink.png"
-          width={50}
-          height={42}
-          alt=""
-          priority
-        />
-        <div className="absolute left-24 top-1/3">
-          <Image
-            src="/images/ota-yellow.png"
-            width={50}
-            height={42}
-            alt=""
-            priority
-          />
-        </div>
-
-        <Image src="/images/king.png" width={50} height={42} alt="" priority /> */}
-        {/* <button
-          type="button"
-          className="absolute left-24 top-1/3 inline-flex items-center rounded-md border border-transparent bg-yellow px-6 py-3 text-xl font-medium text-gray-800 shadow-sm"
-        >
-          アニメ部！の使い方
-        </button> */}
       </section>
       {/* <div>
         <div className="grid grid-cols-3 gap-4">

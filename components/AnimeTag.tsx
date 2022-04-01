@@ -1,6 +1,8 @@
 import {
+  collection,
   collectionGroup,
   onSnapshot,
+  orderBy,
   query,
   Unsubscribe,
   where,
@@ -9,20 +11,19 @@ import React, { useEffect, useState } from 'react';
 import { ReviewData } from '../types/ReviewData';
 import { db } from '../utils/firebase';
 
-const AnimeTag = (props: { title: string }) => {
-  const title = props.title;
+const AnimeTag = (props: { animeId: string }) => {
+  const id = props.animeId;
 
   const [reviews, setReviews] = useState<ReviewData[]>();
 
   const subscribeReviews = (callback: (reviews: ReviewData[]) => void) => {
-    const ref = collectionGroup(db, `reviews`);
-    const animeTitles = query(ref, where('title', '==', title));
-    return onSnapshot(animeTitles, async (snap) => {
+    const ref = collection(db, `animes/${id}/reviews`);
+    const reviews = query(ref, orderBy('createAt', 'desc'));
+    return onSnapshot(reviews, async (snap) => {
       const tasks = snap.docs.map((doc) => {
         return doc.data();
       });
       const allReviews = await Promise.all(tasks);
-      // console.log(allReviews, 'allReviews');
       callback(allReviews as ReviewData[]);
     });
   };
@@ -33,20 +34,22 @@ const AnimeTag = (props: { title: string }) => {
     return () => {
       subscribes.forEach((subscribe) => subscribe());
     };
-  }, [title]);
+  }, [id]);
 
   const tags = reviews?.map((review) => review.tag);
-  // const tags2 = [...new Set(tags)];
-  // console.log(...(tags as string[]), 'tags');
-  // console.log(tags2);
-
+  // console.log(tags);
   if (!reviews || !tags) {
     return null;
   }
+
   return (
-    <ul className="grid-cols-gridResponsive list-none grid list-inside list-decimal justify-items-start gap-4">
-      {/* <li>{...tags}</li> */}
-    </ul>
+    <>
+      <ul className="grid-cols-gridResponsive list-none grid list-inside list-decimal justify-items-start gap-4">
+        {tags.map((tag) => (
+          <li key={tag}>{tag}</li>
+        ))}
+      </ul>
+    </>
   );
 };
 

@@ -42,7 +42,8 @@ export const listButton = async (props: ListButton) => {
     alert('ログインしてください');
     return;
   }
-  const idRef = doc(collection(db, `users/${user?.uid}/reviews`));
+  // animes/animeid/lists/uid
+  const idRef = doc(collection(db, `users/${user?.uid}/lists`));
   const id = idRef.id;
   const ref = doc(db, `users/${user?.uid}/lists/${id}`);
   await setDoc(ref, {
@@ -53,7 +54,7 @@ export const listButton = async (props: ListButton) => {
     alert(`${anime?.title}を観たいリストに登録しました`);
   });
 
-  //listsの中にタイトルあるか
+  //animesの処理：listsの中にタイトルあるか
   if (
     dbLists !== undefined &&
     dbLists.find((dbList: { title: string }) => dbList.title === anime?.title)

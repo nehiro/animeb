@@ -46,6 +46,7 @@ const Score = ({
   reviewModal: boolean;
 }) => {
   const { user, reviews, lists } = useAuth();
+  // console.log(reviews, 'reviews');
   //ログインユーザーがreviewしているかどうか
   const reviewedRef = reviews?.find((review) => review.title === anime?.title);
   // console.log(reviewedRef, 'reviewedRef');
@@ -110,77 +111,6 @@ const Score = ({
 
   //review登録
   const onSubmit = async (data: ReviewData) => {
-    //userがreviewしているかどうか-サブコレクション
-    if (!reviewedRef) {
-      const idRef = doc(collection(db, `users/${user?.uid}/reviews`));
-      const id = idRef.id;
-      const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
-      if (data.isScore === true) {
-        await setDoc(ref, {
-          id: id,
-          title: anime?.title,
-          isScore: data.isScore,
-          storyScore: data.storyScore,
-          drawingScore: data.drawingScore,
-          voiceActorScore: data.voiceActorScore,
-          musicScore: data.musicScore,
-          characterScore: data.characterScore,
-          review: data.review,
-          spoiler: data.spoiler,
-          tag: data.tag,
-          createAt: Date.now(),
-        });
-      } else {
-        await setDoc(ref, {
-          id: id,
-          title: anime?.title,
-          isScore: data.isScore,
-          storyScore: 1,
-          drawingScore: 1,
-          voiceActorScore: 1,
-          musicScore: 1,
-          characterScore: 1,
-          review: data.review,
-          spoiler: data.spoiler,
-          tag: data.tag,
-          createAt: Date.now(),
-        });
-      }
-      // console.log(data, 'data');
-      alert(`${anime?.title}のレビューを登録しました`);
-    } else {
-      const id = reviews?.find((review) => review.title === anime?.title)?.id;
-      const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
-      if (data.isScore === true) {
-        await updateDoc(ref, {
-          isScore: data.isScore,
-          storyScore: data.storyScore,
-          drawingScore: data.drawingScore,
-          voiceActorScore: data.voiceActorScore,
-          musicScore: data.musicScore,
-          characterScore: data.characterScore,
-          review: data.review,
-          spoiler: data.spoiler,
-          tag: data.tag,
-          updatedAt: Date.now(),
-        });
-      } else {
-        await updateDoc(ref, {
-          isScore: data.isScore,
-          storyScore: 1,
-          drawingScore: 1,
-          voiceActorScore: 1,
-          musicScore: 1,
-          characterScore: 1,
-          review: data.review,
-          spoiler: data.spoiler,
-          tag: data.tag,
-          updatedAt: Date.now(),
-        });
-      }
-      alert(`${anime?.title}のレビューを更新しました`);
-    }
-
     //animesコレクションの処理
     if (
       dbAnimes.data !== undefined &&
@@ -235,6 +165,7 @@ const Score = ({
               tag: data.tag,
               createAt: Date.now(),
             });
+            alert(`${anime?.title}のレビューを更新しました`);
           } else {
             //今回false
             await updateDoc(animesIDRef, {
@@ -259,6 +190,7 @@ const Score = ({
               tag: data.tag,
               createAt: Date.now(),
             });
+            alert(`${anime?.title}のレビューを更新しました`);
           }
         } else {
           //過去false
@@ -286,6 +218,7 @@ const Score = ({
               tag: data.tag,
               createAt: Date.now(),
             });
+            alert(`${anime?.title}のレビューを更新しました`);
           } else {
             //今回もfalse:何もしない
             console.log('4つ目');
@@ -295,6 +228,7 @@ const Score = ({
               tag: data.tag,
               createAt: Date.now(),
             });
+            alert(`${anime?.title}のレビューを更新しました`);
           }
         }
       } else {
@@ -322,12 +256,14 @@ const Score = ({
             tag: data.tag,
             createAt: Date.now(),
           });
+          alert(`${anime?.title}のレビューを登録しました`);
         } else {
           await updateDoc(animesIDRef, {
             unScoreReviewCount: increment(1),
           });
           console.log('6つ目');
-          await updateDoc(animesUserRef, {
+          await setDoc(animesUserRef, {
+            uid: user?.uid,
             isScore: data.isScore,
             storyScore: 1,
             drawingScore: 1,
@@ -339,6 +275,7 @@ const Score = ({
             tag: data.tag,
             createAt: Date.now(),
           });
+          alert(`${anime?.title}のレビューを登録しました`);
         }
       }
       // console.log(anime);

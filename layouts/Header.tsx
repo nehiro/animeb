@@ -17,12 +17,6 @@ import SearchModal from '../components/SearchModal';
 import { useAuth } from '../utils/userContext';
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import {
-  BookmarkAltIcon,
-  CalendarIcon,
-  ShieldCheckIcon,
-  SupportIcon,
-} from '@heroicons/react/outline';
 import { signOut } from '@firebase/auth';
 import { auth } from '../utils/firebase';
 import Link from 'next/link';
@@ -36,45 +30,6 @@ const logout = () => {
       alert(`ログアウト失敗`);
     });
 };
-
-const resources = [
-  {
-    name: 'Help Center',
-    description:
-      'Get all of your questions answered in our forums or contact support.',
-    href: '#',
-    icon: SupportIcon,
-  },
-  {
-    name: 'Guides',
-    description:
-      'Learn how to maximize our platform to get the most out of it.',
-    href: '#',
-    icon: BookmarkAltIcon,
-  },
-  {
-    name: 'Events',
-    description:
-      'See what meet-ups and other events we might be planning near you.',
-    href: '#',
-    icon: CalendarIcon,
-  },
-  {
-    name: 'Security',
-    description: 'Understand how we take your privacy seriously.',
-    href: '#',
-    icon: ShieldCheckIcon,
-  },
-];
-const recentPosts = [
-  { id: 1, name: 'Boost your conversion rate', href: '#' },
-  {
-    id: 2,
-    name: 'How to use search engine optimization to drive traffic to your site',
-    href: '#',
-  },
-  { id: 3, name: 'Improve your customer experience', href: '#' },
-];
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ');
@@ -143,7 +98,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                           <Popover.Panel className="absolute right-0 z-10 mt-3 w-48 max-w-md px-2 sm:px-0">
                             <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                               <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-5 sm:py-4 sm:px-6">
-                                <Link href="/myPage">
+                                <Link href={`/users/${user?.uid}`}>
                                   <a>
                                     <i className="mr-1.5 leading-none">
                                       <UserCircleIcon className="inline-block h-5 w-5 text-purple" />

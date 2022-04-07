@@ -1,15 +1,13 @@
-export type ReviewData = {
-  uid: string;
+export type DbAnime = {
+  id: string;
   title: string;
-  isScore: boolean;
   storyScore: number;
   drawingScore: number;
   voiceActorScore: number;
   musicScore: number;
   characterScore: number;
-  review: string;
-  spoiler: boolean;
-  tag: string;
   createAt: number;
-  id: string;
+  reviewCount: number;
+  unScoreReviewCount: number;
+  listCount: number;
 };

@@ -4,19 +4,27 @@ import {
   UserGroupIcon,
   UsersIcon,
 } from '@heroicons/react/solid';
+import { list } from 'firebase/storage';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { ReactElement, useEffect } from 'react';
-import Followers from '../../components/Followers';
-import Layout from '../../layouts/Layout';
-import LayoutNoNav from '../../layouts/LayoutNoNav';
-import MyPageSubHeader from '../../layouts/MyPageSubHeader';
-import { auth } from '../../utils/firebase';
-import { useAuth } from '../../utils/userContext';
+import Card from '../../../components/card/Card';
+import { adminDB } from '../../../firebase/server';
+import Layout from '../../../layouts/Layout';
+import LayoutNoNav from '../../../layouts/LayoutNoNav';
+import MyPageSubHeader from '../../../layouts/MyPageSubHeader';
+import { User } from '../../../types/User';
+import { useAnime } from '../../../utils/animeContext';
+import { auth } from '../../../utils/firebase';
+import { useAuth } from '../../../utils/userContext';
 
-const MyPage = () => {
+const MyPage = (props: { userInfo: User }) => {
   //user管理
-  const { user } = useAuth();
+  const { user, lists } = useAuth();
+  const userId = props.userInfo.uid;
+  const userData = props.userInfo;
+  const { animes } = useAnime();
   //ログインしているかどうか
   const router = useRouter();
   useEffect(() => {
@@ -25,33 +33,42 @@ const MyPage = () => {
     });
   }, []);
   const tabs = [
-    { name: 'watched', href: '/myPage', icon: EyeIcon, current: false },
     {
-      name: 'checked',
-      href: '/myPage/checked',
-      icon: BookmarkIcon,
+      name: 'watched',
+      href: `/users/${userId}`,
+      icon: EyeIcon,
       current: false,
     },
     {
+      name: 'checked',
+      href: `/users/${userId}/checked`,
+      icon: BookmarkIcon,
+      current: true,
+    },
+    {
       name: 'following',
-      href: '/myPage/following',
+      href: `/users/${userId}/following`,
       icon: UsersIcon,
       current: false,
     },
     {
       name: 'followers',
-      href: '/myPage/followers',
+      href: `/users/${userId}/followers`,
       icon: UserGroupIcon,
-      current: true,
+      current: false,
     },
   ];
+
+  const newLists = animes?.filter((anime) => {
+    return lists?.find((listTitle) => listTitle.title === anime.title);
+  });
 
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
   }
   return (
     <>
-      <MyPageSubHeader />
+      <MyPageSubHeader userData={userData} />
       <section>
         <div className="container">
           <div className="sm:block">
@@ -89,9 +106,16 @@ const MyPage = () => {
       </section>
       <section>
         <div className="container py-4">
-          <div className="grid grid-cols-3 gap-4">
-            <Followers />
-          </div>
+          <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            {newLists?.map((newList) => (
+              <li
+                key={newList.title}
+                className="flex w-full flex-col justify-between"
+              >
+                <Card anime={newList}></Card>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
     </>
@@ -99,5 +123,30 @@ const MyPage = () => {
 };
 
 export default MyPage;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const usersRef = adminDB.collection('users');
+  const snap = await usersRef.get();
+  const paths = snap.docs.map((doc) => `/users/${doc.id}/checked`);
+  console.log(paths, 'paths');
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  // console.log(params, 'params');
+  const usersRef = adminDB.collection('users').doc(`${params?.slug}`);
+  // console.log(usersRef, 'usersRef');
+  const snap = await usersRef.get();
+  // console.log(snap, 'snap');
+  // console.log(snap.data(), 'snap.data()');
+  const userInfo = snap.data();
+  // console.log(userInfo, 'userInfo');
+  return {
+    props: { userInfo },
+  };
+};
 
 MyPage.getLayout = (page: ReactElement) => <LayoutNoNav>{page}</LayoutNoNav>;

@@ -30,6 +30,7 @@ type Card = {
 
 const Card = ({ anime }: { anime: Anime }) => {
   const { user, reviews, lists } = useAuth();
+  // console.log(reviews, 'reviews');
   //ログインユーザーがreviewしているかどうか
   const reviewedRef = reviews?.find((review) => review.title === anime?.title);
   // console.log(reviewedRef, 'reviewedRef');

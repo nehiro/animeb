@@ -8,18 +8,11 @@ import { News } from '../../types/News';
 import BackGroundGray from '../../components/BackGroundGray';
 import SubpageTitle from '../../components/SubpageTitle';
 import Breadcrumbs from '../../components/Breadcrumbs';
+import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 
 const Index = ({ news }: { news: News[] }) => {
   // console.log(news, 'news');
-  //日付表示フォーマット
-  const dateFormat = (time: number) => {
-    const dt = new Date(time);
-    var y = dt.getFullYear();
-    var m = ('00' + (dt.getMonth() + 1)).slice(-2);
-    var d = ('00' + dt.getDate()).slice(-2);
-    return y + '-' + m + '-' + d;
-  };
 
   return (
     <>
@@ -52,7 +45,7 @@ const Index = ({ news }: { news: News[] }) => {
                         {item.category === 'notice' ? 'お知らせ' : '機能追加'}
                       </span>
                       <span className="mr-4 mb-1 md:mb-0">
-                        {dateFormat(item.createdAt)}
+                        {format(item.createdAt, 'yyyy/MM/dd')}
                       </span>
                       <span>{item.title}</span>
                     </a>

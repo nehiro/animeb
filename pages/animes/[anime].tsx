@@ -19,7 +19,7 @@ import BackGroundGray from '../../components/BackGroundGray';
 import BackGroundWhite from '../../components/BackGroundWhite';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import StreamingService from '../../components/StreamingService';
-import AnimeReview from '../../components/AnimeReview';
+import AnimeReviewTabs from '../../components/AnimeReviewTabs';
 import AnotherAnime from '../../components/card/AnotherAnime';
 import Button from '../../components/Button';
 import Layout from '../../layouts/Layout';
@@ -472,7 +472,7 @@ const AnimeWork = (animeTitle: AnimeName) => {
           {animeInfo?.title}
           に投稿された感想・評価
         </h2>
-        <AnimeReview animeId={animeId} />
+        <AnimeReviewTabs animeId={animeId} />
       </BackGroundWhite>
       {/* <BackGroundGray>
         <h2 className="mb-8 flex items-center justify-center text-xl font-bold">

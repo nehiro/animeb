@@ -14,12 +14,12 @@ const Footer = ({ open, toggle }: SideMenuProps) => {
 
   return (
     <footer
-      className={`bg-yellow h-14 w-auto flex justify-center transition-all ease-in-out duration-500 sm:duration-700 z-20 ${
+      className={`z-20 flex h-14 w-auto justify-center bg-yellow transition-all duration-500 ease-in-out sm:duration-700 ${
         open ? ' lg:ml-52' : ''
       }`}
     >
       <button onClick={returnTop}>
-        <ChevronUpIcon className="h-6 w-6 mx-auto " />
+        <ChevronUpIcon className="mx-auto h-6 w-6 " />
       </button>
     </footer>
   );

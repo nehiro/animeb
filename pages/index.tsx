@@ -33,7 +33,8 @@ const Home = () => {
   // console.log(animesMap, 'animesMap');
 
   // followとuser管理
-  const { user, loading, reviews } = useAuth();
+  const { user, loading, reviews, lists } = useAuth();
+  console.log(lists, 'lists');
   const { data: users } = useSWR('users', async () => {
     const ref = collection(db, 'users');
     const snap = await getDocs(ref);

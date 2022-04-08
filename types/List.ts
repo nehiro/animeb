@@ -1,5 +1,4 @@
 export type List = {
-  title: string;
-  id: string;
+  uid: string;
   createAt: number;
 };

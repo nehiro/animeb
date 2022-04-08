@@ -43,22 +43,24 @@ export const listButton = async (props: ListButton) => {
     return;
   }
   // animes/animeid/lists/uid
-  const idRef = doc(collection(db, `users/${user?.uid}/lists`));
-  const id = idRef.id;
-  const ref = doc(db, `users/${user?.uid}/lists/${id}`);
-  await setDoc(ref, {
-    id: id,
-    title: anime?.title,
-    createAt: Date.now(),
-  }).then(() => {
-    alert(`${anime?.title}を観たいリストに登録しました`);
-  });
+  //ここがいらない
+  // const idRef = doc(collection(db, `animes/${user?.uid}/lists/${user?.uid}`));
+  // const id = idRef.id;
+  // const ref = doc(db, `users/${user?.uid}/lists/${id}`);
+  // await setDoc(ref, {
+  //   id: id,
+  //   title: anime?.title,
+  //   createAt: Date.now(),
+  // }).then(() => {
+  //   alert(`${anime?.title}を観たいリストに登録しました`);
+  // });
 
   //animesの処理：listsの中にタイトルあるか
   if (
     dbLists !== undefined &&
     dbLists.find((dbList: { title: string }) => dbList.title === anime?.title)
   ) {
+    //id　を取得
     const id = dbLists.find(
       (dbList: { title: string }) => dbList.title === anime?.title
     ).id;
@@ -68,8 +70,17 @@ export const listButton = async (props: ListButton) => {
     await updateDoc(animesIDRef, {
       listCount: increment(1),
     });
+    //lists の処理
+    const animesListsRef = doc(db, `animes/${id}/lists/${user?.uid}`);
+    await setDoc(animesListsRef, {
+      uid: user?.uid,
+      createAt: Date.now(),
+    }).then(() => {
+      alert(`${anime?.title}を観たいリストに登録しました`);
+    });
     // console.log(anime);
   } else {
+    //されていなかったら
     const animesIDRef = doc(collection(db, 'animes'));
     const animesID = animesIDRef.id;
     const animesRef = doc(db, `animes/${animesID}`);
@@ -86,6 +97,13 @@ export const listButton = async (props: ListButton) => {
       musicScore: 0,
       characterScore: 0,
     });
+    const animesListsRef = doc(db, `animes/${animesID}/lists/${user?.uid}`);
+    await setDoc(animesListsRef, {
+      uid: user?.uid,
+      createAt: Date.now(),
+    }).then(() => {
+      alert(`${anime?.title}を観たいリストに登録しました`);
+    });
   }
 };
 //リストから外す
@@ -98,9 +116,10 @@ export const unlistButton = async (props: UnlistButton) => {
     alert('ログインしてください');
     return;
   }
+  //なんで上手く行くのか
   const id = lists?.find((listTitle) => listTitle.title === anime?.title)?.id;
   // console.log(id);
-  const ref = doc(db, `users/${user?.uid}/lists/${id}`);
+  const ref = doc(db, `animes/${id}/lists/${user?.uid}`);
   deleteDoc(ref).then(() => {
     alert(`${anime?.title}を観たいリストから外しました`);
   });

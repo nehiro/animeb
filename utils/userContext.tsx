@@ -7,8 +7,8 @@ import {
   onSnapshot,
 } from '@firebase/firestore';
 import { createContext, FC, useContext, useEffect, useState } from 'react';
-import { userLists } from '../lib/getList';
-import { userReviews } from '../lib/getReviews';
+// import { userLists } from '../lib/getList';
+// import { userReviews } from '../lib/getReviews';
 import {
   subscribeFollowerUsers,
   subscribeFollowUsers,
@@ -38,8 +38,8 @@ const AuthContext = createContext<AuthContextProps>({
   followUsers: undefined,
   followerUsers: undefined,
   likeIds: undefined,
-  reviews: undefined,
-  lists: undefined,
+  // reviews: undefined,
+  // lists: undefined,
 });
 //箱の中を詰める
 export const AuthProvider: FC = ({ children }) => {
@@ -54,8 +54,8 @@ export const AuthProvider: FC = ({ children }) => {
   const [likeIds, setLikeIds] = useState<string[]>();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [reviews, setReviews] = useState<ReviewData[]>();
-  const [lists, setLists] = useState<List[]>();
+  // const [reviews, setReviews] = useState<ReviewData[]>();
+  // const [lists, setLists] = useState<List[]>();
 
   //呼び出されたら一度だけレンダリング
   useEffect(() => {
@@ -114,14 +114,14 @@ export const AuthProvider: FC = ({ children }) => {
       );
       unsubscribes.push(subscribeLikes(user.uid, (ids) => setLikeIds(ids)));
 
-      const reviews = userReviews(user.uid, (reviews) => setReviews(reviews));
+      // const reviews = userReviews(user.uid, (reviews) => setReviews(reviews));
 
-      const lists = userLists(user.uid, (lists) => setLists(lists));
+      // const lists = userLists(user.uid, (lists) => setLists(lists));
 
       return () => {
         unsubscribes.forEach((unsubscribe) => unsubscribe());
-        reviews;
-        lists;
+        // reviews;
+        // lists;
       };
     }
   }, [user]);
@@ -135,8 +135,8 @@ export const AuthProvider: FC = ({ children }) => {
         followUsers,
         likeIds,
         followerUsers,
-        reviews,
-        lists,
+        // reviews,
+        // lists,
       }}
     >
       {children}

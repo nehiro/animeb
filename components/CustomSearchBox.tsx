@@ -4,10 +4,11 @@ import { connectSearchBox } from 'react-instantsearch-dom';
 import { SearchIcon } from '@heroicons/react/outline';
 
 const SearchBoxBase = ({ currentRefinement, refine }: SearchBoxProvided) => {
-  const { register, handleSubmit } = useForm<{ q: string }>();
+  const { register, handleSubmit, reset } = useForm<{ q: string }>();
 
   const search = ({ q }: { q: string }) => {
     refine(q);
+    // reset({ q: '' });
   };
 
   return (

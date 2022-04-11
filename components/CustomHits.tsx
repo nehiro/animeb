@@ -1,13 +1,16 @@
 import Link from 'next/link';
 import React from 'react';
 import { BasicDoc, HitsProvided } from 'react-instantsearch-core';
-import { connectHits } from 'react-instantsearch-dom';
+import { connectHits, Highlight } from 'react-instantsearch-dom';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 const Hits = ({ hits }: HitsProvided<BasicDoc>) => {
   if (!hits?.length) {
+    // console.log(hits);
     return (
-      <p className="text-sm text-gray-500">検索結果が見つかりませんでした</p>
+      <p className="text-sm text-gray-500">
+        キーワードを入力して検索してください
+      </p>
     );
   }
 
@@ -26,6 +29,7 @@ const Hits = ({ hits }: HitsProvided<BasicDoc>) => {
               {/* <div className="text-4xl">{hit.gender === 'male' ? '👨🏻' : '👩🏻'}</div> */}
               <div className="flex items-center justify-start">
                 <ExternalLinkIcon className="mr-2 h-5 w-5 flex-none text-gray-400" />
+                {/* <Highlight attribute="title" hit={hit} /> */}
                 <h3>{hit.title}</h3>
                 {/* <h3>{hit.name}</h3> */}
                 {/* <p className="text-sm text-gray-500">{hit.brand}</p>

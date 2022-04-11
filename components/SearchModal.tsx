@@ -5,7 +5,7 @@ import { debounce } from 'debounce';
 import { SearchIndex } from 'algoliasearch/lite';
 import { useRouter } from 'next/router';
 import { SearchState } from 'react-instantsearch-core';
-import { InstantSearch } from 'react-instantsearch-dom';
+import { InstantSearch, PoweredBy } from 'react-instantsearch-dom';
 import CustomHits from './CustomHits';
 import CustomHitsPerPage from './CustomHitsPerPage';
 import CustomPagination from './CustomPagination';
@@ -43,6 +43,23 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
       }
     );
   };
+
+  // // 1. Create a render function
+  // const renderPoweredBy = (renderOptions, isFirstRender) => {
+  //   // Rendering logic
+  // };
+
+  // // 2. Create the custom widget
+  // const customPoweredBy =
+  //   instantsearch.connectors.connectPoweredBy(renderPoweredBy);
+
+  // // 3. Instantiate
+  // search.addWidgets([
+  //   customPoweredBy({
+  //     // instance params
+  //   }),
+  // ]);
+
   return (
     <>
       <Transition.Root show={isOpen} as={Fragment}>
@@ -95,6 +112,7 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
                   indexName="animes"
                 >
                   <div className="mb-2 flex items-center justify-between">
+                    {/* 検索ボックス：uiをオリジナルにするためにconnectSearchBox(SearchBoxBase)*/}
                     <CustomSearchBox
                       defaultRefinement={router.query.q as string}
                     />
@@ -106,7 +124,7 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
                       <i className="ri-eye-close-line"></i>
                     </button>
                   </div>
-
+                  {/* indexでヒットしたアイテムを表示する：uiをオリジナルにするためにconnectHits(Hits)*/}
                   <CustomHits />
                   <CustomPagination
                     defaultRefinement={Number(router.query.page) || 1}
@@ -130,6 +148,7 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
                       Number(router.query.hitsPerPage as string) || 5
                     }
                   />
+                  <PoweredBy />
                 </InstantSearch>
               </div>
             </Transition.Child>
@@ -141,14 +160,3 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
 };
 
 export default SearchModal;
-function changeIndex(value: string): void {
-  throw new Error('Function not implemented.');
-}
-
-function setSearchResult(arg0: { nbHits: any; hits: any }) {
-  throw new Error('Function not implemented.');
-}
-
-function setIndex(videoIndex: any) {
-  throw new Error('Function not implemented.');
-}

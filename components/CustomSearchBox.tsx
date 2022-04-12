@@ -7,6 +7,7 @@ const SearchBoxBase = ({ currentRefinement, refine }: SearchBoxProvided) => {
   const { register, handleSubmit, reset } = useForm<{ q: string }>();
 
   const search = ({ q }: { q: string }) => {
+    console.log(q, 'q');
     refine(q);
     // reset({ q: '' });
   };

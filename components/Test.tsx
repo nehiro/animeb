@@ -11,14 +11,15 @@ import { ReviewData } from '../types/ReviewData';
 import { db } from '../utils/firebase';
 
 const Test = (userId: string) => {
-  const { data } = useSWR('reviews', async () => {
+  const { data } = useSWR(userId && `reviews/${userId}`, async () => {
     const ref = query(
       collectionGroup(db, 'reviews'),
       where('uid', '==', `${userId}`)
     );
+    console.log(userId, 'userId');
     console.log(ref, '0');
     const snap = await getDocs(ref);
-    console.log(snap, '1');
+    console.log(snap.empty, '1');
 
     const datas = snap.docs.map((item) => {
       console.log(item.ref.parent.parent?.id, '2');

@@ -26,37 +26,41 @@ type Props = {
 
 const SearchModal = ({ isOpen, onClose }: Props) => {
   const router = useRouter();
-  const updateQueryParams = (state: SearchState) => {
-    router.push(
-      {
-        query: {
-          q: state.query || [],
-          hitsPerPage: state.hitsPerPage || [],
-          page: state.page || [],
-          sortBy: state.sortBy || [],
-          ...state.refinementList,
-        },
-      },
-      undefined,
-      {
-        shallow: true,
-      }
-    );
-  };
-
-  // // 1. Create a render function
-  // const renderPoweredBy = (renderOptions, isFirstRender) => {
-  //   // Rendering logic
+  // const updateQueryParams = (state: SearchState) => {
+  //   router.push(
+  //     {
+  //       query: {
+  //         q: state.query || [],
+  //         hitsPerPage: state.hitsPerPage || [],
+  //         page: state.page || [],
+  //         sortBy: state.sortBy || [],
+  //         ...state.refinementList,
+  //       },
+  //     },
+  //     undefined,
+  //     {
+  //       shallow: true,
+  //     }
+  //   );
   // };
 
-  // // 2. Create the custom widget
+  // // Create the render function
+  // const renderPoweredBy = (renderOptions, isFirstRender) => {
+  //   const { url, widgetParams } = renderOptions;
+
+  //   widgetParams.container.innerHTML = `
+  //   <a href="${url}">Powered by Algolia</a>
+  // `;
+  // };
+
+  // // Create the custom widget
   // const customPoweredBy =
   //   instantsearch.connectors.connectPoweredBy(renderPoweredBy);
 
-  // // 3. Instantiate
+  // // Instantiate the custom widget
   // search.addWidgets([
   //   customPoweredBy({
-  //     // instance params
+  //     container: document.querySelector('#powered-by'),
   //   }),
   // ]);
 
@@ -107,7 +111,7 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
                   </button>
                 </div> */}
                 <InstantSearch
-                  onSearchStateChange={updateQueryParams}
+                  // onSearchStateChange={updateQueryParams}
                   searchClient={searchClient}
                   indexName="animes"
                 >
@@ -148,7 +152,6 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
                       Number(router.query.hitsPerPage as string) || 5
                     }
                   />
-                  <PoweredBy />
                 </InstantSearch>
               </div>
             </Transition.Child>

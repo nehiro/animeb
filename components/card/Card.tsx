@@ -8,8 +8,10 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
 import { useAuth } from '../../utils/userContext';
 import { listButton, unlistButton } from '../../lib/card';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import Score from '../Score';
+import { userReviews } from '../../lib/getReviews';
+import { userLists } from '../../lib/getList';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -29,14 +31,21 @@ type Card = {
 };
 
 const Card = ({ anime }: { anime: Anime }) => {
-  const { user, reviews, lists } = useAuth();
-  // console.log(reviews, 'reviews');
-  //ログインユーザーがreviewしているかどうか
-  const reviewedRef = reviews?.find((review) => review.title === anime?.title);
-  // console.log(reviewedRef, 'reviewedRef');
+  const { user, lists } = useAuth();
+
+  const { mutate } = useSWRConfig();
+
   //ログインユーザーがlistしているかどうか
+  const authUserListData = userLists(user?.uid as string);
+  // console.log(authUseListData);
   const listed = () => {
-    return lists?.find((list) => list.title === anime?.title);
+    return authUserListData?.find((list) => list.title === anime?.title);
+  };
+
+  //ログインユーザーがreviewしているかどうか
+  const authUserReviewData = userReviews(user?.uid as string);
+  const reviewed = () => {
+    return authUserReviewData?.find((review) => review.title === anime?.title);
   };
 
   //animesコレクションにあるタイトル
@@ -160,7 +169,7 @@ const Card = ({ anime }: { anime: Anime }) => {
       <div className="grid grid-cols-3 items-center justify-items-center gap-2">
         <div className="w-full">
           <button className="w-full" onClick={modalOpen}>
-            {reviewedRef ? (
+            {reviewed() ? (
               <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
                 <EyeIcon className="mx-auto h-5 w-5" />
                 <span className="inline-block h-full w-full">
@@ -181,7 +190,10 @@ const Card = ({ anime }: { anime: Anime }) => {
           {listed() ? (
             <button
               className="w-full"
-              onClick={() => unlistButton({ anime, user, lists, dbAnimes })}
+              onClick={() => {
+                unlistButton({ anime, user, authUserListData, dbAnimes });
+                mutate(user?.uid && `lists`);
+              }}
             >
               <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
                 <BookmarkIcon className="mx-auto h-5 w-5" />
@@ -193,7 +205,10 @@ const Card = ({ anime }: { anime: Anime }) => {
           ) : (
             <button
               className="w-full"
-              onClick={() => listButton({ anime, user, dbAnimes })}
+              onClick={() => {
+                listButton({ anime, user, dbAnimes });
+                mutate(user?.uid && `lists`);
+              }}
             >
               <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
                 <BookmarkIcon className="mx-auto h-5 w-5 text-amber-400" />

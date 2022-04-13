@@ -12,30 +12,15 @@ import {
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { Anime } from '../types/Anime';
 import { useAuth } from '../utils/userContext';
 import { db } from '../utils/firebase';
 import { ReviewData } from '../types/ReviewData';
 import SwitchButton from './SwitchButton';
 import { deleteReviweButton } from '../lib/card';
+import { userReviews } from '../lib/getReviews';
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
-
-type Card = {
-  title: string;
-  isScore: boolean;
-  storyScore: number;
-  drawingScore: number;
-  voiceActorScore: number;
-  musicScore: number;
-  characterScore: number;
-  review: string;
-  spoiler: boolean;
-  tag: string;
-};
 const Score = ({
   anime,
   setReviewModal,
@@ -45,15 +30,16 @@ const Score = ({
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   reviewModal: boolean;
 }) => {
-  const { user, reviews, lists } = useAuth();
+  const { user } = useAuth();
   // console.log(reviews, 'reviews');
   //ログインユーザーがreviewしているかどうか
-  const reviewedRef = reviews?.find((review) => review.title === anime?.title);
+  const authUserReviewData = userReviews(user?.uid as string);
+  // console.log(authUseReviewData, 'authUseReviewData');
+  const reviewedRef = authUserReviewData?.find(
+    (review) => review.title === anime?.title
+  );
+  // const reviewedRef = reviews?.find((review) => review.title === anime?.title);
   // console.log(reviewedRef, 'reviewedRef');
-  //ログインユーザーがlistしているかどうか
-  const listed = () => {
-    return lists?.find((list) => list.title === anime?.title);
-  };
 
   //animesコレクションにあるタイトル
   const dbAnimes = useSWR('animes', async () => {
@@ -61,6 +47,8 @@ const Score = ({
     const snap = await getDocs(ref);
     return snap.docs.map((doc) => doc.data());
   });
+
+  const { mutate } = useSWRConfig();
 
   // console.log(dbAnimes.data, 'dbAnimes');
 
@@ -75,7 +63,7 @@ const Score = ({
     control,
     watch,
     formState: { errors },
-  } = useForm<Card>({
+  } = useForm<ReviewData>({
     defaultValues: {
       title: reviewedRef?.title,
       isScore: false,
@@ -119,21 +107,18 @@ const Score = ({
       //既に誰かがこのタイトルをレビューまたはリストしていたら
 
       //自分がレビューしていたら
-      const userReviewsRef = reviews?.find(
-        (review) => review.title === anime?.title
-      );
-      const userStoryScore = userReviewsRef?.storyScore;
-      const userDrawingScore = userReviewsRef?.drawingScore;
-      const userVoiceActorScore = userReviewsRef?.voiceActorScore;
-      const userMusicScore = userReviewsRef?.musicScore;
-      const userCharacterScore = userReviewsRef?.characterScore;
-      const userIsScore = userReviewsRef?.isScore;
+      const userStoryScore = reviewedRef?.storyScore;
+      const userDrawingScore = reviewedRef?.drawingScore;
+      const userVoiceActorScore = reviewedRef?.voiceActorScore;
+      const userMusicScore = reviewedRef?.musicScore;
+      const userCharacterScore = reviewedRef?.characterScore;
+      const userIsScore = reviewedRef?.isScore;
       const id = dbAnimes.data.find(
         (dbList) => dbList.title === anime?.title
       )?.id;
       const animesIDRef = doc(db, `animes/${id}`);
       const animesUserRef = doc(db, `animes/${id}/reviews/${user?.uid}`);
-      if (userReviewsRef) {
+      if (reviewedRef) {
         //過去true
         if (userIsScore === true) {
           //今回もture
@@ -344,6 +329,7 @@ const Score = ({
           tag: data.tag,
           createAt: Date.now(),
         });
+        alert(`${anime?.title}のレビューを登録しました`);
       }
     }
     setReviewModal(false);
@@ -572,6 +558,9 @@ const Score = ({
                       <button
                         type="submit"
                         className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={() => {
+                          mutate(user?.uid && `reviews`);
+                        }}
                       >
                         投稿
                       </button>
@@ -588,6 +577,9 @@ const Score = ({
                       <button
                         type="submit"
                         className="inline-flex w-full justify-center rounded-md border border-transparent bg-buttonBlack px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={() => {
+                          mutate(user?.uid && `reviews`);
+                        }}
                       >
                         更新
                       </button>
@@ -599,7 +591,7 @@ const Score = ({
                             anime,
                             setReviewModal,
                             user,
-                            reviews,
+                            authUserReviewData,
                             dbAnimes,
                           })
                         }

@@ -16,6 +16,7 @@ import UserItem from '../components/UserItem';
 import Profile from '../components/Profile';
 import Link from 'next/link';
 import { Anime } from '../types/Anime';
+import { userReviews } from '../lib/getReviews';
 
 const Home = () => {
   //アニメ管理
@@ -34,7 +35,8 @@ const Home = () => {
 
   // followとuser管理
   const { user, loading, reviews, lists } = useAuth();
-  console.log(lists, 'lists');
+
+  // console.log(lists, 'lists');
   const { data: users } = useSWR('users', async () => {
     const ref = collection(db, 'users');
     const snap = await getDocs(ref);

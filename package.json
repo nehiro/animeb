@@ -10,6 +10,7 @@
     "prepare": "cd .. && husky install animeb-app/.husky"
   },
   "dependencies": {
+    "@algolia/autocomplete-js": "^1.6.2",
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.3",
     "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.68",

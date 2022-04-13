@@ -30,7 +30,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { Anime } from '../../types/Anime';
 import { useAuth } from '../../utils/userContext';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import {
   collection,
   collectionGroup,
@@ -44,6 +44,8 @@ import { listButton, unlistButton } from '../../lib/card';
 import Score from '../../components/Score';
 import { addMonths } from 'date-fns';
 import { Tab } from '@headlessui/react';
+import { userReviews } from '../../lib/getReviews';
+import { userLists } from '../../lib/getList';
 
 type AnimeName = {
   name: string;
@@ -104,12 +106,19 @@ const AnimeWork = (animeTitle: AnimeName) => {
     }
   };
 
-  const reviewedRef = reviews?.find(
-    (review) => review.title === animeTitle.name
+  //ログインユーザーがreviewしているかどうか
+  const authUserReviewData = userReviews(user?.uid as string);
+  const reviewedRef = authUserReviewData?.find(
+    (review) => review.title === animeTitle?.name
   );
+
+  //ログインユーザーがlistしているかどうか
+  const authUserListData = userLists(user?.uid as string);
+  // console.log(authUseListData);
   const listed = () => {
-    return lists?.find((list) => list.title === animeTitle.name);
+    return authUserListData?.find((list) => list.title === animeTitle.name);
   };
+
   const animeInfoArray = animes?.filter(
     (anime) => anime.title === animeTitle.name
   );
@@ -136,17 +145,6 @@ const AnimeWork = (animeTitle: AnimeName) => {
         break;
     }
   };
-
-  // const [height, setHeight] = useState(null);
-  // const [width, setWidth] = useState(null);
-  // const div = useCallback((node) => {
-  //   if (node !== null) {
-  //     setHeight(node.getBoundingClientRect().height);
-  //     setWidth(node.getBoundingClientRect().width);
-  //   }
-  // }, []);
-  // console.log(height, 'height');
-  // console.log(width, 'width');
 
   const listCount = dbAnimes?.data?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
@@ -238,6 +236,8 @@ const AnimeWork = (animeTitle: AnimeName) => {
     },
   ];
 
+  const { mutate } = useSWRConfig();
+
   return (
     <>
       <Breadcrumbs />
@@ -280,14 +280,15 @@ const AnimeWork = (animeTitle: AnimeName) => {
                 {listed() ? (
                   <button
                     className="w-full"
-                    onClick={() =>
+                    onClick={() => {
                       unlistButton({
                         anime: animeInfo as Anime,
                         user,
-                        lists,
+                        authUserListData,
                         dbAnimes,
-                      })
-                    }
+                      });
+                      mutate(user?.uid && `lists`);
+                    }}
                   >
                     <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
                       <BookmarkIcon className="mx-auto h-5 w-5" />
@@ -299,9 +300,10 @@ const AnimeWork = (animeTitle: AnimeName) => {
                 ) : (
                   <button
                     className="w-full"
-                    onClick={() =>
-                      listButton({ anime: animeInfo as Anime, user, dbAnimes })
-                    }
+                    onClick={() => {
+                      listButton({ anime: animeInfo as Anime, user, dbAnimes });
+                      mutate(user?.uid && `lists`);
+                    }}
                   >
                     <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
                       <BookmarkIcon className="mx-auto h-5 w-5 text-amber-400" />

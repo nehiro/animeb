@@ -30,6 +30,7 @@ import {
 import { ReviewData } from '../../../types/ReviewData';
 import { DbAnime } from '../../../types/DbAnime';
 import { userReviews } from '../../../lib/getReviews';
+import { userLists } from '../../../lib/getList';
 
 const MyPage = (props: { userInfo: User }) => {
   //user管理
@@ -69,15 +70,8 @@ const MyPage = (props: { userInfo: User }) => {
     },
   ];
 
-  // console.log(reviews, 'reviews');
-  const [otherUserReviews, setOtherUserReviews] = useState<ReviewData[]>();
-  // console.log(otherUserReviews, 'otherUserReviews');
-
-  useEffect(() => {
-    if (userId) {
-      userReviews(userId, (reviews) => setOtherUserReviews(reviews));
-    }
-  }, [userId]);
+  //ログインユーザーがreviewしているかどうか
+  const otherUserReviews = userReviews(userId);
 
   const userReviewsFilter = animes?.filter((anime) => {
     return otherUserReviews?.find(

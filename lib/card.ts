@@ -14,6 +14,7 @@ import { List } from '../types/List';
 import { ReviewData } from '../types/ReviewData';
 import { db } from '../utils/firebase';
 import useSWR from 'swr';
+import { ListData } from '../types/ListData';
 
 type ListButton = {
   anime: Anime;
@@ -23,14 +24,14 @@ type ListButton = {
 type UnlistButton = {
   anime: Anime;
   user: User | null | undefined;
-  lists: List[] | undefined;
+  authUserListData: ListData[] | undefined;
   dbAnimes: any;
 };
 type DeleteReviweButton = {
   anime: Anime;
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   user: User | null | undefined;
-  reviews: ReviewData[] | undefined;
+  authUserReviewData: ReviewData[] | undefined;
   dbAnimes: any;
 };
 //リストに登録する
@@ -110,7 +111,7 @@ export const listButton = async (props: ListButton) => {
 export const unlistButton = async (props: UnlistButton) => {
   const user = props.user;
   const anime = props.anime;
-  const lists = props.lists;
+  const lists = props.authUserListData;
   const dbLists = props.dbAnimes.data;
   if (!user) {
     alert('ログインしてください');
@@ -138,22 +139,13 @@ export const unlistButton = async (props: UnlistButton) => {
 export const deleteReviweButton = async (props: DeleteReviweButton) => {
   const user = props.user;
   const anime = props.anime;
-  const reviews = props.reviews;
+  const reviews = props.authUserReviewData;
   const setReviewModal = props.setReviewModal;
   const dbLists = props.dbAnimes.data;
   if (!user) {
     alert('ログインしてください');
     return;
   }
-  //自分のサブコレクションの処理
-  const id = reviews?.find((review) => review.title === anime?.title)?.id;
-  // console.log(id);
-  const ref = doc(db, `users/${user?.uid}/reviews/${id}`);
-  deleteDoc(ref).then(() => {
-    // reset();
-    alert(`${anime?.title}のレビューを削除しました`);
-    setReviewModal(false);
-  });
 
   //animesコレクションの処理
   const dbId = dbLists.find(
@@ -172,6 +164,7 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
   // console.log(id, 'id');
   // console.log('カウントダウン');
   const animesIDRef = doc(db, `animes/${dbId}`);
+  const animesReviewsIDRef = doc(db, `animes/${dbId}/reviews/${user.uid}`);
   if (userIsScore === true) {
     await updateDoc(animesIDRef, {
       storyScore: increment(-(userStoryScore as number)),
@@ -181,9 +174,17 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
       characterScore: increment(-(userCharacterScore as number)),
       reviewCount: increment(-1),
     });
+    await deleteDoc(animesReviewsIDRef).then(() => {
+      alert(`${anime?.title}のレビューを削除しました`);
+      setReviewModal(false);
+    });
   } else {
     await updateDoc(animesIDRef, {
       unScoreReviewCount: increment(-1),
+    });
+    await deleteDoc(animesReviewsIDRef).then(() => {
+      alert(`${anime?.title}のレビューを削除しました`);
+      setReviewModal(false);
     });
   }
 };

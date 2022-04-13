@@ -14,6 +14,7 @@ import { adminDB } from '../../../firebase/server';
 import Layout from '../../../layouts/Layout';
 import LayoutNoNav from '../../../layouts/LayoutNoNav';
 import MyPageSubHeader from '../../../layouts/MyPageSubHeader';
+import { userLists } from '../../../lib/getList';
 import { User } from '../../../types/User';
 import { useAnime } from '../../../utils/animeContext';
 import { auth } from '../../../utils/firebase';
@@ -59,8 +60,11 @@ const MyPage = (props: { userInfo: User }) => {
     },
   ];
 
+  //ログインユーザーがlistしているかどうか
+  const otherUserLists = userLists(userId);
+
   const newLists = animes?.filter((anime) => {
-    return lists?.find((listTitle) => listTitle.title === anime.title);
+    return otherUserLists?.find((listTitle) => listTitle.title === anime.title);
   });
 
   function classNames(...classes: string[]) {
@@ -75,7 +79,7 @@ const MyPage = (props: { userInfo: User }) => {
             <div className="border-b border-gray-200">
               <nav className="-mb-px flex space-x-8" aria-label="Tabs">
                 {tabs.map((tab) => (
-                  <Link href={tab.href}>
+                  <Link href={tab.href} key={tab.name}>
                     <a
                       key={tab.name}
                       className={classNames(

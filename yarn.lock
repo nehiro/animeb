@@ -2,6 +2,36 @@
 # yarn lockfile v1
 
 
+"@algolia/autocomplete-core@1.6.2":
+  "integrity" "sha512-YntEdEOck6f7LtCcrT2TjUl2AI+G/HcY7gQWMgM4kuruu9vSxyF05W48IFWANt2gTI7oj0Q5zAZgyVppkQM9LA=="
+  "resolved" "https://registry.npmjs.org/@algolia/autocomplete-core/-/autocomplete-core-1.6.2.tgz"
+  "version" "1.6.2"
+  dependencies:
+    "@algolia/autocomplete-shared" "1.6.2"
+
+"@algolia/autocomplete-js@^1.6.2":
+  "integrity" "sha512-/0lFGUZ6c5HGOidb06NlvApLR19nGviFEQI6A2wtEds0ME+L9Xp3LzJWCi/675a5rekOfSR6RE4fN14ujXrVug=="
+  "resolved" "https://registry.npmjs.org/@algolia/autocomplete-js/-/autocomplete-js-1.6.2.tgz"
+  "version" "1.6.2"
+  dependencies:
+    "@algolia/autocomplete-core" "1.6.2"
+    "@algolia/autocomplete-preset-algolia" "1.6.2"
+    "@algolia/autocomplete-shared" "1.6.2"
+    "htm" "^3.0.0"
+    "preact" "^10.0.0"
+
+"@algolia/autocomplete-preset-algolia@1.6.2":
+  "integrity" "sha512-1g2Fr4XcGFf0+bSPVcxPhiOP6cwWpu3d8TMcinU6On68+IJ8YeMzLTX72uWYLd+kK32SLepdxUpY+Gx9gN3C2g=="
+  "resolved" "https://registry.npmjs.org/@algolia/autocomplete-preset-algolia/-/autocomplete-preset-algolia-1.6.2.tgz"
+  "version" "1.6.2"
+  dependencies:
+    "@algolia/autocomplete-shared" "1.6.2"
+
+"@algolia/autocomplete-shared@1.6.2":
+  "integrity" "sha512-Js7N8EgKsRgaclDde70rF07VOdC+Zb6VLXTIWkJnO6+EI9zbXm/mT2StGVcpNuQ+UN8ZF/bVZLjuVBypOk8bUQ=="
+  "resolved" "https://registry.npmjs.org/@algolia/autocomplete-shared/-/autocomplete-shared-1.6.2.tgz"
+  "version" "1.6.2"
+
 "@algolia/cache-browser-local-storage@4.12.1":
   "integrity" "sha512-ERFFOnC9740xAkuO0iZTQqm2AzU7Dpz/s+g7o48GlZgx5p9GgNcsuK5eS0GoW/tAK+fnKlizCtlFHNuIWuvfsg=="
   "resolved" "https://registry.npmjs.org/@algolia/cache-browser-local-storage/-/cache-browser-local-storage-4.12.1.tgz"
@@ -57,7 +87,7 @@
     "@algolia/requester-common" "4.12.1"
     "@algolia/transporter" "4.12.1"
 
-"@algolia/client-search@4.12.1":
+"@algolia/client-search@^4.5.1", "@algolia/client-search@^4.9.1", "@algolia/client-search@4.12.1":
   "integrity" "sha512-MwwKKprfY6X2nJ5Ki/ccXM2GDEePvVjZnnoOB2io3dLKW4fTqeSRlC5DRXeFD7UM0vOPPHr4ItV2aj19APKNVQ=="
   "resolved" "https://registry.npmjs.org/@algolia/client-search/-/client-search-4.12.1.tgz"
   "version" "4.12.1"
@@ -1369,7 +1399,7 @@
   dependencies:
     "@algolia/events" "^4.0.1"
 
-"algoliasearch@^4.12.0", "algoliasearch@>= 3.1 < 5", "algoliasearch@>=4":
+"algoliasearch@^4.12.0", "algoliasearch@^4.9.1", "algoliasearch@>= 3.1 < 5", "algoliasearch@>=4":
   "integrity" "sha512-c0dM1g3zZBJrkzE5GA/Nu1y3fFxx3LCzxKzcmp2dgGS8P4CjszB/l3lsSh2MSrrK1Hn/KV4BlbBMXtYgG1Bfrw=="
   "resolved" "https://registry.npmjs.org/algoliasearch/-/algoliasearch-4.12.1.tgz"
   "version" "4.12.1"
@@ -2672,6 +2702,11 @@
   "resolved" "https://registry.npmjs.org/highlight.js/-/highlight.js-11.4.0.tgz"
   "version" "11.4.0"
 
+"htm@^3.0.0":
+  "integrity" "sha512-L0s3Sid5r6YwrEvkig14SK3Emmc+kIjlfLhEGn2Vy3bk21JyDEes4MoDsbJk6luaPp8bugErnxPz86ZuAw6e5Q=="
+  "resolved" "https://registry.npmjs.org/htm/-/htm-3.1.0.tgz"
+  "version" "3.1.0"
+
 "http-parser-js@>=0.5.1":
   "integrity" "sha512-x+JVEkO2PoM8qqpbPbOL3cqHPwerep7OwzK7Ay+sMQjKzaKCqWvjoXm5tqMP9tXWWTnTzAjIhXg+J99XYuPhPA=="
   "resolved" "https://registry.npmjs.org/http-parser-js/-/http-parser-js-0.5.5.tgz"
@@ -3722,6 +3757,11 @@
     "nanoid" "^3.1.30"
     "picocolors" "^1.0.0"
     "source-map-js" "^1.0.1"
+
+"preact@^10.0.0":
+  "integrity" "sha512-MufnRFz39aIhs9AMFisonjzTud1PK1bY+jcJLo6m2T9Uh8AqjD77w11eAAawmjUogoGOnipECq7e/1RClIKsxg=="
+  "resolved" "https://registry.npmjs.org/preact/-/preact-10.7.1.tgz"
+  "version" "10.7.1"
 
 "prelude-ls@^1.2.1":
   "integrity" "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="

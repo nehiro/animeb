@@ -5,14 +5,14 @@ import { connectHits, Highlight } from 'react-instantsearch-dom';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 const Hits = ({ hits }: HitsProvided<BasicDoc>) => {
-  if (!hits?.length) {
-    // console.log(hits);
-    return (
-      <p className="text-sm text-gray-500">
-        キーワードを入力して検索してください
-      </p>
-    );
-  }
+  // if (!hits?.length) {
+  //   // console.log(hits);
+  //   return (
+  //     <p className="text-sm text-gray-500">
+  //       キーワードを入力して検索してください
+  //     </p>
+  //   );
+  // }
 
   return (
     <ul className="space-y-2">

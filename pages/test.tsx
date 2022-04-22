@@ -2,17 +2,22 @@ import {
   AutocompleteState,
   createAutocomplete,
 } from '@algolia/autocomplete-core';
-import { getAlgoliaResults } from '@algolia/autocomplete-js';
+import { getAlgoliaResults, autocomplete } from '@algolia/autocomplete-js';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { ReactElement, useMemo, useRef, useState } from 'react';
 import LayoutNoNav from '../layouts/LayoutNoNav';
 import { searchClient } from '../pages/api/client';
-import { debounce } from 'debounce';
 
 export type AlgoliaData = {
-  objectId: number;
+  objectId: string;
+  objectID: string;
   title: string;
+};
+
+type Debounce = {
+  fn: any;
+  time: number;
 };
 
 const test = () => {
@@ -21,28 +26,67 @@ const test = () => {
   const [autocompleteState, setAutocompleteState] =
     useState<AutocompleteState<AlgoliaData>>();
 
+  const debounced = debouncePromise(
+    (items: Debounce) => Promise.resolve(items),
+    1000
+  );
+  function debouncePromise(fn: any, time: number) {
+    // console.log(fn, 'fn');
+    let timerId: NodeJS.Timeout | undefined = undefined;
+
+    return function debounced(...args: any[]) {
+      // console.log(args, 'args');
+      if (timerId) {
+        // console.log(typeof timerId, 'timerId');
+        clearTimeout(timerId);
+      }
+
+      return new Promise((resolve) => {
+        timerId = setTimeout(() => resolve(fn(...args)), time);
+        // console.log(timerId, 'timerId');
+      });
+    };
+  }
+
   // useMemo：値が変わった時だけ実行
   const autocomplete = useMemo(
     () =>
       createAutocomplete<AlgoliaData>({
         id: 'autocomplete-search',
-        openOnFocus: true,
+        //未入力でもタイトル出すか
+        openOnFocus: false,
+        //inputの状態が変わるたびに呼び出される
         onStateChange({ state }) {
+          // {
+          //   console.log(state, 'state');
+          // }
           setAutocompleteState(state);
         },
+        placeholder: 'タイトルで検索',
         // onSubmit(params) {
         //   alert(`実際には「${params.state.query}」の検索結果画面に遷移します`);
         // },
+
+        //データ取得場所
         getSources() {
-          return [
+          return debounced([
             {
               sourceId: 'animes',
-              getItemInputValue({ item }) {
+              getItemInputValue({ item }: { item: AlgoliaData }) {
+                // {
+                //   console.log(typeof item.objectID, 'item');
+                // }
                 return item.title;
               },
-              getItems({ query }) {
+              //取得するアイテムを絞る
+              getItems({ query }: { query: string }) {
+                //query：入力された文字
+                // {
+                //   console.log(typeof query, 'query');
+                // }
                 return getAlgoliaResults({
                   searchClient,
+                  //animesからqueryの文字で20件取得
                   queries: [
                     {
                       indexName: 'animes',
@@ -54,16 +98,28 @@ const test = () => {
                   ],
                 });
               },
-              getItemUrl({ item }) {
+              //アイテムにリンクを返す
+              getItemUrl({ item }: { item: AlgoliaData }) {
+                // {
+                //   console.log(item, 'item');
+                // }
+                //itemはアルゴリアから引っ張ってきたそれぞれのデータ
                 return `/animes/${item.title}`;
               },
-              onSelect(params) {
+              //アイテムをクリックした時に走る
+              onSelect(params: { itemUrl: string }) {
+                // {
+                //   console.log(params, 'params');
+                // }
                 router.replace(params.itemUrl as string, undefined, {
+                  //ページをロードせずにurlを更新：ここでは無意味
+                  ///hoge?aaa=1 => /hoge?bbb=2はOK
+                  ///hoge => /fugaはNG
                   shallow: true,
                 });
               },
             },
-          ];
+          ]);
         },
         navigator: {
           navigate({ itemUrl }) {
@@ -73,24 +129,6 @@ const test = () => {
       }),
     []
   );
-
-  const [count01, setCount01] = useState(0);
-  const [count02, setCount02] = useState(0);
-
-  const result01 = () => setCount01(count01 + 1);
-  const result02 = () => setCount02(count02 + 1);
-
-  // const square = () => {
-  //   let i = 0
-  //   while (i < 2) i++
-  //   return count02 * count02
-  // }
-
-  const square = useMemo(() => {
-    let i = 0;
-    while (i < 200000000000) i++;
-    return count02 * count02;
-  }, [count02]);
 
   return (
     <>
@@ -106,7 +144,7 @@ const test = () => {
             }) as any)}
             id="search-field"
             className="mb-2 block w-full rounded border bg-transparent"
-            placeholder="投稿を検索"
+            // placeholder="投稿を検索"
             autoComplete="off"
             ref={inputRef}
             type="text"
@@ -149,12 +187,6 @@ const test = () => {
           </div>
         </form>
       </div>
-      {/* <div>result01: {count01}</div>
-      <div>result02: {count02}</div> */}
-      {/* <div>square: {square()}</div> */}
-      {/* <div>square: {square}</div>
-      <button onClick={result01}>increment</button>
-      <button onClick={result02}>increment</button> */}
     </>
   );
 };

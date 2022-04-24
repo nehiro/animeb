@@ -52,6 +52,7 @@ module.exports = {
         no1: "url('/images/gold.svg')",
         no2: "url('/images/silver.svg')",
         no3: "url('/images/bronze.svg')",
+        searchIcon: "url('/images/search.svg')",
       }),
       backgroundSize: {
         '50%': '50%',
@@ -79,5 +80,12 @@ module.exports = {
   variants: {
     backgroundColor: ['first', 'last', 'even'],
     backgroundImage: ['first', 'last', 'even'],
+    backgroundImage: ({ before }) => before(['active']),
+    backgroundRepeat: ({ before }) => before(['active']),
+    position: ({ before }) => before(['active']),
+    height: ({ before }) => before(['active']),
+    width: ({ before }) => before(['active']),
+    inset: ({ before }) => before(['active']),
+    margin: ({ before }) => before(['active']),
   },
 };

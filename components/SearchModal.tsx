@@ -13,6 +13,7 @@ import CustomSearchBox from './CustomSearchBox';
 import Layout from '../layouts/Layout';
 import { searchClient } from '../pages/api/client';
 import { XIcon } from '@heroicons/react/outline';
+import AlgoliaAutoComplete from './AlgoliaAutoComplete';
 
 type SearchRespons = {
   nbHits: number;
@@ -84,12 +85,12 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
             >
               <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
             </Transition.Child>
-            <span
+            {/* <span
               className="hidden sm:inline-block sm:h-screen sm:align-middle"
               aria-hidden="true"
             >
               &#8203;
-            </span>
+            </span> */}
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -99,60 +100,8 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <div className="my-8 inline-block w-full max-w-lg transform overflow-hidden rounded-lg bg-gray-100 p-6 px-4 pt-5 pb-4 text-left align-middle shadow-xl transition-all">
-                {/* <div className="absolute top-2 right-0 block pt-4 pr-4 sm:hidden">
-                  <button
-                    type="button"
-                    className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    onClick={() => onClose()}
-                  >
-                    <span>閉じる</span>
-                    <XIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </div> */}
-                <InstantSearch
-                  // onSearchStateChange={updateQueryParams}
-                  searchClient={searchClient}
-                  indexName="animes"
-                >
-                  <div className="mb-2 flex items-center justify-between">
-                    {/* 検索ボックス：uiをオリジナルにするためにconnectSearchBox(SearchBoxBase)*/}
-                    <CustomSearchBox
-                      defaultRefinement={router.query.q as string}
-                    />
-                    <button
-                      type="button"
-                      className="block rounded-md text-xl text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:hidden"
-                      onClick={() => onClose()}
-                    >
-                      <i className="ri-eye-close-line"></i>
-                    </button>
-                  </div>
-                  {/* indexでヒットしたアイテムを表示する：uiをオリジナルにするためにconnectHits(Hits)*/}
-                  <CustomHits />
-                  <CustomPagination
-                    defaultRefinement={Number(router.query.page) || 1}
-                  />
-                  <CustomHitsPerPage
-                    items={[
-                      {
-                        value: 5,
-                        label: '5',
-                      },
-                      {
-                        value: 20,
-                        label: '20',
-                      },
-                      {
-                        value: 50,
-                        label: '50',
-                      },
-                    ]}
-                    defaultRefinement={
-                      Number(router.query.hitsPerPage as string) || 5
-                    }
-                  />
-                </InstantSearch>
+              <div className="my-8 inline-block w-full max-w-xl transform overflow-hidden rounded-lg bg-gray-100 p-6 px-4 pt-5 pb-4 text-left align-middle shadow-xl transition-all">
+                <AlgoliaAutoComplete />
               </div>
             </Transition.Child>
           </div>

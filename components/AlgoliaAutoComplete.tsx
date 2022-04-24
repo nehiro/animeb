@@ -3,10 +3,10 @@ import {
   createAutocomplete,
 } from '@algolia/autocomplete-core';
 import { getAlgoliaResults, autocomplete } from '@algolia/autocomplete-js';
+import { SearchIcon, XIcon } from '@heroicons/react/outline';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import { ReactElement, useMemo, useRef, useState } from 'react';
-import LayoutNoNav from '../layouts/LayoutNoNav';
+import { useMemo, useRef, useState } from 'react';
 import { searchClient } from '../pages/api/client';
 
 export type AlgoliaData = {
@@ -20,7 +20,7 @@ type Debounce = {
   time: number;
 };
 
-const test = () => {
+const AlgoliaAutoComplete = () => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [autocompleteState, setAutocompleteState] =
@@ -28,7 +28,7 @@ const test = () => {
 
   const debounced = debouncePromise(
     (items: Debounce) => Promise.resolve(items),
-    1000
+    500
   );
   function debouncePromise(fn: any, time: number) {
     // console.log(fn, 'fn');
@@ -62,7 +62,7 @@ const test = () => {
           // }
           setAutocompleteState(state);
         },
-        placeholder: 'タイトルで検索',
+        placeholder: 'タイトルを入力',
         // onSubmit(params) {
         //   alert(`実際には「${params.state.query}」の検索結果画面に遷移します`);
         // },
@@ -73,9 +73,9 @@ const test = () => {
             {
               sourceId: 'animes',
               getItemInputValue({ item }: { item: AlgoliaData }) {
-                {
-                  console.log(item, 'item');
-                }
+                // {
+                //   console.log(item, 'item');
+                // }
                 return item.title;
               },
               //取得するアイテムを絞る
@@ -137,59 +137,60 @@ const test = () => {
           {...(autocomplete.getFormProps({
             inputElement: inputRef.current,
           }) as any)}
+          className="relative before:absolute before:top-1/2 before:left-3 before:-mt-2 before:h-4 before:w-4 before:bg-searchIcon before:bg-no-repeat"
         >
           <input
             {...(autocomplete.getInputProps({
               inputElement: inputRef.current,
             }) as any)}
             id="search-field"
-            className="mb-2 block w-full rounded border bg-transparent"
+            className="mb-2 block w-full rounded border bg-transparent pl-10 focus:border-violet-500"
             // placeholder="投稿を検索"
             autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
             ref={inputRef}
             type="text"
           />
-
-          <div {...(autocomplete.getPanelProps({}) as any)}>
-            {autocompleteState?.isOpen &&
-              autocompleteState?.collections.map((collection, index) => {
-                const { source, items } = collection;
-
-                return (
-                  <div
-                    className="w-full overflow-hidden rounded bg-white shadow dark:bg-slate-800"
-                    key={`source-${index}`}
-                  >
-                    {items.length > 0 && (
-                      <ul {...autocomplete.getListProps()}>
-                        {items.map((item, index) => (
-                          <li key={item.title}>
-                            <a
-                              {...(autocomplete.getItemProps({
-                                item,
-                                source,
-                              }) as any)}
-                              className={classNames(
-                                'block py-2 pl-3 text-sm',
-                                autocompleteState?.activeItemId === index &&
-                                  'bg-indigo-600 text-white'
-                              )}
-                            >
-                              {item.title}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                );
-              })}
-          </div>
         </form>
+        <div {...(autocomplete.getPanelProps({}) as any)}>
+          {autocompleteState?.isOpen &&
+            autocompleteState?.collections.map((collection, index) => {
+              const { source, items } = collection;
+
+              return (
+                <div
+                  className="w-full overflow-hidden rounded bg-white shadow"
+                  key={`source-${index}`}
+                >
+                  {items.length > 0 && (
+                    <ul {...autocomplete.getListProps()}>
+                      {items.map((item, index) => (
+                        <li key={item.title} className="even:bg-gray-50">
+                          <a
+                            {...(autocomplete.getItemProps({
+                              item,
+                              source,
+                            }) as any)}
+                            className={classNames(
+                              'block py-4 pl-3 text-sm',
+                              autocompleteState?.activeItemId === index &&
+                                'bg-purple text-white'
+                            )}
+                          >
+                            {item.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
+        </div>
       </div>
     </>
   );
 };
 
-export default test;
-test.getLayout = (page: ReactElement) => <LayoutNoNav>{page}</LayoutNoNav>;
+export default AlgoliaAutoComplete;

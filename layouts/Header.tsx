@@ -8,6 +8,7 @@ import {
   MusicNoteIcon,
   QuestionMarkCircleIcon,
   UserCircleIcon,
+  HeartIcon,
 } from '@heroicons/react/outline';
 import { LoginIcon } from '@heroicons/react/outline';
 import { UserIcon } from '@heroicons/react/outline';
@@ -134,6 +135,14 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                                     <span className="text-sm">
                                       ベストアニメ設定
                                     </span>
+                                  </a>
+                                </Link>
+                                <Link href="/cheer">
+                                  <a>
+                                    <i className="mr-1.5 leading-none">
+                                      <HeartIcon className="inline-block h-5 w-5 text-purple" />
+                                    </i>
+                                    <span className="text-sm">応援する</span>
                                   </a>
                                 </Link>
                               </div>

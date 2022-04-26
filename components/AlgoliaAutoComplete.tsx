@@ -147,8 +147,6 @@ const AlgoliaAutoComplete = () => {
             className="mb-2 block w-full rounded border bg-transparent pl-10 focus:border-violet-500"
             // placeholder="投稿を検索"
             autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
             ref={inputRef}
             type="text"
           />

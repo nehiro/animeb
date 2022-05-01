@@ -14,6 +14,7 @@ type Price = {
   id: string;
   description: string;
   unit_amount: number;
+  active: boolean;
 };
 
 type Product = {
@@ -97,19 +98,24 @@ const CheerProductList = () => {
     <div>
       {products?.map((product) => (
         <div key={product.id}>
-          <h2>{product.name}</h2>
-          {product.prices.map((price) => (
-            <div key={price.id}>
-              {price.description || 'デフォルト'} -{' '}
-              {price.unit_amount.toLocaleString()}円
-              <button
-                onClick={() => redirectToCheckout(price.id)}
-                className="rounded bg-purple p-2 text-white"
-              >
-                応援する
-              </button>
-            </div>
-          ))}
+          {/* <h2>{product.name}</h2> */}
+          {product.prices.map((price) =>
+            price.active ? (
+              <div key={price.id} className="bg-gray-100 py-10 text-center">
+                {/* {price.description || 'デフォルト'} -{' '} */}
+                {price.unit_amount.toLocaleString()}円
+                <button
+                  onClick={() => redirectToCheckout(price.id)}
+                  className="ml-4 rounded bg-purple py-1 px-3 text-white"
+                  disabled
+                >
+                  応援する
+                </button>
+              </div>
+            ) : (
+              ''
+            )
+          )}
         </div>
       ))}
     </div>

@@ -44,18 +44,20 @@ const CheerCheeredList = () => {
       setPurchases(result.docs.map((doc) => doc.data() as Purchase));
     });
   }, []);
-  // console.log(purchases, 'purchases');
+  console.log(purchases, 'purchases');
   return (
-    <div>
-      <h2>応援履歴</h2>
+    <div className="mt-5 text-center">
+      <h2 className="mb-2 font-semibold">履歴</h2>
       <ul>
         {purchases?.map((purchase) => {
           const price = purchase.items[0].price;
           return (
             <li key={purchase.id}>
-              <span>{purchase.items[0].description}</span>
+              {/* <span>{purchase.items[0].description}</span> */}
               <span>{price.unit_amount.toLocaleString()}円</span>
-              <span>{format(purchase.created, 'yyyy/MM/dd')}</span>
+              <span className="ml-4">
+                {format(purchase.created, 'yyyy/MM/dd')}
+              </span>
             </li>
           );
         })}

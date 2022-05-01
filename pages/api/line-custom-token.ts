@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { auth, adminDB } from '../../firebase/server';
-// import fetch from 'node-fetch';
+import fetch from 'node-fetch';
 import { Site } from '../../lib/site';
 
 type LineUser = {
@@ -10,6 +10,7 @@ type LineUser = {
 };
 
 const getIdToken = async (code: string) => {
+  console.log(code, 'code走った');
   const res = await fetch('https://api.line.me/oauth2/v2.1/token', {
     method: 'POST',
     headers: {
@@ -17,7 +18,7 @@ const getIdToken = async (code: string) => {
     },
     body: new URLSearchParams({
       grant_type: 'authorization_code',
-      redirect_uri: `${Site.origin}/line-login`,
+      redirect_uri: `${Site.origin}/signup`,
       client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
       client_secret: process.env.LINE_CHANNEL_SECRET as string,
       code,
@@ -27,11 +28,13 @@ const getIdToken = async (code: string) => {
   const { id_token } = (await res.json()) as {
     id_token: string;
   };
+  console.log(id_token, 'id_token走った');
 
   return id_token;
 };
 
 const getUserData = async (idToken: string) => {
+  console.log(idToken, 'idToken走った');
   const res = await fetch('https://api.line.me/oauth2/v2.1/verify', {
     method: 'POST',
     headers: {
@@ -47,6 +50,8 @@ const getUserData = async (idToken: string) => {
 };
 
 const createUser = async (lineUser: LineUser) => {
+  console.log(lineUser, 'lineUser');
+  // console.log(lineUser.sub, 'lineUser.sub');
   if (!(await adminDB.doc(`users/${lineUser.sub}`).get()).exists) {
     return adminDB.doc(`users/${lineUser.sub}`).set({
       id: lineUser.sub,
@@ -57,13 +62,18 @@ const createUser = async (lineUser: LineUser) => {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  //渡されてきたprops、state、code
+  //state LINEの画面に行くと作成されて、リダイレクトで戻ると削除される
   const { state, code } = req.body;
 
+  //adminSDKでアクセス
   if (
     state &&
     code &&
+    //既に登録しているか？
     (await adminDB.doc(`lineStates/${state}`).get()).exists
   ) {
+    //登録しているものを削除
     await adminDB.doc(`lineStates/${state}`).delete();
 
     const idToken = await getIdToken(code as string);

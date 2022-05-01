@@ -6,6 +6,7 @@ module.exports = {
       'pbs.twimg.com',
       'lh3.googleusercontent.com',
       'raw.githubusercontent.com',
+      'profile.line-scdn.net',
     ],
   },
 };

@@ -32,7 +32,7 @@ const LineLogin = () => {
       client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
       redirect_uri: `${Site.origin}/signup`,
       state,
-      scope: 'profile openid',
+      scope: 'profile openid email',
     }).toString();
 
     //上で作成したURIを読み込む
@@ -41,7 +41,7 @@ const LineLogin = () => {
 
   useEffect(() => {
     //router.query：クエリパラメーター
-    if (router.isReady && router.query.code && router.query.state) {
+    if (router.query.code && router.query.state) {
       fetch('/api/line-custom-token', {
         method: 'POST',
         headers: {
@@ -74,8 +74,8 @@ const LineLogin = () => {
           });
         });
     }
-    console.log(router.query.code);
-    console.log(router.query.state);
+    console.log(router.query.code, 'code');
+    console.log(router.query.state, 'state');
   }, [router.query.code]);
   return (
     <>

@@ -62,6 +62,7 @@ export const AuthProvider: FC = ({ children }) => {
     //ログインユーザー監視
     let unsubscribeUser: Unsubscribe;
     const unsubscribeAuth = onAuthStateChanged(auth, (authUser) => {
+      unsubscribeUser?.();
       if (authUser) {
         const userDoc = doc(db, `users/${authUser.uid}`);
         //参照idが無かったらnewUserを登録

@@ -19,7 +19,7 @@ const GoogleLogin = () => {
     getRedirectResult(auth)
       .then((result) => {
         const user = result?.user;
-        console.log(user);
+        // console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -32,10 +32,10 @@ const GoogleLogin = () => {
   return (
     <button
       onClick={Login}
-      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-google hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-google"
+      className="flex w-full justify-center rounded-md border border-transparent bg-google py-2 px-4 text-sm font-medium text-white shadow-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-google focus:ring-offset-2"
     >
       <svg
-        className="w-5 h-5"
+        className="h-5 w-5"
         fill="currentColor"
         preserveAspectRatio="xMidYMid meet"
         height="18px"

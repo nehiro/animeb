@@ -7,10 +7,21 @@ type LineUser = {
   sub: string;
   name: string;
   picture: string;
+  email: string;
 };
 
 const getIdToken = async (code: string) => {
   console.log(code, 'code走った');
+  console.log(
+    {
+      grant_type: 'authorization_code',
+      redirect_uri: `${Site.origin}/signup`,
+      client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
+      client_secret: process.env.LINE_CHANNEL_SECRET as string,
+      code,
+    },
+    'URLSearchParams'
+  );
   const res = await fetch('https://api.line.me/oauth2/v2.1/token', {
     method: 'POST',
     headers: {
@@ -34,7 +45,7 @@ const getIdToken = async (code: string) => {
 };
 
 const getUserData = async (idToken: string) => {
-  console.log(idToken, 'idToken走った');
+  // console.log(idToken, 'idToken走った');
   const res = await fetch('https://api.line.me/oauth2/v2.1/verify', {
     method: 'POST',
     headers: {
@@ -54,9 +65,17 @@ const createUser = async (lineUser: LineUser) => {
   // console.log(lineUser.sub, 'lineUser.sub');
   if (!(await adminDB.doc(`users/${lineUser.sub}`).get()).exists) {
     return adminDB.doc(`users/${lineUser.sub}`).set({
-      id: lineUser.sub,
+      bd: '',
+      email: lineUser.email,
+      gender: null,
       name: lineUser.name,
+      uid: lineUser.sub,
       photoURL: lineUser.picture,
+      intro: '',
+      followCount: 0,
+      followerCount: 0,
+      createdAt: Date.now(),
+      ranking: [],
     });
   }
 };
@@ -70,7 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (
     state &&
     code &&
-    //既に登録しているか？
+    //なんの為の処理？
     (await adminDB.doc(`lineStates/${state}`).get()).exists
   ) {
     //登録しているものを削除

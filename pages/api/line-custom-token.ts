@@ -11,17 +11,17 @@ type LineUser = {
 };
 
 const getIdToken = async (code: string) => {
-  console.log(code, 'code走った');
-  console.log(
-    {
-      grant_type: 'authorization_code',
-      redirect_uri: `${Site.origin}/signup`,
-      client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
-      client_secret: process.env.LINE_CHANNEL_SECRET as string,
-      code,
-    },
-    'URLSearchParams'
-  );
+  // console.log(code, 'code走った');
+  // console.log(
+  //   {
+  //     grant_type: 'authorization_code',
+  //     redirect_uri: `${Site.origin}/signup`,
+  //     client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
+  //     client_secret: process.env.LINE_CHANNEL_SECRET as string,
+  //     code,
+  //   },
+  //   'URLSearchParams'
+  // );
   const res = await fetch('https://api.line.me/oauth2/v2.1/token', {
     method: 'POST',
     headers: {
@@ -39,7 +39,7 @@ const getIdToken = async (code: string) => {
   const { id_token } = (await res.json()) as {
     id_token: string;
   };
-  console.log(id_token, 'id_token走った');
+  // console.log(id_token, 'id_token走った');
 
   return id_token;
 };
@@ -61,7 +61,7 @@ const getUserData = async (idToken: string) => {
 };
 
 const createUser = async (lineUser: LineUser) => {
-  console.log(lineUser, 'lineUser');
+  // console.log(lineUser, 'lineUser');
   // console.log(lineUser.sub, 'lineUser.sub');
   if (!(await adminDB.doc(`users/${lineUser.sub}`).get()).exists) {
     return adminDB.doc(`users/${lineUser.sub}`).set({

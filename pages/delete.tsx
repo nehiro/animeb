@@ -1,7 +1,7 @@
 import { deleteDoc, doc } from '@firebase/firestore';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
-import { signOut } from 'firebase/auth';
+import { signOut, getAuth, deleteUser, User } from 'firebase/auth';
 import { useRouter } from 'next/dist/client/router';
 import React, {
   Fragment,
@@ -28,10 +28,25 @@ const Delete = () => {
     });
   }, []);
   //user削除
+  const auth = getAuth();
+  const authUser = auth.currentUser;
   const DeleteUserData = async () => {
-    await deleteDoc(doc(db, `users/${user?.uid}`)).then(() => {
-      alert('ユーザー情報を削除しました。');
-    });
+    console.log('走った');
+    //auth情報
+    await deleteUser(authUser as User)
+      .then(() => {
+        alert('ユーザー認証を削除しました。');
+      })
+      .catch((error) => {
+        alert('ユーザー削除に失敗しました。');
+      });
+    //ユーザー情報
+    await deleteDoc(doc(db, `users/${user?.uid}`)).then(() => {});
+    //stripe履歴
+    await deleteDoc(doc(db, `customers/${user?.uid}`)).then(() => {});
+    //フォローフォロワー
+    //reviews
+    //lists
   };
   const [open, setOpen] = useState(false);
 
@@ -63,7 +78,7 @@ const Delete = () => {
           initialFocus={cancelButtonRef}
           onClose={setOpen}
         >
-          <div className="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+          <div className="min-h-screen flex items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -114,7 +129,7 @@ const Delete = () => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 sm:col-start-2 sm:text-sm"
-                    onClick={() => DeleteUserData()}
+                    onClick={DeleteUserData}
                   >
                     削除する
                   </button>

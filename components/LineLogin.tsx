@@ -13,7 +13,7 @@ const LineLogin = () => {
 
   const openLineLoginPage = async () => {
     //先にID作成
-    console.log('走った');
+    // console.log('走った');
     const stateRef = doc(collection(db, 'lineStates'));
     const state = stateRef.id;
 
@@ -57,25 +57,26 @@ const LineLogin = () => {
         //更に成功したときにトークンを使って、signInWithCustomTokenでログイン
         .then((token) => {
           signInWithCustomToken(auth, token).then(() => {
-            router.replace(
-              {
-                //UrlObject
-                //id=router.query.id
-                //どこのquery
-                query: {
-                  id: router.query.id,
-                },
-              },
-              undefined,
-              {
-                shallow: true,
-              }
-            );
+            // console.log(token, 'token');
+            // router.replace(
+            //   {
+            //     //UrlObject
+            //     //id=router.query.id
+            //     //どこのquery
+            //     query: {
+            //       id: router.query.id,
+            //     },
+            //   },
+            //   undefined,
+            //   {
+            //     shallow: true,
+            //   }
+            // );
           });
         });
     }
-    console.log(router.query.code, 'code');
-    console.log(router.query.state, 'state');
+    // console.log(router.query.code, 'code');
+    // console.log(router.query.state, 'state');
   }, [router.query.code]);
   return (
     <>

@@ -68,9 +68,9 @@ const MyPage = (props: { userInfo: User }) => {
             <div className="border-b border-gray-200">
               <nav className="-mb-px flex space-x-8" aria-label="Tabs">
                 {tabs.map((tab) => (
-                  <Link href={tab.href}>
+                  <Link href={tab.href} key={tab.name}>
                     <a
-                      key={tab.name}
+                      // key={tab.name}
                       className={classNames(
                         tab.current
                           ? 'border-indigo-500 text-indigo-600'

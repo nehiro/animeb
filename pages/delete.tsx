@@ -1,7 +1,8 @@
-import { deleteDoc, doc } from '@firebase/firestore';
+import { collection, deleteDoc, doc } from '@firebase/firestore';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { signOut, getAuth, deleteUser, User } from 'firebase/auth';
+import { getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/dist/client/router';
 import React, {
   Fragment,
@@ -10,6 +11,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import useSWR from 'swr';
 import BackGroundWhite from '../components/BackGroundWhite';
 import Breadcrumbs from '../components/Breadcrumbs';
 import Button from '../components/Button';
@@ -20,6 +22,17 @@ import { useAuth } from '../utils/userContext';
 
 const Delete = () => {
   const { user } = useAuth();
+  const followUsers = useSWR(`${user?.uid}`, async () => {
+    const ref = collection(db, `users/${user?.uid}/follows/`);
+    const snap = await getDocs(ref);
+    const snapData = snap.docs.map((doc) => doc.data());
+    return snapData;
+  });
+  console.log(
+    followUsers.data?.map((data) => data),
+    'followUsers'
+  );
+
   //ログインしているかどうか
   const router = useRouter();
   useEffect(() => {
@@ -40,13 +53,25 @@ const Delete = () => {
       .catch((error) => {
         alert('ユーザー削除に失敗しました。');
       });
+
+    //フォローフォロワー
+    //フォローしているユーザーのfollowerCountをマイナス
+    const ref = collection(db, `users/${user?.uid}/follows/`);
+    //フォローしてくれているユーザーのfollorCountをマイナス、且つuidを削除
+
     //ユーザー情報
     await deleteDoc(doc(db, `users/${user?.uid}`)).then(() => {});
+
     //stripe履歴
     await deleteDoc(doc(db, `customers/${user?.uid}`)).then(() => {});
-    //フォローフォロワー
+
     //reviews
+    //reviewsのuid削除
+    //それぞれのスコアをマイナス、reviewCount、unScoreCountをマイナス
+
     //lists
+    //listsのuidを削除
+    //listCountをマイナス
   };
   const [open, setOpen] = useState(false);
 

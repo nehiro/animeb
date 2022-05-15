@@ -14,6 +14,7 @@ import { ItemInterface, ReactSortable, Sortable } from 'react-sortablejs';
 import { doc, updateDoc } from 'firebase/firestore';
 import { UserRanking } from '../types/UserRanking';
 import WatchedAnimes from '../components/WatchedAnimes';
+import toast from 'react-hot-toast';
 
 const BestAnime = () => {
   // user管理
@@ -51,7 +52,7 @@ const BestAnime = () => {
   const bestAnimeSet = async () => {
     await updateDoc(doc(db, `users/${user?.uid}`), {
       ranking,
-    }).then(() => alert('ベストアニメを登録しました'));
+    }).then(() => toast.success('ベストアニメを登録しました'));
   };
 
   const choiced = {

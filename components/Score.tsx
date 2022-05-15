@@ -20,6 +20,7 @@ import { ReviewData } from '../types/ReviewData';
 import SwitchButton from './SwitchButton';
 import { deleteReviweButton } from '../lib/card';
 import { userReviews } from '../lib/getReviews';
+import toast from 'react-hot-toast';
 
 const Score = ({
   anime,
@@ -150,7 +151,7 @@ const Score = ({
               tag: data.tag,
               createAt: Date.now(),
             });
-            alert(`${anime?.title}のレビューを更新しました`);
+            toast.success(`${anime?.title}のレビューを更新しました`);
           } else {
             //今回false
             await updateDoc(animesIDRef, {
@@ -175,7 +176,7 @@ const Score = ({
               tag: data.tag,
               createAt: Date.now(),
             });
-            alert(`${anime?.title}のレビューを更新しました`);
+            toast.success(`${anime?.title}のレビューを更新しました`);
           }
         } else {
           //過去false
@@ -203,7 +204,7 @@ const Score = ({
               tag: data.tag,
               createAt: Date.now(),
             });
-            alert(`${anime?.title}のレビューを更新しました`);
+            toast.success(`${anime?.title}のレビューを更新しました`);
           } else {
             //今回もfalse:何もしない
             console.log('4つ目');
@@ -213,7 +214,7 @@ const Score = ({
               tag: data.tag,
               createAt: Date.now(),
             });
-            alert(`${anime?.title}のレビューを更新しました`);
+            toast.success(`${anime?.title}のレビューを更新しました`);
           }
         }
       } else {
@@ -241,7 +242,7 @@ const Score = ({
             tag: data.tag,
             createAt: Date.now(),
           });
-          alert(`${anime?.title}のレビューを登録しました`);
+          toast.success(`${anime?.title}のレビューを登録しました`);
         } else {
           await updateDoc(animesIDRef, {
             unScoreReviewCount: increment(1),
@@ -260,7 +261,7 @@ const Score = ({
             tag: data.tag,
             createAt: Date.now(),
           });
-          alert(`${anime?.title}のレビューを登録しました`);
+          toast.success(`${anime?.title}のレビューを登録しました`);
         }
       }
       // console.log(anime);
@@ -329,7 +330,7 @@ const Score = ({
           tag: data.tag,
           createAt: Date.now(),
         });
-        alert(`${anime?.title}のレビューを登録しました`);
+        toast.success(`${anime?.title}のレビューを登録しました`);
       }
     }
     setReviewModal(false);

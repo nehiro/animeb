@@ -15,6 +15,7 @@ import { ReviewData } from '../types/ReviewData';
 import { db } from '../utils/firebase';
 import useSWR from 'swr';
 import { ListData } from '../types/ListData';
+import toast, { Toaster } from 'react-hot-toast';
 
 type ListButton = {
   anime: Anime;
@@ -40,7 +41,8 @@ export const listButton = async (props: ListButton) => {
   const anime = props.anime;
   const dbLists = props.dbAnimes.data;
   if (!user) {
-    alert('ログインしてください');
+    // alert('ログインしてください');
+    toast.error('ログインしてください');
     return;
   }
   // animes/animeid/lists/uid
@@ -77,7 +79,7 @@ export const listButton = async (props: ListButton) => {
       uid: user?.uid,
       createAt: Date.now(),
     }).then(() => {
-      alert(`${anime?.title}を観たいリストに登録しました`);
+      toast.success(`${anime?.title}を観たいリストに登録しました`);
     });
     // console.log(anime);
   } else {
@@ -103,7 +105,7 @@ export const listButton = async (props: ListButton) => {
       uid: user?.uid,
       createAt: Date.now(),
     }).then(() => {
-      alert(`${anime?.title}を観たいリストに登録しました`);
+      toast.success(`${anime?.title}を観たいリストに登録しました`);
     });
   }
 };
@@ -114,7 +116,7 @@ export const unlistButton = async (props: UnlistButton) => {
   const lists = props.authUserListData;
   const dbLists = props.dbAnimes.data;
   if (!user) {
-    alert('ログインしてください');
+    toast.error('ログインしてください');
     return;
   }
   //なんで上手く行くのか
@@ -122,7 +124,7 @@ export const unlistButton = async (props: UnlistButton) => {
   // console.log(id);
   const ref = doc(db, `animes/${id}/lists/${user?.uid}`);
   deleteDoc(ref).then(() => {
-    alert(`${anime?.title}を観たいリストから外しました`);
+    toast.success(`${anime?.title}を観たいリストから外しました`);
   });
 
   const dbId = dbLists.find(
@@ -143,7 +145,7 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
   const setReviewModal = props.setReviewModal;
   const dbLists = props.dbAnimes.data;
   if (!user) {
-    alert('ログインしてください');
+    toast.error('ログインしてください');
     return;
   }
 
@@ -175,7 +177,7 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
       reviewCount: increment(-1),
     });
     await deleteDoc(animesReviewsIDRef).then(() => {
-      alert(`${anime?.title}のレビューを削除しました`);
+      toast.success(`${anime?.title}のレビューを削除しました`);
       setReviewModal(false);
     });
   } else {
@@ -183,7 +185,7 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
       unScoreReviewCount: increment(-1),
     });
     await deleteDoc(animesReviewsIDRef).then(() => {
-      alert(`${anime?.title}のレビューを削除しました`);
+      toast.success(`${anime?.title}のレビューを削除しました`);
       setReviewModal(false);
     });
   }

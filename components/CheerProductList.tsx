@@ -7,6 +7,7 @@ import {
   where,
 } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { db } from '../utils/firebase';
 import { useAuth } from '../utils/userContext';
 
@@ -86,7 +87,7 @@ const CheerProductList = () => {
       };
 
       if (error) {
-        alert(`An error occured: ${error.message}`);
+        toast.error(`An error occured: ${error.message}`);
       }
 
       if (url) {

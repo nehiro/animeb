@@ -1,4 +1,10 @@
-import { collection, deleteDoc, doc } from '@firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  increment,
+  updateDoc,
+} from '@firebase/firestore';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { signOut, getAuth, deleteUser, User } from 'firebase/auth';
@@ -11,6 +17,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import toast from 'react-hot-toast';
 import useSWR from 'swr';
 import BackGroundWhite from '../components/BackGroundWhite';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -22,16 +29,27 @@ import { useAuth } from '../utils/userContext';
 
 const Delete = () => {
   const { user } = useAuth();
-  const followUsers = useSWR(`${user?.uid}`, async () => {
-    const ref = collection(db, `users/${user?.uid}/follows/`);
-    const snap = await getDocs(ref);
-    const snapData = snap.docs.map((doc) => doc.data());
-    return snapData;
-  });
-  console.log(
-    followUsers.data?.map((data) => data),
-    'followUsers'
-  );
+  // const followUsers = useSWR(`${user?.uid}`, async () => {
+  //   const ref = collection(db, `users/${user?.uid}/follows/`);
+  //   const snap = await getDocs(ref);
+  //   const snapData = snap.docs.map((doc) => doc.data());
+  //   return snapData;
+  // });
+
+  // const discountFollowCountRef = followUsers.data?.map((data) =>
+  //   doc(db, `users/${data.id}`)
+  // );
+
+  // console.log(
+  //   discountFollowCountRef?.map((item) => item.path),
+  //   'discountFollowCountRef'
+  // );
+  // updateDoc(
+  //   discountFollowCountRef?.forEach((item) => item.path),
+  //   {
+  //     followerCount: increment(-1),
+  //   }
+  // );
 
   //ログインしているかどうか
   const router = useRouter();
@@ -48,15 +66,29 @@ const Delete = () => {
     //auth情報
     await deleteUser(authUser as User)
       .then(() => {
-        alert('ユーザー認証を削除しました。');
+        toast.success('ユーザー認証を削除しました。');
       })
       .catch((error) => {
-        alert('ユーザー削除に失敗しました。');
+        toast.error('ユーザー削除に失敗しました。');
       });
 
     //フォローフォロワー
     //フォローしているユーザーのfollowerCountをマイナス
-    const ref = collection(db, `users/${user?.uid}/follows/`);
+    const followUsers = useSWR(`${user?.uid}`, async () => {
+      const ref = collection(db, `users/${user?.uid}/follows/`);
+      const snap = await getDocs(ref);
+      const snapData = snap.docs.map((doc) => doc.data());
+      return snapData;
+    });
+    const discountFollowCountRef = followUsers.data?.map((data) =>
+      doc(db, `users/${data.id}`)
+    );
+    await updateDoc(
+      discountFollowCountRef?.forEach((item) => item.path),
+      {
+        followerCount: increment(-1),
+      }
+    );
     //フォローしてくれているユーザーのfollorCountをマイナス、且つuidを削除
 
     //ユーザー情報

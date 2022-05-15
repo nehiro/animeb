@@ -4,6 +4,7 @@ import React, { ReactElement, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
 import { AuthProvider } from '../utils/userContext';
 import { AnimeProvider } from '../utils/animeContext';
+import { Toaster } from 'react-hot-toast';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -17,9 +18,12 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <AuthProvider>
-      <AnimeProvider>{getLayout(<Component {...pageProps} />)}</AnimeProvider>
-    </AuthProvider>
+    <>
+      <AuthProvider>
+        <AnimeProvider>{getLayout(<Component {...pageProps} />)}</AnimeProvider>
+      </AuthProvider>
+      <Toaster />
+    </>
   );
 };
 

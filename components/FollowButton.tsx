@@ -10,6 +10,7 @@ import { useAuth } from '../utils/userContext';
 import { db } from '../utils/firebase';
 import Image from 'next/image';
 import { User } from '../types/User';
+import toast from 'react-hot-toast';
 
 type Props = {
   user: User;
@@ -39,7 +40,7 @@ const FollowButton = ({ user }: Props) => {
 
   const follow = (authUserId: string | undefined, targetUserId: string) => {
     if (!authUserId) {
-      alert('ログインしてください');
+      toast.error('ログインしてください');
       return;
     }
 
@@ -54,7 +55,7 @@ const FollowButton = ({ user }: Props) => {
 
   const unFollow = (authUserId: string | undefined, targetUserId: string) => {
     if (!authUserId) {
-      alert('ログインしてください');
+      toast.error('ログインしてください');
       return;
     }
 

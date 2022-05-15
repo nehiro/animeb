@@ -9,6 +9,7 @@ import { useAuth } from '../utils/userContext';
 import { db } from '../utils/firebase';
 import Image from 'next/image';
 import { User } from '../types/User';
+import toast from 'react-hot-toast';
 
 type Props = {
   user: User;
@@ -39,7 +40,7 @@ const UserItem = ({ user }: Props) => {
 
   const follow = (authUserId: string | undefined, targetUserId: string) => {
     if (!authUserId) {
-      alert('ログインしてください');
+      toast.error('ログインしてください');
       return;
     }
 
@@ -54,7 +55,7 @@ const UserItem = ({ user }: Props) => {
 
   const unFollow = (authUserId: string | undefined, targetUserId: string) => {
     if (!authUserId) {
-      alert('ログインしてください');
+      toast.error('ログインしてください');
       return;
     }
 
@@ -66,27 +67,27 @@ const UserItem = ({ user }: Props) => {
 
   return (
     <div className="flex items-center border bg-white p-4">
-      <div className="w-10 h-10 rounded-full mr-2 relative overflow-hidden">
+      <div className="relative mr-2 h-10 w-10 overflow-hidden rounded-full">
         <Image src={user.photoURL} alt="" layout="fill" />
       </div>
 
       <div className="flex-1">
         <p>{user.name}</p>
         {isFollower() && (
-          <p className="text-gray-500 mt-1 text-sm">フォローされています</p>
+          <p className="mt-1 text-sm text-gray-500">フォローされています</p>
         )}
       </div>
       {isFollow() ? (
         <button
           onClick={() => unFollow(authUser?.uid, user.uid)}
-          className="text-sm border border-transparent bg-indigo-500 text-white px-2 py-1 rounded-full"
+          className="rounded-full border border-transparent bg-indigo-500 px-2 py-1 text-sm text-white"
         >
           フォロー中
         </button>
       ) : (
         <button
           onClick={() => follow(authUser?.uid, user.uid)}
-          className="text-sm border border-indigo-500 text-indigo-500 px-2 py-1 rounded-full hover:bg-indigo-100"
+          className="rounded-full border border-indigo-500 px-2 py-1 text-sm text-indigo-500 hover:bg-indigo-100"
         >
           フォロー
         </button>

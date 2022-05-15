@@ -21,14 +21,15 @@ import { Popover, Transition } from '@headlessui/react';
 import { signOut } from '@firebase/auth';
 import { auth } from '../utils/firebase';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 const logout = () => {
   signOut(auth)
     .then(() => {
-      alert(`ログアウト完了`);
+      toast.success(`ログアウト完了`);
     })
     .catch((error) => {
-      alert(`ログアウト失敗`);
+      toast.error(`ログアウト失敗`);
     });
 };
 

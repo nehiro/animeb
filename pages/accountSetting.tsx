@@ -2,6 +2,7 @@ import { doc, setDoc, updateDoc } from '@firebase/firestore';
 import { useRouter } from 'next/dist/client/router';
 import React, { ReactElement, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import BackGroundWhite from '../components/BackGroundWhite';
 import Breadcrumbs from '../components/Breadcrumbs';
 import SubpageTitle from '../components/SubpageTitle';
@@ -43,7 +44,9 @@ const AccountSetting = () => {
       gender: data.gender,
       bd: data.bd,
     }).then(() => {
-      alert(`${data.email}\n${data.gender}\n${data.bd}\nを登録しました。`);
+      toast.success(
+        `${data.email}\n${data.gender}\n${data.bd}\nを登録しました。`
+      );
     });
   };
   /***useForm END***/
@@ -62,7 +65,7 @@ const AccountSetting = () => {
             <li className="mb-4">
               <label htmlFor="email" className="block font-bold">
                 メールアドレスを変更する
-                <span className="inline-block bg-red-600 text-white px-2 ml-2 mb-2">
+                <span className="ml-2 mb-2 inline-block bg-red-600 px-2 text-white">
                   必須
                 </span>
               </label>
@@ -77,7 +80,7 @@ const AccountSetting = () => {
                 })}
                 id="email"
                 autoComplete="email"
-                className="border rounded w-full box-border h-10 p-2"
+                className="box-border h-10 w-full rounded border p-2"
                 required
                 defaultValue={user?.email}
               />
@@ -91,7 +94,7 @@ const AccountSetting = () => {
               )}
             </li>
             <li className=" mb-4">
-              <label htmlFor="gender" className="block mb-2 font-bold">
+              <label htmlFor="gender" className="mb-2 block font-bold">
                 性別を変更する
               </label>
               <input
@@ -123,14 +126,14 @@ const AccountSetting = () => {
               無回答
             </li>
             <li className="mb-4">
-              <label htmlFor="bd" className="block mb-2 font-bold">
+              <label htmlFor="bd" className="mb-2 block font-bold">
                 生年月日を変更する
               </label>
               <input
                 id="bd"
                 {...register('bd')}
                 type="date"
-                className="border rounded w-full box-border h-10 p-2"
+                className="box-border h-10 w-full rounded border p-2"
                 defaultValue={user?.bd}
               />
             </li>
@@ -138,7 +141,7 @@ const AccountSetting = () => {
               <input
                 type="submit"
                 value="保存する"
-                className="bg-buttonBlack rounded-full py-3 px-12 text-white mx-auto inline-block relative"
+                className="relative mx-auto inline-block rounded-full bg-buttonBlack py-3 px-12 text-white"
               />
             </li>
           </ul>

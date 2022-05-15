@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { ReactElement, useMemo, useRef, useState } from 'react';
 import LayoutNoNav from '../layouts/LayoutNoNav';
 import { searchClient } from '../pages/api/client';
+import toast, { Toaster } from 'react-hot-toast';
 
 export type AlgoliaData = {
   objectId: string;
@@ -130,9 +131,15 @@ const test = () => {
     []
   );
 
+  const notify = () => toast('Here is your toast.');
+
   return (
     <>
-      <div {...autocomplete.getRootProps({})}>
+      <div>
+        <button onClick={notify}>ボタン</button>
+        <Toaster />
+      </div>
+      {/* <div {...autocomplete.getRootProps({})}>
         <form
           {...(autocomplete.getFormProps({
             inputElement: inputRef.current,
@@ -186,7 +193,7 @@ const test = () => {
               })}
           </div>
         </form>
-      </div>
+      </div> */}
     </>
   );
 };

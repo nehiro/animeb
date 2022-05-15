@@ -12,6 +12,7 @@ import useSWR, { useSWRConfig } from 'swr';
 import Score from '../Score';
 import { userReviews } from '../../lib/getReviews';
 import { userLists } from '../../lib/getList';
+import toast from 'react-hot-toast';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -137,7 +138,7 @@ const Card = ({ anime }: { anime: Anime }) => {
   const [reviewModal, setReviewModal] = useState(false);
   const modalOpen = () => {
     if (!user) {
-      alert('ログインしてください');
+      toast.error('ログインしてください');
       return;
     }
     setReviewModal(true);

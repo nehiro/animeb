@@ -2,13 +2,15 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   increment,
   updateDoc,
 } from '@firebase/firestore';
+import { validateArgCount } from '@firebase/util';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { signOut, getAuth, deleteUser, User } from 'firebase/auth';
-import { getDocs } from 'firebase/firestore';
+import { collectionGroup, getDocs, query, where } from 'firebase/firestore';
 import { useRouter } from 'next/dist/client/router';
 import React, {
   Fragment,
@@ -29,27 +31,15 @@ import { useAuth } from '../utils/userContext';
 
 const Delete = () => {
   const { user } = useAuth();
-  // const followUsers = useSWR(`${user?.uid}`, async () => {
-  //   const ref = collection(db, `users/${user?.uid}/follows/`);
-  //   const snap = await getDocs(ref);
-  //   const snapData = snap.docs.map((doc) => doc.data());
-  //   return snapData;
-  // });
+  // console.log(user?.uid);
 
-  // const discountFollowCountRef = followUsers.data?.map((data) =>
-  //   doc(db, `users/${data.id}`)
-  // );
-
-  // console.log(
-  //   discountFollowCountRef?.map((item) => item.path),
-  //   'discountFollowCountRef'
-  // );
-  // updateDoc(
-  //   discountFollowCountRef?.forEach((item) => item.path),
-  //   {
-  //     followerCount: increment(-1),
-  //   }
-  // );
+  const getLists = async (id: string): Promise<any> => {
+    const userRef = doc(db, `users/${id}`);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+    // console.log(userData, 'userData');
+    return userData as any;
+  };
 
   //ログインしているかどうか
   const router = useRouter();
@@ -61,8 +51,55 @@ const Delete = () => {
   //user削除
   const auth = getAuth();
   const authUser = auth.currentUser;
+  console.log(authUser, 'authUser');
   const DeleteUserData = async () => {
     console.log('走った');
+    //フォローフォロワー
+
+    //退会ユーザーがフォローしているユーザーのfollowerCountをマイナス
+    const followerRef = collection(db, `users/${authUser?.uid}/follows/`);
+    if (followerRef) {
+      const snap = await getDocs(followerRef);
+      const snapData = snap.docs.map((doc) => doc.data());
+      // console.log(snapData, 'snapData');
+      snapData.forEach(
+        async (item) =>
+          await updateDoc(doc(db, `users/${item.id}`), {
+            followerCount: increment(-1),
+          })
+      );
+    } else {
+      return null;
+    }
+    //退会ユーザーをフォローしているユーザーのfollowCountをマイナスとfollowsサブコレのuid削除
+    const followRef = query(
+      collectionGroup(db, 'follows'),
+      where('id', '==', `${authUser?.uid}`)
+    );
+    if (followRef) {
+      const snap = await getDocs(followRef);
+      const snapData = snap.docs.map((item) => {
+        return getLists(item.ref.parent.parent?.id as string);
+      });
+      const snapSubData = snap.docs.map(async (item) => {
+        const followUserUid = item.ref.parent.parent?.id as string;
+        const ref = doc(db, `users/${followUserUid}/follows/${authUser?.uid}`);
+        await deleteDoc(ref);
+      });
+
+      const lists = await Promise.all(snapData);
+      // console.log(lists, 'lists');
+
+      lists.forEach(
+        async (item: any) =>
+          await updateDoc(doc(db, `users/${item.uid}`), {
+            followCount: increment(-1),
+          })
+      );
+    } else {
+      return null;
+    }
+
     //auth情報
     await deleteUser(authUser as User)
       .then(() => {
@@ -72,26 +109,8 @@ const Delete = () => {
         toast.error('ユーザー削除に失敗しました。');
       });
 
-    //フォローフォロワー
-    //フォローしているユーザーのfollowerCountをマイナス
-    const followUsers = useSWR(`${user?.uid}`, async () => {
-      const ref = collection(db, `users/${user?.uid}/follows/`);
-      const snap = await getDocs(ref);
-      const snapData = snap.docs.map((doc) => doc.data());
-      return snapData;
-    });
-    const discountFollowCountRef = followUsers.data?.map((data) =>
-      doc(db, `users/${data.id}`)
-    );
-    await updateDoc(
-      discountFollowCountRef?.forEach((item) => item.path),
-      {
-        followerCount: increment(-1),
-      }
-    );
-    //フォローしてくれているユーザーのfollorCountをマイナス、且つuidを削除
-
     //ユーザー情報
+    // await deleteDoc(doc(db, `users/${user?.uid}/follows`)).then(() => {});
     await deleteDoc(doc(db, `users/${user?.uid}`)).then(() => {});
 
     //stripe履歴

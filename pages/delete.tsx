@@ -9,7 +9,7 @@ import {
 import { validateArgCount } from '@firebase/util';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
-import { signOut, getAuth, deleteUser, User } from 'firebase/auth';
+import { signOut, getAuth, deleteUser, User, getIdToken } from 'firebase/auth';
 import { collectionGroup, getDocs, query, where } from 'firebase/firestore';
 import { useRouter } from 'next/dist/client/router';
 import React, {
@@ -33,14 +33,6 @@ const Delete = () => {
   const { user } = useAuth();
   // console.log(user?.uid);
 
-  const getLists = async (id: string): Promise<any> => {
-    const userRef = doc(db, `users/${id}`);
-    const userSnap = await getDoc(userRef);
-    const userData = userSnap.data();
-    // console.log(userData, 'userData');
-    return userData as any;
-  };
-
   //ログインしているかどうか
   const router = useRouter();
   useEffect(() => {
@@ -48,81 +40,34 @@ const Delete = () => {
       user === null && router.replace('/');
     });
   }, []);
+
   //user削除
   const auth = getAuth();
   const authUser = auth.currentUser;
-  console.log(authUser, 'authUser');
+  // console.log(authUser, 'authUser');
+  // console.log(authUser?.uid, 'authUser.uid');
+
   const DeleteUserData = async () => {
-    console.log('走った');
-    //フォローフォロワー
-
-    //退会ユーザーがフォローしているユーザーのfollowerCountをマイナス
-    const followerRef = collection(db, `users/${authUser?.uid}/follows/`);
-    if (followerRef) {
-      const snap = await getDocs(followerRef);
-      const snapData = snap.docs.map((doc) => doc.data());
-      // console.log(snapData, 'snapData');
-      snapData.forEach(
-        async (item) =>
-          await updateDoc(doc(db, `users/${item.id}`), {
-            followerCount: increment(-1),
-          })
-      );
-    } else {
-      return null;
+    if (!authUser) {
+      return;
     }
-    //退会ユーザーをフォローしているユーザーのfollowCountをマイナスとfollowsサブコレのuid削除
-    const followRef = query(
-      collectionGroup(db, 'follows'),
-      where('id', '==', `${authUser?.uid}`)
-    );
-    if (followRef) {
-      const snap = await getDocs(followRef);
-      const snapData = snap.docs.map((item) => {
-        return getLists(item.ref.parent.parent?.id as string);
-      });
-      const snapSubData = snap.docs.map(async (item) => {
-        const followUserUid = item.ref.parent.parent?.id as string;
-        const ref = doc(db, `users/${followUserUid}/follows/${authUser?.uid}`);
-        await deleteDoc(ref);
-      });
-
-      const lists = await Promise.all(snapData);
-      // console.log(lists, 'lists');
-
-      lists.forEach(
-        async (item: any) =>
-          await updateDoc(doc(db, `users/${item.uid}`), {
-            followCount: increment(-1),
-          })
-      );
-    } else {
-      return null;
-    }
-
-    //auth情報
-    await deleteUser(authUser as User)
-      .then(() => {
+    const token = await getIdToken(authUser, true);
+    fetch('/api/withdrawal', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      body: JSON.stringify({
+        authUser: authUser,
+      }),
+    })
+      .then((res) => {
         toast.success('ユーザー認証を削除しました。');
       })
-      .catch((error) => {
+      .catch((res) => {
         toast.error('ユーザー削除に失敗しました。');
       });
-
-    //ユーザー情報
-    // await deleteDoc(doc(db, `users/${user?.uid}/follows`)).then(() => {});
-    await deleteDoc(doc(db, `users/${user?.uid}`)).then(() => {});
-
-    //stripe履歴
-    await deleteDoc(doc(db, `customers/${user?.uid}`)).then(() => {});
-
-    //reviews
-    //reviewsのuid削除
-    //それぞれのスコアをマイナス、reviewCount、unScoreCountをマイナス
-
-    //lists
-    //listsのuidを削除
-    //listCountをマイナス
   };
   const [open, setOpen] = useState(false);
 

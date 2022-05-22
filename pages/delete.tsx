@@ -63,10 +63,12 @@ const Delete = () => {
       }),
     })
       .then((res) => {
-        toast.success('ユーザー認証を削除しました。');
+        // toast.success('ユーザー認証を削除しました。');
+        console.log(res.status, '成功');
       })
       .catch((res) => {
-        toast.error('ユーザー削除に失敗しました。');
+        // toast.error('ユーザー削除に失敗しました。');
+        console.log(res.status, '失敗');
       });
   };
   const [open, setOpen] = useState(false);

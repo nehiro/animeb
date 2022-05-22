@@ -17,6 +17,7 @@ import {
 import { db } from '../../utils/firebase';
 import { deleteUser } from 'firebase/auth';
 import toast from 'react-hot-toast';
+import { getAuth } from 'firebase-admin/auth';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const authUser = req.body.authUser;
@@ -33,6 +34,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // console.log('走った');
+
+  //auth情報
+  await getAuth()
+    .deleteUser(uid)
+    .then(() => {
+      console.log('アカウント削除成功');
+    })
+    .catch(() => {
+      console.log('アカウント削除失敗');
+    });
   //フォローフォロワー
 
   //退会ユーザーがフォローしているユーザーのfollowerCountをマイナス
@@ -46,6 +57,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await updateDoc(doc(db, `users/${item.id}`), {
           followerCount: increment(-1),
         })
+          .then(() => {
+            console.log('フォロワー数マイナス成功');
+          })
+          .catch(() => {
+            console.log('フォロワー数マイナス失敗');
+          })
     );
   } else {
     return null;
@@ -63,7 +80,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const snapSubData = snap.docs.map(async (item) => {
       const followUserUid = item.ref.parent.parent?.id as string;
       const ref = doc(db, `users/${followUserUid}/follows/${uid}`);
-      await deleteDoc(ref);
+      await deleteDoc(ref)
+        .then(() => {
+          console.log('uid削除成功');
+        })
+        .catch(() => {
+          console.log('uid削除失敗');
+        });
     });
 
     const lists = await Promise.all(snapData);
@@ -74,22 +97,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await updateDoc(doc(db, `users/${item.uid}`), {
           followCount: increment(-1),
         })
+          .then(() => {
+            console.log('フォローカウントマイナス成功');
+          })
+          .catch(() => {
+            console.log('フォローカウントマイナス失敗');
+          })
     );
   } else {
     return null;
   }
 
-  //auth情報
-  await deleteUser(authUser)
-    .then(() => {})
-    .catch(() => {});
-
   //ユーザー情報
+  //サブこれ削除
   // await deleteDoc(doc(db, `users/${user?.uid}/follows`)).then(() => {});
-  await deleteDoc(doc(db, `users/${uid}`)).then(() => {});
+
+  await deleteDoc(doc(db, `users/${uid}`))
+    .then(() => {
+      console.log('ユーザーデータ削除成功');
+    })
+    .catch(() => {
+      console.log('ユーザーデータ削除失敗');
+    });
 
   //stripe履歴
-  await deleteDoc(doc(db, `customers/${uid}`)).then(() => {});
+  await deleteDoc(doc(db, `customers/${uid}`))
+    .then(() => {
+      console.log('ストライプ削除成功');
+    })
+    .catch(() => {
+      console.log('ストライプ削除失敗');
+    });
 
   //reviews
   //reviewsのuid削除

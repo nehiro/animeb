@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import * as admin from 'firebase-admin';
+import { db } from '../../utils/firebase';
+import { getAuth } from 'firebase-admin/auth';
 import { auth, adminDB } from '../../firebase/server';
-import fetch from 'node-fetch';
-import { Site } from '../../lib/site';
 import {
   collection,
   collectionGroup,
@@ -14,10 +15,6 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import { db } from '../../utils/firebase';
-import { deleteUser } from 'firebase/auth';
-import toast from 'react-hot-toast';
-import { getAuth } from 'firebase-admin/auth';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const authUser = req.body.authUser;
@@ -58,10 +55,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           followerCount: increment(-1),
         })
           .then(() => {
-            console.log('フォロワー数マイナス成功');
+            console.log('フォロワー数マイナス成功', item.id);
           })
           .catch(() => {
-            console.log('フォロワー数マイナス失敗');
+            console.log('フォロワー数マイナス失敗', item.id);
           })
     );
   } else {
@@ -109,16 +106,45 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   //ユーザー情報
-  //サブこれ削除
-  // await deleteDoc(doc(db, `users/${user?.uid}/follows`)).then(() => {});
+  //サブコレも含めて削除
 
-  await deleteDoc(doc(db, `users/${uid}`))
-    .then(() => {
-      console.log('ユーザーデータ削除成功');
-    })
-    .catch(() => {
-      console.log('ユーザーデータ削除失敗');
-    });
+  const deleteDocumentRecursively = async (
+    docRef: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
+  ) => {
+    const collections = await docRef.listCollections();
+
+    if (collections.length > 0) {
+      for (const collection of collections) {
+        const snapshot = await collection.get();
+        for (const doc of snapshot.docs) {
+          await deleteDocumentRecursively(doc.ref)
+            .then(() => {
+              console.log('サブコレ削除成功', doc.id);
+            })
+            .catch(() => {
+              console.log('サブコレ削除失敗', doc.id);
+            });
+        }
+      }
+    }
+
+    await docRef
+      .delete()
+      .then(() => {
+        console.log('ユーザー情報削除成功', docRef.id);
+      })
+      .catch(() => {
+        console.log('ユーザー情報削除失敗', docRef.id);
+      });
+  };
+
+  (async () => {
+    const db = admin.firestore();
+    // サブコレクション含め再帰的に削除する＝中身が空になるまで
+    await deleteDocumentRecursively(db.collection('users').doc(uid));
+  })().catch((e) => {
+    console.log(e);
+  });
 
   //stripe履歴
   await deleteDoc(doc(db, `customers/${uid}`))

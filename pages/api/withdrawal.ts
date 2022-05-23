@@ -112,6 +112,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     docRef: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
   ) => {
     const collections = await docRef.listCollections();
+    console.log(collections, 'collections');
 
     if (collections.length > 0) {
       for (const collection of collections) {
@@ -129,15 +130,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     await docRef
-      .set({
-        deleted: true,
-      })
+      .delete()
       .then(() => {
         console.log('ユーザー情報削除成功', docRef.id);
       })
       .catch(() => {
         console.log('ユーザー情報削除失敗', docRef.id);
       });
+
+    // await docRef
+    //   .set({
+    //     deleted: true,
+    //   })
+    //   .then(() => {
+    //     console.log('deleted代入成功', docRef.id);
+    //   })
+    //   .catch(() => {
+    //     console.log('deleted代入失敗', docRef.id);
+    //   });
   };
 
   (async () => {

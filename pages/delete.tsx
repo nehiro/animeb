@@ -28,6 +28,7 @@ import SubpageTitle from '../components/SubpageTitle';
 import LayoutNoNav from '../layouts/LayoutNoNav';
 import { auth, db } from '../utils/firebase';
 import { useAuth } from '../utils/userContext';
+import * as admin from 'firebase-admin';
 
 const Delete = () => {
   const { user } = useAuth();
@@ -63,18 +64,19 @@ const Delete = () => {
       }),
     })
       .then((res) => {
-        // toast.success('ユーザー認証を削除しました。');
-        console.log(res.status, '成功');
+        toast.success('ユーザー情報を削除しました。');
+        // console.log(res.status, '成功');
         signOut(auth);
       })
       .catch((res) => {
-        // toast.error('ユーザー削除に失敗しました。');
-        console.log(res.status, '失敗');
+        toast.error('ユーザー情報の削除に失敗しました。');
+        // console.log(res.status, '失敗');
       });
   };
   const [open, setOpen] = useState(false);
 
   const cancelButtonRef = useRef(null);
+
   return (
     <>
       <Breadcrumbs />

@@ -63,6 +63,7 @@ const getUserData = async (idToken: string) => {
 const createUser = async (lineUser: LineUser) => {
   // console.log(lineUser, 'lineUser');
   // console.log(lineUser.sub, 'lineUser.sub');
+  console.log('create-user');
   if (!(await adminDB.doc(`users/${lineUser.sub}`).get()).exists) {
     return adminDB.doc(`users/${lineUser.sub}`).set({
       bd: '',

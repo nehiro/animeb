@@ -65,6 +65,7 @@ const Delete = () => {
       .then((res) => {
         // toast.success('ユーザー認証を削除しました。');
         console.log(res.status, '成功');
+        signOut(auth);
       })
       .catch((res) => {
         // toast.error('ユーザー削除に失敗しました。');

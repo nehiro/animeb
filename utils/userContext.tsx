@@ -62,11 +62,13 @@ export const AuthProvider: FC = ({ children }) => {
     //ログインユーザー監視
     let unsubscribeUser: Unsubscribe;
     const unsubscribeAuth = onAuthStateChanged(auth, (authUser) => {
+      console.log(authUser, 'auth');
       unsubscribeUser?.();
       if (authUser) {
         const userDoc = doc(db, `users/${authUser.uid}`);
         //参照idが無かったらnewUserを登録
         unsubscribeUser = onSnapshot(userDoc, (snap) => {
+          console.log(authUser.photoURL, 'authUser');
           if (!snap.exists()) {
             //データ同期
             const newUser: User = {
@@ -85,25 +87,30 @@ export const AuthProvider: FC = ({ children }) => {
 
             setDoc(userDoc, newUser);
             setUser(newUser);
+            console.log('create user');
           } else {
             setUser(snap.data() as User);
             setLoading(false);
+            console.log('走った2');
           }
         });
       } else {
         //authUserがあればログイン
         setUser(null);
         setLoading(false);
+        console.log('auth is gone');
       }
     });
     return () => {
       unsubscribeUser?.();
       unsubscribeAuth();
+      console.log('走った4');
     };
   }, []);
 
   //userが変わるたびにレンダリング
   useEffect(() => {
+    console.log('走った5');
     if (user) {
       const unsubscribes: Unsubscribe[] = [];
 

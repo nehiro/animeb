@@ -129,7 +129,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     await docRef
-      .delete()
+      .set({
+        deleted: true,
+      })
       .then(() => {
         console.log('ユーザー情報削除成功', docRef.id);
       })

@@ -3,7 +3,7 @@ import {
   createAutocomplete,
 } from '@algolia/autocomplete-core';
 import { getAlgoliaResults, autocomplete } from '@algolia/autocomplete-js';
-import { SearchIcon, XIcon } from '@heroicons/react/outline';
+import { RefreshIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { useMemo, useRef, useState } from 'react';
@@ -19,8 +19,11 @@ type Debounce = {
   fn: any;
   time: number;
 };
+type Props = {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const AlgoliaAutoComplete = () => {
+const AlgoliaAutoComplete = ({ setIsOpen }: Props) => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [autocompleteState, setAutocompleteState] =
@@ -115,7 +118,7 @@ const AlgoliaAutoComplete = () => {
                   //ページをロードせずにurlを更新：ここでは無意味
                   ///hoge?aaa=1 => /hoge?bbb=2はOK
                   ///hoge => /fugaはNG
-                  shallow: true,
+                  // shallow: true,
                 });
               },
             },
@@ -163,23 +166,33 @@ const AlgoliaAutoComplete = () => {
                 >
                   {items.length > 0 && (
                     <ul {...autocomplete.getListProps()}>
-                      {items.map((item, index) => (
-                        <li key={item.title} className="even:bg-gray-50">
-                          <a
-                            {...(autocomplete.getItemProps({
-                              item,
-                              source,
-                            }) as any)}
-                            className={classNames(
-                              'block py-4 pl-3 text-sm',
-                              autocompleteState?.activeItemId === index &&
-                                'bg-purple text-white'
-                            )}
+                      {items ? (
+                        items.map((item, index) => (
+                          <li
+                            key={item.title}
+                            className="even:bg-gray-50"
+                            onClick={() => setIsOpen(false)}
                           >
-                            {item.title}
-                          </a>
-                        </li>
-                      ))}
+                            <a
+                              {...(autocomplete.getItemProps({
+                                item,
+                                source,
+                              }) as any)}
+                              className={classNames(
+                                'block py-4 pl-3 text-sm',
+                                autocompleteState?.activeItemId === index &&
+                                  'bg-purple text-white'
+                              )}
+                            >
+                              {item.title}
+                            </a>
+                          </li>
+                        ))
+                      ) : (
+                        <p className="flex justify-center">
+                          <RefreshIcon className="w-10 animate-spin text-gray-700" />
+                        </p>
+                      )}
                     </ul>
                   )}
                 </div>

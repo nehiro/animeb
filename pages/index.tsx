@@ -15,6 +15,7 @@ import Timeline from '../components/Timeline';
 import UserItem from '../components/UserItem';
 import Profile from '../components/Profile';
 import Link from 'next/link';
+import { RefreshIcon } from '@heroicons/react/outline';
 import { Anime } from '../types/Anime';
 import { userReviews } from '../lib/getReviews';
 
@@ -95,19 +96,24 @@ const Home = () => {
         {/* <ul>{animesMap}</ul> */}
 
         {/* <ul id="animeTitle">{animeMap}</ul> */}
-        <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {animes
-            ?.filter((anime) => anime.year === 2022 && anime.quarter === 4)
-            .map((anime) => (
-              <li
-                key={anime.title}
-                className="flex w-full flex-col justify-between"
-              >
-                <Card anime={anime}></Card>
-              </li>
-            ))}
-        </ul>
-
+        {animes ? (
+          <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            {animes
+              ?.filter((anime) => anime.year === 2022 && anime.quarter === 4)
+              .map((anime) => (
+                <li
+                  key={anime.title}
+                  className="flex w-full flex-col justify-between"
+                >
+                  <Card anime={anime}></Card>
+                </li>
+              ))}
+          </ul>
+        ) : (
+          <p className="flex justify-center">
+            <RefreshIcon className="w-10 animate-spin text-gray-700" />
+          </p>
+        )}
         {/* <Button>もっと見る</Button> */}
       </BackGroundGray>
       {/* <BackGroundWhite>

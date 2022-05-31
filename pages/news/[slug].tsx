@@ -9,8 +9,11 @@ import { News } from '../../types/News';
 import TiptapRender from '../../components/TiptapRender';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import TiptapNewsEditor from '../../components/TiptapNewsEditor';
+import { useAuth } from '../../utils/userContext';
 
 const Slug = ({ news }: { news: News }) => {
+  const { user } = useAuth();
+  const admin = user?.admin;
   // console.log(news, 'news');
   // console.log(news.title, 'news.title');
   console.log(news.body, 'news.body');
@@ -168,16 +171,18 @@ const Slug = ({ news }: { news: News }) => {
                 />
               )}
             ></Controller>
-            <Link href={`${news.id}/editor`}>
-              <a className="no-underline">
-                <button
-                  type="button"
-                  className="inline-flex items-center rounded-md border border-transparent bg-purple px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-500"
-                >
-                  編集
-                </button>
-              </a>
-            </Link>
+            {admin === true ? (
+              <Link href={`${news.id}/editor`}>
+                <a className="no-underline">
+                  <button
+                    type="button"
+                    className="inline-flex items-center rounded-md border border-transparent bg-purple px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-500"
+                  >
+                    編集
+                  </button>
+                </a>
+              </Link>
+            ) : null}
           </div>
         </div>
       </div>

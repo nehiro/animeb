@@ -6,7 +6,7 @@ import Button from '../components/Button';
 import SubpageTitle from '../components/SubpageTitle';
 import Layout from '../layouts/Layout';
 import { useAuth } from '../utils/userContext';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, useFormState } from 'react-hook-form';
 import { doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
 import { auth, db, storage } from '../utils/firebase';
 import { useRouter } from 'next/dist/client/router';
@@ -15,6 +15,7 @@ import 'cropperjs/dist/cropper.css';
 import Modal from 'react-modal';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import LayoutNoNav from '../layouts/LayoutNoNav';
+import toast from 'react-hot-toast';
 
 //formの型
 interface IFormInput {
@@ -40,39 +41,47 @@ const Profile = () => {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
+  // const { dirtyFields } = useFormState({
+  //   control,
+  // });
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    console.log(preview, 'preview');
     const photoURL = preview ? await uploadAvatar() : user?.photoURL || null;
     await updateDoc(doc(db, `users/${user?.uid}`), {
       name: data.name,
       intro: data.intro,
       photoURL,
-    }).then(() => {
-      alert(
-        `${data.name}さん\n${data.intro}\nとサムネイル画像を登録しました。`
-      );
-    });
+    })
+      .then(() => {
+        toast.success('プロフィール登録に成功しました。');
+      })
+      .catch(() => {
+        toast.error('プロフィール登録に失敗しました。');
+      });
   };
   /***useForm END***/
 
   // dbから画像とってくる
-  useEffect(() => {
-    const userDoc = doc(db, `users/${user?.uid}`);
+  // useEffect(() => {
+  //   const userDoc = doc(db, `users/${user?.uid}`);
 
-    getDoc(userDoc).then((result) => {
-      const userData = result.data();
-      const photo = userData?.photoURL;
-      if (photo) {
-        setPreview(photo);
-      }
-    });
-  }, []);
+  //   getDoc(userDoc).then((result) => {
+  //     const userData = result.data();
+  //     const photo = userData?.photoURL;
+  //     if (photo) {
+  //       setPreview(photo);
+  //     }
+  //   });
+  // }, []);
 
   // プレビュー画像を管理
   const [preview, setPreview] = useState<string>();
+  // console.log(preview, 'preview');
 
   // クロッパーを管理
   const [cropper, setCropper] = useState<Cropper | null>();
@@ -124,6 +133,7 @@ const Profile = () => {
     // 保存先のRefを取得
     // アップロードするときココから不変 START
     const storageRef = ref(storage, `users/${user?.uid}/avatar.jpg`);
+    // console.log(preview, 'preview');
 
     // 画像アップロード
     await uploadString(storageRef, preview as string, 'data_url');

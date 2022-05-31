@@ -10,9 +10,14 @@ import SubpageTitle from '../../components/SubpageTitle';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
+import { userLists } from '../../lib/getList';
+import { useAuth } from '../../utils/userContext';
+import { User } from '../../types/User';
 
 const Index = ({ news }: { news: News[] }) => {
   // console.log(news, 'news');
+  const { user } = useAuth();
+  const admin = user?.admin;
 
   return (
     <>
@@ -52,31 +57,35 @@ const Index = ({ news }: { news: News[] }) => {
                   </Link>
                 </div>
                 <div>
-                  <button
-                    type="button"
-                    className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                  >
-                    <Link href={`/news/${item.id}/editor`}>
-                      <a>編集</a>
-                    </Link>
-                  </button>
+                  {admin === true ? (
+                    <button
+                      type="button"
+                      className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                    >
+                      <Link href={`/news/${item.id}/editor`}>
+                        <a>編集</a>
+                      </Link>
+                    </button>
+                  ) : null}
                 </div>
               </li>
             ))}
           </ul>
         </div>
-        <div className="text-right">
-          <Link href="/news/newsForm">
-            <a>
-              <button
-                type="button"
-                className="inline-flex items-center rounded-md border border-transparent bg-purple px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-500"
-              >
-                新規作成
-              </button>
-            </a>
-          </Link>
-        </div>
+        {admin === true ? (
+          <div className="text-right">
+            <Link href="/news/newsForm">
+              <a>
+                <button
+                  type="button"
+                  className="inline-flex items-center rounded-md border border-transparent bg-purple px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-500"
+                >
+                  新規作成
+                </button>
+              </a>
+            </Link>
+          </div>
+        ) : null}
       </BackGroundGray>
 
       {/* <Tiptap editable={false} content={content}></Tiptap> */}

@@ -62,9 +62,10 @@ const getUserData = async (idToken: string) => {
 
 const createUser = async (lineUser: LineUser) => {
   // console.log(lineUser, 'lineUser');
-  // console.log(lineUser.sub, 'lineUser.sub');
-  console.log('create-user');
+  console.log(lineUser.sub, 'lineUser.sub');
+  // console.log('create-user');
   if (!(await adminDB.doc(`users/${lineUser.sub}`).get()).exists) {
+    console.log('1');
     return adminDB.doc(`users/${lineUser.sub}`).set({
       bd: '',
       email: lineUser.email,
@@ -78,6 +79,29 @@ const createUser = async (lineUser: LineUser) => {
       createdAt: Date.now(),
       ranking: [],
     });
+  } else {
+    const data = await (
+      await adminDB.doc(`users/${lineUser.sub}`).get()
+    ).data();
+    if (data?.deleted === true) {
+      console.log('2');
+      return adminDB.doc(`users/${lineUser.sub}`).set({
+        bd: '',
+        email: lineUser.email,
+        gender: null,
+        name: lineUser.name,
+        uid: lineUser.sub,
+        photoURL: lineUser.picture,
+        intro: '',
+        followCount: 0,
+        followerCount: 0,
+        createdAt: Date.now(),
+        ranking: [],
+        deleted: false,
+      });
+    }
+    console.log('3');
+    return data;
   }
 };
 

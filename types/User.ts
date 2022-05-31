@@ -12,4 +12,5 @@ export type User = {
   followerCount: number;
   createdAt: number;
   ranking: UserRanking[];
+  admin?: boolean;
 };

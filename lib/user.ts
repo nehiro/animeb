@@ -37,12 +37,14 @@ export const subscribeFollowUsers = (
   uid: string,
   callback: (users: User[]) => void
 ) => {
+  // console.log('走った');
   const ref = collection(db, `users/${uid}/follows`);
   return onSnapshot(ref, async (snap) => {
     const tasks = snap.docs.map((doc) => {
       return getUser(doc.id);
     });
     const users = await Promise.all(tasks);
+    // console.log(users);
     callback(users);
   });
 };

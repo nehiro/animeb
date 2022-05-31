@@ -23,9 +23,11 @@ type SearchRespons = {
 type Props = {
   isOpen: boolean;
   onClose: VoidFunction;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const SearchModal = ({ isOpen, onClose }: Props) => {
+// const SearchModal = ({ isOpen, onClose, setIsOpen }: Props) => {
+const SearchModal = ({ isOpen, onClose, setIsOpen }: Props) => {
   const router = useRouter();
   // const updateQueryParams = (state: SearchState) => {
   //   router.push(
@@ -91,6 +93,7 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
             >
               &#8203;
             </span> */}
+
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -101,7 +104,7 @@ const SearchModal = ({ isOpen, onClose }: Props) => {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <div className="my-8 inline-block w-full max-w-xl transform overflow-hidden rounded-lg bg-gray-100 p-6 px-4 pt-5 pb-4 text-left align-middle shadow-xl transition-all">
-                <AlgoliaAutoComplete />
+                <AlgoliaAutoComplete setIsOpen={setIsOpen} />
               </div>
             </Transition.Child>
           </div>

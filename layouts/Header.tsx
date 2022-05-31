@@ -9,6 +9,7 @@ import {
   QuestionMarkCircleIcon,
   UserCircleIcon,
   HeartIcon,
+  RefreshIcon,
 } from '@heroicons/react/outline';
 import { LoginIcon } from '@heroicons/react/outline';
 import { UserIcon } from '@heroicons/react/outline';
@@ -39,10 +40,17 @@ function classNames(...classes: any[]) {
 
 const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
   const { user } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
+
+  // console.log(user, 'user');
+  // console.log(user?.photoURL, 'photoURL');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <>
-      <SearchModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <SearchModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        setIsOpen={setIsOpen}
+      />
       <header className="fixed top-0 left-0 z-40 flex h-14 w-full items-center justify-between bg-purple">
         <div className="w-full px-4">
           <div className="flex justify-between">
@@ -62,7 +70,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
               </Link>
             </div>
             <button
-              className="relative hidden h-10 max-w-xl flex-1 items-center justify-start rounded-full bg-white px-4 md:flex"
+              className="relative hidden h-10 max-w-xl flex-1 items-center justify-start rounded-full bg-white px-4 focus-visible:outline-none md:flex"
               onClick={() => setIsOpen(true)}
             >
               <SearchIcon className="mr-3 inline-block h-5 w-5 text-gray-500" />
@@ -84,7 +92,13 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                       <>
                         <Popover.Button>
                           <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                            <Image src={user.photoURL} alt="" layout="fill" />
+                            {user ? (
+                              <Image src={user.photoURL} alt="" layout="fill" />
+                            ) : (
+                              <p className="flex justify-center">
+                                <RefreshIcon className="w-10 animate-spin text-gray-700" />
+                              </p>
+                            )}
                           </div>
                         </Popover.Button>
 

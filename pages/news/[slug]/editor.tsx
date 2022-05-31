@@ -20,7 +20,7 @@ import {
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
-import { db } from '../../../utils/firebase';
+import { auth, db } from '../../../utils/firebase';
 import { News } from '../../../types/News';
 import TiptapEditor from '../../../components/TiptapEditor';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -29,8 +29,17 @@ import TiptapNewsEditor from '../../../components/TiptapNewsEditor';
 import { useRouter } from 'next/router';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
+import { useAuth } from '../../../utils/userContext';
 
 const Editor = ({ news }: { news: News }) => {
+  const { user } = useAuth();
+  const admin = user?.admin;
+  const router = useRouter();
+  useEffect(() => {
+    if (admin !== true) {
+      router.replace('/');
+    }
+  }, []);
   const {
     register,
     handleSubmit,
@@ -45,7 +54,7 @@ const Editor = ({ news }: { news: News }) => {
   });
 
   //ニュース削除
-  const router = useRouter();
+
   const DeleteNews = async () => {
     await deleteDoc(doc(db, `news/${news.id}`))
       .then(() => {

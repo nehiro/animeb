@@ -8,7 +8,7 @@ type Props = {
 };
 
 const Layout = ({ children }: Props) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState<boolean>(true);
   const toggle = () => {
     setOpen((prevState) => !prevState);
   };
@@ -18,7 +18,7 @@ const Layout = ({ children }: Props) => {
       <Header toggleSideNav={toggle} />
       <Nav open={open} toggle={toggle} />
       <main
-        className={`mt-14 transition-all ease-in-out duration-500 sm:duration-700 z-20 ${
+        className={`z-20 mt-14 transition-all duration-500 ease-in-out sm:duration-700 ${
           open ? ' lg:ml-52' : ''
         }`}
       >

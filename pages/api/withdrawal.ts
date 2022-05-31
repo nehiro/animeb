@@ -112,42 +112,65 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     docRef: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
   ) => {
     const collections = await docRef.listCollections();
-    console.log(collections, 'collections');
+    // console.log(collections, 'collections');
 
     if (collections.length > 0) {
       for (const collection of collections) {
         const snapshot = await collection.get();
-        for (const doc of snapshot.docs) {
-          await deleteDocumentRecursively(doc.ref)
+        // console.log(snapshot, 'snapshot');
+        for (const docc of snapshot.docs) {
+          const ref = doc(db, `users/${uid}/follows/${docc.id}`);
+          deleteDoc(ref);
+          // console.log(doc, 'doc');
+          // console.log(doc.ref, 'doc.ref');
+          // console.log(docc.data(), 'doc.data()');
+          await deleteDocumentRecursively(docc.ref)
             .then(() => {
-              console.log('サブコレ削除成功', doc.id);
+              console.log('サブコレ削除成功', docc.id);
             })
             .catch(() => {
-              console.log('サブコレ削除失敗', doc.id);
+              console.log('サブコレ削除失敗', docc.id);
             });
         }
+        await docRef
+          .delete()
+          .then(() => {
+            console.log('ユーザー情報削除成功', docRef.id);
+          })
+          .catch(() => {
+            console.log('ユーザー情報削除失敗', docRef.id);
+          });
+        // await docRef
+        //   .set({
+        //     deleted: true,
+        //   })
+        //   .then(() => {
+        //     console.log('deleted代入成功', docRef.id);
+        //   })
+        //   .catch(() => {
+        //     console.log('deleted代入失敗', docRef.id);
+        //   });
       }
+    } else {
+      await docRef
+        .delete()
+        .then(() => {
+          console.log('ユーザー情報削除成功', docRef.id);
+        })
+        .catch(() => {
+          console.log('ユーザー情報削除失敗', docRef.id);
+        });
+      // await docRef
+      //   .set({
+      //     deleted: true,
+      //   })
+      //   .then(() => {
+      //     console.log('deleted代入成功', docRef.id);
+      //   })
+      //   .catch(() => {
+      //     console.log('deleted代入失敗', docRef.id);
+      //   });
     }
-
-    await docRef
-      .delete()
-      .then(() => {
-        console.log('ユーザー情報削除成功', docRef.id);
-      })
-      .catch(() => {
-        console.log('ユーザー情報削除失敗', docRef.id);
-      });
-
-    // await docRef
-    //   .set({
-    //     deleted: true,
-    //   })
-    //   .then(() => {
-    //     console.log('deleted代入成功', docRef.id);
-    //   })
-    //   .catch(() => {
-    //     console.log('deleted代入失敗', docRef.id);
-    //   });
   };
 
   (async () => {
@@ -158,7 +181,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(e);
   });
 
-  //stripe履歴
+  // stripe履歴
   await deleteDoc(doc(db, `customers/${uid}`))
     .then(() => {
       console.log('ストライプ削除成功');

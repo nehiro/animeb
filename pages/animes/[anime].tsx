@@ -5,6 +5,7 @@ import {
   LinkIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  RefreshIcon,
 } from '@heroicons/react/outline';
 import Image from 'next/image';
 import React, {
@@ -65,6 +66,8 @@ const AnimeWork = (animeTitle: AnimeName) => {
   const animeId = dbAnimes?.data?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
   )?.id;
+
+  const { mutate } = useSWRConfig();
 
   //レビューのモーダル
   const [reviewModal, setReviewModal] = useState(false);
@@ -236,253 +239,275 @@ const AnimeWork = (animeTitle: AnimeName) => {
     },
   ];
 
-  const { mutate } = useSWRConfig();
-
   return (
     <>
       <Breadcrumbs />
-      <BackGroundWhite>
-        <div className="flex justify-start">
-          <div className="mr-8 min-w-200 max-w-242">
-            <div className="relative mb-2 block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72">
-              <Image
-                src={
-                  'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
-                  `${animeInfo?.title}` +
-                  '.jpg'
-                }
-                layout="fill"
-                className="object-cover"
-                alt=""
-              />
-            </div>
-            <div className="mb-2 grid grid-cols-2 items-center justify-items-center gap-2">
-              <div className="w-full">
-                <button className="w-full" onClick={modalOpen}>
-                  {reviewedRef ? (
-                    <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
-                      <EyeIcon className="mx-auto h-5 w-5" />
-                      <span className="inline-block h-full w-full">
-                        {reviewedCount()}
-                      </span>
+      {animeInfo ? (
+        <>
+          <BackGroundWhite>
+            <div className="flex justify-start">
+              <div className="mr-8 min-w-200 max-w-242">
+                <div className="relative mb-2 block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72">
+                  <Image
+                    src={
+                      'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
+                      `${animeInfo?.title}` +
+                      '.jpg'
+                    }
+                    layout="fill"
+                    className="object-cover"
+                    alt=""
+                  />
+                </div>
+                <div className="mb-2 grid grid-cols-2 items-center justify-items-center gap-2">
+                  <div className="w-full">
+                    <button className="w-full" onClick={modalOpen}>
+                      {reviewedRef ? (
+                        <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
+                          <EyeIcon className="mx-auto h-5 w-5" />
+                          <span className="inline-block h-full w-full">
+                            {reviewedCount()}
+                          </span>
+                        </a>
+                      ) : (
+                        <a className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
+                          <EyeIcon className="mx-auto h-5 w-5 text-amber-400" />
+                          <span className="inline-block h-full w-full text-amber-400">
+                            {reviewedCount()}
+                          </span>
+                        </a>
+                      )}
+                    </button>
+                  </div>
+                  <div className="w-full">
+                    {listed() ? (
+                      <button
+                        className="w-full"
+                        onClick={() => {
+                          unlistButton({
+                            anime: animeInfo as Anime,
+                            user,
+                            authUserListData,
+                            dbAnimes,
+                          });
+                          mutate(user?.uid && `lists`);
+                        }}
+                      >
+                        <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
+                          <BookmarkIcon className="mx-auto h-5 w-5" />
+                          <span className="inline-block h-full w-full">
+                            {!listCount ? 0 : listCount}
+                          </span>
+                        </span>
+                      </button>
+                    ) : (
+                      <button
+                        className="w-full"
+                        onClick={() => {
+                          listButton({
+                            anime: animeInfo as Anime,
+                            user,
+                            dbAnimes,
+                          });
+                          mutate(user?.uid && `lists`);
+                        }}
+                      >
+                        <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
+                          <BookmarkIcon className="mx-auto h-5 w-5 text-amber-400" />
+                          <span className="inline-block h-full w-full text-amber-400">
+                            {!listCount ? 0 : listCount}
+                          </span>
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {animeInfo?.url ? (
+                  <div className="mb-1 flex items-center justify-start">
+                    <LinkIcon className="h-4 w-4" />
+                    <a
+                      target="_blank"
+                      href={animeInfo?.url}
+                      className="text-sm"
+                    >
+                      公式サイト
                     </a>
-                  ) : (
-                    <a className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
-                      <EyeIcon className="mx-auto h-5 w-5 text-amber-400" />
-                      <span className="inline-block h-full w-full text-amber-400">
-                        {reviewedCount()}
-                      </span>
-                    </a>
-                  )}
-                </button>
-              </div>
-              <div className="w-full">
-                {listed() ? (
-                  <button
-                    className="w-full"
-                    onClick={() => {
-                      unlistButton({
-                        anime: animeInfo as Anime,
-                        user,
-                        authUserListData,
-                        dbAnimes,
-                      });
-                      mutate(user?.uid && `lists`);
-                    }}
-                  >
-                    <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
-                      <BookmarkIcon className="mx-auto h-5 w-5" />
-                      <span className="inline-block h-full w-full">
-                        {!listCount ? 0 : listCount}
-                      </span>
-                    </span>
-                  </button>
-                ) : (
-                  <button
-                    className="w-full"
-                    onClick={() => {
-                      listButton({ anime: animeInfo as Anime, user, dbAnimes });
-                      mutate(user?.uid && `lists`);
-                    }}
-                  >
-                    <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
-                      <BookmarkIcon className="mx-auto h-5 w-5 text-amber-400" />
-                      <span className="inline-block h-full w-full text-amber-400">
-                        {!listCount ? 0 : listCount}
-                      </span>
-                    </span>
-                  </button>
-                )}
-              </div>
-            </div>
-            {animeInfo?.url ? (
-              <div className="mb-1 flex items-center justify-start">
-                <LinkIcon className="h-4 w-4" />
-                <a target="_blank" href={animeInfo?.url} className="text-sm">
-                  公式サイト
-                </a>
-              </div>
-            ) : (
-              ''
-            )}
-            {animeInfo?.pv ? (
-              <div className="flex items-center justify-start">
-                <LinkIcon className="h-4 w-4" />
-                <a target="_blank" href={animeInfo?.pv} className="text-sm">
-                  PV
-                </a>
-              </div>
-            ) : (
-              ''
-            )}
-          </div>
-          <div>
-            <h1 className="mb-6 hidden text-2xl font-bold md:block">
-              {animeInfo?.title}
-            </h1>
-            <div className="mb-1 hidden md:block">
-              公開時期: {`${animeInfo?.year}年`} {`${quarter()}アニメ`}
-            </div>
-            <div className="mb-6 flex flex-wrap items-end justify-items-start">
-              <div className="flex items-end">
-                <StarIcon className="h-6 w-6 text-yellow" />
-                <span className="mr-4 text-3xl leading-none text-yellow">
-                  {reviewAverage()}
-                </span>
-              </div>
-              <ul className="flex flex-wrap items-center justify-start">
-                {evaluationItems.map((item) => (
-                  <li className="mr-3" key={item.heading}>
-                    {item.heading}
-                    <span className="ml-2">
-                      {item.value === undefined || item.value === 0
-                        ? '-'
-                        : (item.value / reviewCount).toFixed(1)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mb-6">
-              <h3 className="mb-2 text-sm font-bold">スタッフ</h3>
-              <ul className="mb-1 grid grid-cols-4 gap-4">
-                {/* <ul className="mb-1 flex flex-wrap"> */}
-                {animeInfo.staff.slice(0, loadStaffIndex).map((item) => (
-                  <li key={item[0]} className="">
-                    <h3 className="mb-1 rounded bg-gray-200 px-2 py-1 text-sm font-bold">
-                      {item[0]}
-                    </h3>
-                    <p className="py-1 px-2 text-sm">{item[1]}</p>
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => displayStaffMore()} className="text-sm">
-                {isStaffEmpty ? (
-                  <span className="text-violet-800">
-                    <ChevronUpIcon className="inline-block h-4 w-4" /> 閉じる
-                  </span>
-                ) : (
-                  <span className="text-violet-800">
-                    <ChevronDownIcon className="inline-block h-4 w-4" />{' '}
-                    さらに表示
-                  </span>
-                )}
-              </button>
-            </div>
-            {animeInfo.op || animeInfo.ed ? (
-              // <div className="mb-6 flex flex-wrap">
-              <div className="mb-6 grid grid-cols-4 gap-4">
-                {animeInfo.op ? (
-                  <div className="">
-                    <h3 className="mb-1 rounded bg-gray-200 px-2 py-1 text-sm font-bold">
-                      OP
-                    </h3>
-                    <p className="px-2 py-1 text-sm">
-                      {animeInfo.op[0] + ' 『' + animeInfo.op[1] + '』'}
-                    </p>
                   </div>
                 ) : (
                   ''
                 )}
-                {animeInfo.ed ? (
-                  <div>
-                    <h3 className="rounded bg-gray-200 px-2 py-1 text-sm font-bold">
-                      ED
-                    </h3>
-                    <p className="px-2 py-1 text-sm">
-                      {animeInfo.ed[0] + ' 『' + animeInfo.ed[1] + '』'}
-                    </p>
+                {animeInfo?.pv ? (
+                  <div className="flex items-center justify-start">
+                    <LinkIcon className="h-4 w-4" />
+                    <a target="_blank" href={animeInfo?.pv} className="text-sm">
+                      PV
+                    </a>
                   </div>
                 ) : (
                   ''
                 )}
               </div>
-            ) : (
-              ''
-            )}
-            <div className="mb-6">
-              <h3 className="mb-2 text-sm font-bold">キャスト</h3>
-              <ul className="mb-1 grid grid-cols-4 gap-4">
-                {/* <ul className="mb-1 flex flex-wrap"> */}
-                {animeInfo.cast.slice(0, loadCastIndex).map((item) => (
-                  <li key={item[0]} className="">
-                    <h3 className="mb-1 rounded bg-gray-200 px-2 py-1 text-sm font-bold">
-                      {item[0]}
-                    </h3>
-                    <p className=" px-2 py-1 text-sm">{item[1]}</p>
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => displayCastMore()} className="text-sm">
-                {isCastEmpty ? (
-                  <span className="text-violet-800">
-                    <ChevronUpIcon className="inline-block h-4 w-4" /> 閉じる
-                  </span>
+              <div>
+                <h1 className="mb-6 hidden text-2xl font-bold md:block">
+                  {animeInfo?.title}
+                </h1>
+                <div className="mb-1 hidden md:block">
+                  公開時期: {`${animeInfo?.year}年`} {`${quarter()}アニメ`}
+                </div>
+                <div className="mb-6 flex flex-wrap items-end justify-items-start">
+                  <div className="flex items-end">
+                    <StarIcon className="h-6 w-6 text-yellow" />
+                    <span className="mr-4 text-3xl leading-none text-yellow">
+                      {reviewAverage()}
+                    </span>
+                  </div>
+                  <ul className="flex flex-wrap items-center justify-start">
+                    {evaluationItems.map((item) => (
+                      <li className="mr-3" key={item.heading}>
+                        {item.heading}
+                        <span className="ml-2">
+                          {item.value === undefined || item.value === 0
+                            ? '-'
+                            : (item.value / reviewCount).toFixed(1)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="mb-6">
+                  <h3 className="mb-2 text-sm font-bold">スタッフ</h3>
+                  <ul className="mb-1 grid grid-cols-4 gap-4">
+                    {/* <ul className="mb-1 flex flex-wrap"> */}
+                    {animeInfo.staff.slice(0, loadStaffIndex).map((item) => (
+                      <li key={item[0]} className="">
+                        <h3 className="mb-1 rounded bg-gray-200 px-2 py-1 text-sm font-bold">
+                          {item[0]}
+                        </h3>
+                        <p className="py-1 px-2 text-sm">{item[1]}</p>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    onClick={() => displayStaffMore()}
+                    className="text-sm"
+                  >
+                    {isStaffEmpty ? (
+                      <span className="text-violet-800">
+                        <ChevronUpIcon className="inline-block h-4 w-4" />{' '}
+                        閉じる
+                      </span>
+                    ) : (
+                      <span className="text-violet-800">
+                        <ChevronDownIcon className="inline-block h-4 w-4" />{' '}
+                        さらに表示
+                      </span>
+                    )}
+                  </button>
+                </div>
+                {animeInfo.op || animeInfo.ed ? (
+                  // <div className="mb-6 flex flex-wrap">
+                  <div className="mb-6 grid grid-cols-4 gap-4">
+                    {animeInfo.op ? (
+                      <div className="">
+                        <h3 className="mb-1 rounded bg-gray-200 px-2 py-1 text-sm font-bold">
+                          OP
+                        </h3>
+                        <p className="px-2 py-1 text-sm">
+                          {animeInfo.op[0] + ' 『' + animeInfo.op[1] + '』'}
+                        </p>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                    {animeInfo.ed ? (
+                      <div>
+                        <h3 className="rounded bg-gray-200 px-2 py-1 text-sm font-bold">
+                          ED
+                        </h3>
+                        <p className="px-2 py-1 text-sm">
+                          {animeInfo.ed[0] + ' 『' + animeInfo.ed[1] + '』'}
+                        </p>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </div>
                 ) : (
-                  <span className="text-violet-800">
-                    <ChevronDownIcon className="inline-block h-4 w-4" />{' '}
-                    さらに表示
-                  </span>
+                  ''
                 )}
-              </button>
+                <div className="mb-6">
+                  <h3 className="mb-2 text-sm font-bold">キャスト</h3>
+                  <ul className="mb-1 grid grid-cols-4 gap-4">
+                    {/* <ul className="mb-1 flex flex-wrap"> */}
+                    {animeInfo.cast.slice(0, loadCastIndex).map((item) => (
+                      <li key={item[0]} className="">
+                        <h3 className="mb-1 rounded bg-gray-200 px-2 py-1 text-sm font-bold">
+                          {item[0]}
+                        </h3>
+                        <p className=" px-2 py-1 text-sm">{item[1]}</p>
+                      </li>
+                    ))}
+                  </ul>
+                  <button onClick={() => displayCastMore()} className="text-sm">
+                    {isCastEmpty ? (
+                      <span className="text-violet-800">
+                        <ChevronUpIcon className="inline-block h-4 w-4" />{' '}
+                        閉じる
+                      </span>
+                    ) : (
+                      <span className="text-violet-800">
+                        <ChevronDownIcon className="inline-block h-4 w-4" />{' '}
+                        さらに表示
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </BackGroundWhite>
-      <BackGroundGray>
-        <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
-          あらすじ
-        </h2>
-        <p className="tracking-wider">{animeInfo?.summary}</p>
-      </BackGroundGray>
-      {/* <BackGroundWhite>
+          </BackGroundWhite>
+          <BackGroundGray>
+            <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
+              あらすじ
+            </h2>
+            <p className="tracking-wider">{animeInfo?.summary}</p>
+          </BackGroundGray>
+          {/* {' '} */}
+          {/* <BackGroundWhite>
         <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
           視聴可能な動画配信サービス
         </h2>
         <StreamingService />
       </BackGroundWhite> */}
-      {/* <BackGroundGray>
+          {/* {' '} */}
+          {/* <BackGroundGray>
         <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
           <HashtagIcon className="mr-2 h-5 w-5" />
           {animeInfo?.title}によく使用されているタグ
         </h2>
         <AnimeTag animeId={animeId} />
       </BackGroundGray> */}
-      <BackGroundWhite>
-        <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
-          <ChatAltIcon className="mr-2 h-5 w-5" />
-          {animeInfo?.title}
-          に投稿された感想・評価
-        </h2>
-        <AnimeReviewTabs animeId={animeId} />
-      </BackGroundWhite>
-      {/* <BackGroundGray>
+          <BackGroundWhite>
+            <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
+              <ChatAltIcon className="mr-2 h-5 w-5" />
+              {animeInfo?.title}
+              に投稿された感想・評価
+            </h2>
+            <AnimeReviewTabs animeId={animeId} />
+          </BackGroundWhite>
+          {/* <BackGroundGray>
         <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
           2021年春アニメの他作品
         </h2>
         <AnotherAnime />
         <Button>もっと見る</Button>
       </BackGroundGray> */}
+        </>
+      ) : (
+        <p className="flex justify-center">
+          <RefreshIcon className="w-10 animate-spin text-gray-700" />
+        </p>
+      )}
+
       <Score
         anime={animeInfo as Anime}
         setReviewModal={setReviewModal}

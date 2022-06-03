@@ -25,14 +25,14 @@ type ListButton = {
 type UnlistButton = {
   anime: Anime;
   user: User | null | undefined;
-  authUserListData: ListData[] | undefined;
+  lists: List[] | undefined;
   dbAnimes: any;
 };
 type DeleteReviweButton = {
   anime: Anime;
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   user: User | null | undefined;
-  authUserReviewData: ReviewData[] | undefined;
+  reviews: ReviewData[] | undefined;
   dbAnimes: any;
 };
 //リストに登録する
@@ -113,7 +113,7 @@ export const listButton = async (props: ListButton) => {
 export const unlistButton = async (props: UnlistButton) => {
   const user = props.user;
   const anime = props.anime;
-  const lists = props.authUserListData;
+  const lists = props.lists;
   const dbLists = props.dbAnimes.data;
   if (!user) {
     toast.error('ログインしてください');
@@ -141,7 +141,7 @@ export const unlistButton = async (props: UnlistButton) => {
 export const deleteReviweButton = async (props: DeleteReviweButton) => {
   const user = props.user;
   const anime = props.anime;
-  const reviews = props.authUserReviewData;
+  const reviews = props.reviews;
   const setReviewModal = props.setReviewModal;
   const dbLists = props.dbAnimes.data;
   if (!user) {

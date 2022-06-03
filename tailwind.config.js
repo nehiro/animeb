@@ -58,6 +58,7 @@ module.exports = {
         '50%': '50%',
         16: '4rem',
       },
+      minHeight: { 100: '100px' },
     },
     container: {
       center: true,
@@ -74,7 +75,6 @@ module.exports = {
       decimal: 'decimal',
       lowerLatin: 'lower-latin',
     },
-    minHeight: { 100: '100px' },
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
   variants: {

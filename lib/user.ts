@@ -50,13 +50,13 @@ export const subscribeFollowUsers = (
 };
 
 // 自分をフォローしてくれているユーザーを表示する: 他のユーザーのfollowサブコレクションをcollectionGroupで一気に参照
-// 引数でログインユーザーのuidとusersを返すコールバックj関数(setFollowerUsers:hooks)
+// 引数でログインユーザーのuidとusersを返すコールバック関数(setFollowerUsers:hooks)
 export const subscribeFollowerUsers = (
   uid: string,
   callback: (users: User[]) => void
 ) => {
   const ref = collectionGroup(db, `follows`);
-  const q = query(ref, where('id', '==', uid));
+  const q = query(ref, where('uid', '==', uid));
   return onSnapshot(q, async (snap) => {
     const tasks = snap.docs.map((doc) => {
       // console.log(doc.id, 'doc.id');

@@ -26,17 +26,19 @@ import {
   query,
   where,
   doc,
+  collection,
 } from 'firebase/firestore';
 import { ReviewData } from '../../../types/ReviewData';
 import { DbAnime } from '../../../types/DbAnime';
 import { userReviews } from '../../../lib/getReviews';
 import { userLists } from '../../../lib/getList';
+import { List } from '../../../types/List';
 
 const MyPage = (props: { userInfo: User }) => {
   //user管理
-  const { user, reviews } = useAuth();
+  const { user, reviews, lists } = useAuth();
   const userId = props.userInfo.uid;
-  console.log(userId);
+  // console.log(userId);
   const userData = props.userInfo;
   const { animes } = useAnime();
   // console.log(user?.uid, 'uid');
@@ -48,6 +50,37 @@ const MyPage = (props: { userInfo: User }) => {
       user === null && router.replace('/');
     });
   }, []);
+
+  //ログインユーザーがreviewしているかどうか
+  const [otherReviews, setOtherReviews] = useState<ReviewData[]>();
+
+  // console.log(userId, 'userId index');
+
+  const [followCount, setFollowCount] = useState<number>();
+  const [followerCount, setFollowerCount] = useState<number>();
+
+  useEffect(() => {
+    const otherUserReviews = userReviews(userId, (reviews) =>
+      setOtherReviews(reviews)
+    );
+
+    const otherUserInfo = async () => {
+      const ref = doc(db, `users/${userId}`);
+      const snap = await getDoc(ref);
+      return snap.data() as User;
+    };
+
+    if (userId === user?.uid) {
+      setFollowCount(user.followCount);
+      setFollowerCount(user.followerCount);
+    } else {
+      otherUserInfo().then((item) => {
+        setFollowCount(item.followCount);
+        setFollowerCount(item.followerCount);
+      });
+    }
+  }, [userId]);
+
   const tabs = [
     { name: 'watched', href: `/users/${userId}`, icon: EyeIcon, current: true },
     {
@@ -57,24 +90,21 @@ const MyPage = (props: { userInfo: User }) => {
       current: false,
     },
     {
-      name: 'following',
+      name: `${followCount ? followCount : 0} following`,
       href: `/users/${userId}/following`,
       icon: UsersIcon,
       current: false,
     },
     {
-      name: 'followers',
+      name: `${followerCount ? followerCount : 0} followers`,
       href: `/users/${userId}/followers`,
       icon: UserGroupIcon,
       current: false,
     },
   ];
 
-  //ログインユーザーがreviewしているかどうか
-  const otherUserReviews = userReviews(userId);
-
   const userReviewsFilter = animes?.filter((anime) => {
-    return otherUserReviews?.find(
+    return otherReviews?.find(
       (reviewTitle) => reviewTitle.title === anime.title
     );
   });

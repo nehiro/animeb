@@ -10,12 +10,12 @@ export type Anime = {
   pv: string;
   year: number;
   quarter: number;
-  staff: string[];
+  staff: string[][];
   op: string[];
   ed: string[];
   summary: string;
-  cast: string[];
+  cast: string[][];
   subTitle: string[];
-  onair: string[];
+  onair: string[][];
   streaming: string[];
 };

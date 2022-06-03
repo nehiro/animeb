@@ -46,7 +46,7 @@ const FollowButton = ({ user }: Props) => {
 
     const ref = doc(db, `users/${authUserId}/follows/${targetUserId}`);
     setDoc(ref, {
-      id: user.uid,
+      uid: user.uid,
       createAt: Date.now(),
     });
     updateCount(authUserId, 'followCount', 1);

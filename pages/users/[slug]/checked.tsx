@@ -4,20 +4,22 @@ import {
   UserGroupIcon,
   UsersIcon,
 } from '@heroicons/react/solid';
+import { doc, getDoc } from 'firebase/firestore';
 import { list } from 'firebase/storage';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Card from '../../../components/card/Card';
 import { adminDB } from '../../../firebase/server';
 import Layout from '../../../layouts/Layout';
 import LayoutNoNav from '../../../layouts/LayoutNoNav';
 import MyPageSubHeader from '../../../layouts/MyPageSubHeader';
 import { userLists } from '../../../lib/getList';
+import { List } from '../../../types/List';
 import { User } from '../../../types/User';
 import { useAnime } from '../../../utils/animeContext';
-import { auth } from '../../../utils/firebase';
+import { auth, db } from '../../../utils/firebase';
 import { useAuth } from '../../../utils/userContext';
 
 const MyPage = (props: { userInfo: User }) => {
@@ -33,6 +35,29 @@ const MyPage = (props: { userInfo: User }) => {
       user === null && router.replace('/');
     });
   }, []);
+
+  //ログインユーザーがlistしているかどうか
+  const [otherLists, setOtherLists] = useState<List[]>();
+  const [followCount, setFollowCount] = useState<number>();
+  const [followerCount, setFollowerCount] = useState<number>();
+  useEffect(() => {
+    const otherUserLists = userLists(userId, (lists) => setOtherLists(lists));
+    const otherUserInfo = async () => {
+      const ref = doc(db, `users/${userId}`);
+      const snap = await getDoc(ref);
+      return snap.data() as User;
+    };
+
+    if (userId === user?.uid) {
+      setFollowCount(user.followCount);
+      setFollowerCount(user.followerCount);
+    } else {
+      otherUserInfo().then((item) => {
+        setFollowCount(item.followCount);
+        setFollowerCount(item.followerCount);
+      });
+    }
+  }, [userId]);
   const tabs = [
     {
       name: 'watched',
@@ -47,24 +72,20 @@ const MyPage = (props: { userInfo: User }) => {
       current: true,
     },
     {
-      name: 'following',
+      name: `${followCount ? followCount : 0} following`,
       href: `/users/${userId}/following`,
       icon: UsersIcon,
       current: false,
     },
     {
-      name: 'followers',
+      name: `${followerCount ? followerCount : 0} followers`,
       href: `/users/${userId}/followers`,
       icon: UserGroupIcon,
       current: false,
     },
   ];
-
-  //ログインユーザーがlistしているかどうか
-  const otherUserLists = userLists(userId);
-
   const newLists = animes?.filter((anime) => {
-    return otherUserLists?.find((listTitle) => listTitle.title === anime.title);
+    return otherLists?.find((listTitle) => listTitle.title === anime.title);
   });
 
   function classNames(...classes: string[]) {

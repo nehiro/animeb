@@ -10,6 +10,7 @@ import { db } from '../utils/firebase';
 import Image from 'next/image';
 import { User } from '../types/User';
 import toast from 'react-hot-toast';
+import Link from 'next/link';
 
 type Props = {
   user: User;
@@ -46,7 +47,7 @@ const UserItem = ({ user }: Props) => {
 
     const ref = doc(db, `users/${authUserId}/follows/${targetUserId}`);
     setDoc(ref, {
-      id: user.uid,
+      uid: user.uid,
       createAt: Date.now(),
     });
     updateCount(authUserId, 'followCount', 1);
@@ -66,32 +67,39 @@ const UserItem = ({ user }: Props) => {
   };
 
   return (
-    <div className="flex items-center border bg-white p-4">
-      <div className="relative mr-2 h-10 w-10 overflow-hidden rounded-full">
-        <Image src={user.photoURL} alt="" layout="fill" />
-      </div>
+    <div className="flex items-center justify-between border bg-white p-4">
+      <Link href={`/users/${user.uid}`}>
+        <a className="flex items-center">
+          <div className="relative mr-2 h-10 w-10 overflow-hidden rounded-full">
+            <Image src={user.photoURL} alt="" layout="fill" />
+          </div>
 
-      <div className="flex-1">
-        <p>{user.name}</p>
-        {isFollower() && (
-          <p className="mt-1 text-sm text-gray-500">フォローされています</p>
-        )}
-      </div>
-      {isFollow() ? (
-        <button
-          onClick={() => unFollow(authUser?.uid, user.uid)}
-          className="rounded-full border border-transparent bg-indigo-500 px-2 py-1 text-sm text-white"
-        >
-          フォロー中
-        </button>
-      ) : (
-        <button
-          onClick={() => follow(authUser?.uid, user.uid)}
-          className="rounded-full border border-indigo-500 px-2 py-1 text-sm text-indigo-500 hover:bg-indigo-100"
-        >
-          フォロー
-        </button>
-      )}
+          <div className="flex-1">
+            <p>{user.name}</p>
+            {isFollower() && (
+              <p className="mt-1 text-sm text-gray-500">フォローされています</p>
+            )}
+          </div>
+        </a>
+      </Link>
+
+      {user.uid !== authUser?.uid ? (
+        isFollow() ? (
+          <button
+            onClick={() => unFollow(authUser?.uid, user.uid)}
+            className="rounded-full border border-transparent bg-indigo-500 px-2 py-1 text-sm text-white"
+          >
+            フォロー中
+          </button>
+        ) : (
+          <button
+            onClick={() => follow(authUser?.uid, user.uid)}
+            className="rounded-full border border-indigo-500 px-2 py-1 text-sm text-indigo-500 hover:bg-indigo-100"
+          >
+            フォロー
+          </button>
+        )
+      ) : null}
     </div>
   );
 };

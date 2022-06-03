@@ -67,7 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   //退会ユーザーをフォローしているユーザーのfollowCountをマイナスとfollowsサブコレのuid削除
   const followRef = query(
     collectionGroup(db, 'follows'),
-    where('id', '==', `${uid}`)
+    where('uid', '==', `${uid}`)
   );
   if (followRef) {
     const snap = await getDocs(followRef);

@@ -26,6 +26,7 @@ export const AnimeProvider = ({ children }: { children: ReactNode }) => {
     const response = await fetch(url, {
       method: 'GET',
     });
+    // console.log(response, 'response');
 
     const json = await response.json();
     // console.log('json', json);

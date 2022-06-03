@@ -1,69 +1,60 @@
 import {
-  collection,
   collectionGroup,
   doc,
   getDoc,
-  getDocs,
   onSnapshot,
   query,
   where,
 } from 'firebase/firestore';
-import useSWR from 'swr';
-// import { listData } from '../types/listData';
 import { List } from '../types/List';
-import { ListData } from '../types/ListData';
 import { db } from '../utils/firebase';
 
-export const userLists = (userId: string) => {
-  const { data } = useSWR(userId && `lists`, async () => {
-    const ref = query(
-      collectionGroup(db, 'lists'),
-      where('uid', '==', `${userId}`)
-    );
-    // console.log(userId, 'userId');
-    // console.log(ref, '0');
-    const snap = await getDocs(ref);
-    // console.log(snap.empty, '1');
+export const userLists = (
+  userId: string,
+  callback: (lists: List[]) => void
+) => {
+  const ref = query(
+    collectionGroup(db, 'lists'),
+    where('uid', '==', `${userId}`)
+  );
+
+  return onSnapshot(ref, async (snap) => {
+    // const snap = await getDocs(ref);
 
     const datas = snap.docs.map((item) => {
-      // console.log(item.ref.parent.parent?.id, '2');
-      return getLists(item.ref.parent.parent?.id as string);
+      return getLists(item.ref.parent.parent?.id as string, userId);
     });
-    // console.log(datas, '6');
 
     const lists = await Promise.all(datas);
-    // console.log(lists, '7');
 
-    return lists;
+    // console.log(lists, lists);
+
+    callback(lists);
   });
 
-  const getLists = async (id: string): Promise<ListData> => {
-    const animeRef = doc(db, `animes/${id}`);
-    const animeSnap = await getDoc(animeRef);
-    const newId = animeSnap.data()?.id as string;
-    const newTitle = animeSnap.data()?.title as string;
-    // console.log(newId, newTitle, '3');
+  // return data as ListData[];
+};
 
-    const animeData = { id: newId, title: newTitle };
-    const listRef = doc(db, `animes/${id}/lists/${userId}`);
-    const listSnap = await getDoc(listRef);
-    const uidOnly = listSnap.data()?.uid as string;
-    const addId = {
-      uid: uidOnly,
-      id: id,
-    };
-    // console.log(addId, '4');
+const getLists = async (id: string, userId: string): Promise<List> => {
+  const animeRef = doc(db, `animes/${id}`);
+  const animeSnap = await getDoc(animeRef);
+  const newId = animeSnap.data()?.id as string;
+  const newTitle = animeSnap.data()?.title as string;
 
-    const newData = {
-      ...animeData,
-      ...addId,
-    };
-    // console.log(newData, '5');
-
-    return newData as ListData;
+  const animeData = { id: newId, title: newTitle };
+  const listRef = doc(db, `animes/${id}/lists/${userId}`);
+  const listSnap = await getDoc(listRef);
+  const uidOnly = listSnap.data()?.uid as string;
+  const addId = {
+    uid: uidOnly,
+    id: id,
   };
 
-  // console.log(data, '8');
+  const newData = {
+    ...animeData,
+    ...addId,
+  };
+  // console.log(newData, '5');
 
-  return data as ListData[];
+  return newData as List;
 };

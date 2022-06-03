@@ -4,17 +4,18 @@ import {
   UserGroupIcon,
   UsersIcon,
 } from '@heroicons/react/solid';
+import { doc, getDoc } from 'firebase/firestore';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Following from '../../../components/Following';
 import { adminDB } from '../../../firebase/server';
 import Layout from '../../../layouts/Layout';
 import LayoutNoNav from '../../../layouts/LayoutNoNav';
 import MyPageSubHeader from '../../../layouts/MyPageSubHeader';
 import { User } from '../../../types/User';
-import { auth } from '../../../utils/firebase';
+import { auth, db } from '../../../utils/firebase';
 import { useAuth } from '../../../utils/userContext';
 
 const MyPage = (props: { userInfo: User }) => {
@@ -29,6 +30,28 @@ const MyPage = (props: { userInfo: User }) => {
       user === null && router.replace('/');
     });
   }, []);
+
+  const [followCount, setFollowCount] = useState<number>();
+  const [followerCount, setFollowerCount] = useState<number>();
+  const [otherUserId, setOtherUserId] = useState<string>();
+  useEffect(() => {
+    const otherUserInfo = async () => {
+      const ref = doc(db, `users/${userId}`);
+      const snap = await getDoc(ref);
+      return snap.data() as User;
+    };
+
+    if (userId === user?.uid) {
+      setFollowCount(user.followCount);
+      setFollowerCount(user.followerCount);
+    } else {
+      otherUserInfo().then((item) => {
+        setFollowCount(item.followCount);
+        setFollowerCount(item.followerCount);
+        setOtherUserId(userId);
+      });
+    }
+  }, [userId]);
   const tabs = [
     {
       name: 'watched',
@@ -43,13 +66,13 @@ const MyPage = (props: { userInfo: User }) => {
       current: false,
     },
     {
-      name: 'following',
+      name: `${followCount ? followCount : 0} following`,
       href: `/users/${userId}/following`,
       icon: UsersIcon,
       current: true,
     },
     {
-      name: 'followers',
+      name: `${followerCount ? followerCount : 0} followers`,
       href: `/users/${userId}/followers`,
       icon: UserGroupIcon,
       current: false,
@@ -70,7 +93,6 @@ const MyPage = (props: { userInfo: User }) => {
                 {tabs.map((tab) => (
                   <Link href={tab.href} key={tab.name}>
                     <a
-                      // key={tab.name}
                       className={classNames(
                         tab.current
                           ? 'border-indigo-500 text-indigo-600'
@@ -100,7 +122,7 @@ const MyPage = (props: { userInfo: User }) => {
       <section>
         <div className="container py-4">
           <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3">
-            <Following></Following>
+            <Following otherUserId={otherUserId as string} />
           </div>
         </div>
       </section>

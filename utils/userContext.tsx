@@ -7,8 +7,8 @@ import {
   onSnapshot,
 } from '@firebase/firestore';
 import { createContext, FC, useContext, useEffect, useState } from 'react';
-// import { userLists } from '../lib/getList';
-// import { userReviews } from '../lib/getReviews';
+import { userLists } from '../lib/getList';
+import { userReviews } from '../lib/getReviews';
 import {
   subscribeFollowerUsers,
   subscribeFollowUsers,
@@ -38,8 +38,8 @@ const AuthContext = createContext<AuthContextProps>({
   followUsers: undefined,
   followerUsers: undefined,
   likeIds: undefined,
-  // reviews: undefined,
-  // lists: undefined,
+  reviews: undefined,
+  lists: undefined,
 });
 //箱の中を詰める
 export const AuthProvider: FC = ({ children }) => {
@@ -54,15 +54,17 @@ export const AuthProvider: FC = ({ children }) => {
   const [likeIds, setLikeIds] = useState<string[]>();
   const [loading, setLoading] = useState<boolean>(true);
 
-  // const [reviews, setReviews] = useState<ReviewData[]>();
-  // const [lists, setLists] = useState<List[]>();
+  const [reviews, setReviews] = useState<ReviewData[]>();
+  const [lists, setLists] = useState<List[]>();
 
   //呼び出されたら一度だけレンダリング
   useEffect(() => {
     //ログインユーザー監視
     let unsubscribeUser: Unsubscribe;
     const unsubscribeAuth = onAuthStateChanged(auth, (authUser) => {
+      //Q:ここで何をしているか
       unsubscribeUser?.();
+      // console.log(unsubscribeUser?.(), 'unsubscribeUser');
       if (authUser) {
         const userDoc = doc(db, `users/${authUser.uid}`);
         // console.log(authUser, 'authUser');
@@ -95,13 +97,16 @@ export const AuthProvider: FC = ({ children }) => {
         });
       } else {
         //authUserがあればログイン
-        console.log(authUser, 'authUser');
-        console.log('ログインしてない');
+        // console.log(authUser, 'authUser');
+        // console.log('ログインしてない');
         setUser(null);
         setLoading(false);
       }
     });
     return () => {
+      //Q:ここで何をしているか
+      // console.log(unsubscribeUser?.(), 'unsubscribeUser');
+      // console.log(unsubscribeAuth?.(), 'unsubscribeAuth');
       unsubscribeUser?.();
       unsubscribeAuth();
     };
@@ -122,10 +127,12 @@ export const AuthProvider: FC = ({ children }) => {
       );
       unsubscribes.push(subscribeLikes(user.uid, (ids) => setLikeIds(ids)));
 
-      // const reviews = userReviews(user.uid, (reviews) => setReviews(reviews));
+      const reviews = userReviews(user.uid, (reviews) => setReviews(reviews));
+      // console.log(reviews, 'reviews');
 
-      // const lists = userLists(user.uid, (lists) => setLists(lists));
+      const lists = userLists(user.uid, (lists) => setLists(lists));
 
+      //Q:ここで何をしているか
       return () => {
         unsubscribes.forEach((unsubscribe) => unsubscribe());
         // reviews;
@@ -143,8 +150,8 @@ export const AuthProvider: FC = ({ children }) => {
         followUsers,
         likeIds,
         followerUsers,
-        // reviews,
-        // lists,
+        reviews,
+        lists,
       }}
     >
       {children}

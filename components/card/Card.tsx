@@ -32,21 +32,25 @@ type Card = {
 };
 
 const Card = ({ anime }: { anime: Anime }) => {
-  const { user, lists } = useAuth();
+  const { user, lists, reviews } = useAuth();
+  // console.log(user, 'user');
 
   const { mutate } = useSWRConfig();
 
   //ログインユーザーがlistしているかどうか
-  const authUserListData = userLists(user?.uid as string);
+  // const authUserListData = userLists(user?.uid as string);
   // console.log(authUseListData);
+  // const listed = () => {
+  //   return authUserListData?.find((list) => list.title === anime?.title);
+  // };
   const listed = () => {
-    return authUserListData?.find((list) => list.title === anime?.title);
+    return lists?.find((list) => list.title === anime?.title);
   };
 
   //ログインユーザーがreviewしているかどうか
-  const authUserReviewData = userReviews(user?.uid as string);
+  // const authUserReviewData = userReviews(user?.uid as string);
   const reviewed = () => {
-    return authUserReviewData?.find((review) => review.title === anime?.title);
+    return reviews?.find((review) => review.title === anime?.title);
   };
 
   //animesコレクションにあるタイトル
@@ -143,7 +147,6 @@ const Card = ({ anime }: { anime: Anime }) => {
     }
     setReviewModal(true);
   };
-
   return (
     <>
       <div className="mb-2">
@@ -192,8 +195,8 @@ const Card = ({ anime }: { anime: Anime }) => {
             <button
               className="w-full"
               onClick={() => {
-                unlistButton({ anime, user, authUserListData, dbAnimes });
-                mutate(user?.uid && `lists`);
+                unlistButton({ anime, user, lists, dbAnimes });
+                // mutate(user?.uid && `lists`);
               }}
             >
               <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
@@ -208,7 +211,7 @@ const Card = ({ anime }: { anime: Anime }) => {
               className="w-full"
               onClick={() => {
                 listButton({ anime, user, dbAnimes });
-                mutate(user?.uid && `lists`);
+                // mutate(user?.uid && `lists`);
               }}
             >
               <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">

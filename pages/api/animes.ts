@@ -4,6 +4,33 @@ import db from './db.json';
 
 type Response = Anime | string;
 
+export type Anime2 = {
+  items: [
+    {
+      id?: string;
+      doing: boolean;
+      media: string;
+      firstTime: boolean;
+      season: number;
+      title: string;
+      ruby: string;
+      url: string;
+      pv: string;
+      year: number;
+      quarter: number;
+      staff: string[][];
+      op: string[];
+      ed: string[];
+      summary: string;
+      cast: string[][];
+      subTitle: string[];
+      onair: string[][];
+      streaming: string[];
+    }
+  ];
+};
+type Response2 = Anime2 | string;
+
 const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
   try {
     switch (req.method) {
@@ -16,6 +43,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
       // 取得
       case 'GET':
         // console.log('db', db);
+        // console.log('res', res);
+
         res.status(200).json(db);
         return;
       // 削除

@@ -31,14 +31,12 @@ const Score = ({
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   reviewModal: boolean;
 }) => {
-  const { user } = useAuth();
+  const { user, reviews } = useAuth();
   // console.log(reviews, 'reviews');
   //ログインユーザーがreviewしているかどうか
-  const authUserReviewData = userReviews(user?.uid as string);
+  // const authUserReviewData = userReviews(user?.uid as string);
   // console.log(authUseReviewData, 'authUseReviewData');
-  const reviewedRef = authUserReviewData?.find(
-    (review) => review.title === anime?.title
-  );
+  const reviewedRef = reviews?.find((review) => review.title === anime?.title);
   // const reviewedRef = reviews?.find((review) => review.title === anime?.title);
   // console.log(reviewedRef, 'reviewedRef');
 
@@ -376,7 +374,7 @@ const Score = ({
         className="fixed inset-0 z-50 overflow-y-auto"
         onClose={() => setReviewModal(false)}
       >
-        <div className="min-h-screen flex items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div className="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -592,7 +590,7 @@ const Score = ({
                             anime,
                             setReviewModal,
                             user,
-                            authUserReviewData,
+                            reviews,
                             dbAnimes,
                           })
                         }

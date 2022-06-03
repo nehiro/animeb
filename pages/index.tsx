@@ -38,6 +38,9 @@ const Home = () => {
   const { user, loading, reviews, lists } = useAuth();
 
   // console.log(lists, 'lists');
+  // console.log(reviews, 'reviews');
+  // console.log(user, 'user');
+
   const { data: users } = useSWR('users', async () => {
     const ref = collection(db, 'users');
     const snap = await getDocs(ref);

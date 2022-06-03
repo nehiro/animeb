@@ -110,16 +110,16 @@ const AnimeWork = (animeTitle: AnimeName) => {
   };
 
   //ログインユーザーがreviewしているかどうか
-  const authUserReviewData = userReviews(user?.uid as string);
-  const reviewedRef = authUserReviewData?.find(
+  // const authUserReviewData = userReviews(user?.uid as string);
+  const reviewedRef = reviews?.find(
     (review) => review.title === animeTitle?.name
   );
 
   //ログインユーザーがlistしているかどうか
-  const authUserListData = userLists(user?.uid as string);
+  // const authUserListData = userLists(user?.uid as string);
   // console.log(authUseListData);
   const listed = () => {
-    return authUserListData?.find((list) => list.title === animeTitle.name);
+    return lists?.find((list) => list.title === animeTitle.name);
   };
 
   const animeInfoArray = animes?.filter(
@@ -287,7 +287,7 @@ const AnimeWork = (animeTitle: AnimeName) => {
                           unlistButton({
                             anime: animeInfo as Anime,
                             user,
-                            authUserListData,
+                            lists,
                             dbAnimes,
                           });
                           mutate(user?.uid && `lists`);

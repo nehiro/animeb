@@ -11,6 +11,7 @@ import { db } from '../utils/firebase';
 import { useAuth } from '../utils/userContext';
 import useSWR from 'swr';
 import { User } from '../types/User';
+import { useMediaQuery } from 'react-responsive';
 import Timeline from '../components/Timeline';
 import UserItem from '../components/UserItem';
 import Profile from '../components/Profile';
@@ -53,18 +54,27 @@ const Home = () => {
   //   return null;
   // }
 
+  const isBigScreen = useMediaQuery({ query: '(min-width: 640px)' });
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 639px)' });
+
   return (
     <>
-      <section className="relative h-96">
-        <Image
-          src="/images/hero.png"
-          layout="fill"
-          objectFit="cover"
-          alt=""
-          priority
-        />
+      <section className="relative h-0 w-full bg-hero_sp bg-cover bg-center bg-no-repeat pt-50% sm:bg-hero_pc sm:pt-30%">
+        <p className="absolute top-1/2 left-8 -translate-y-1/2 rounded-full bg-purple drop-shadow-md sm:left-1/4">
+          <Link href="/about">
+            <a className="flex items-center justify-center px-4 py-3 sm:px-6 sm:py-3">
+              {isBigScreen && (
+                <Image src="/images/logo.svg" width="140" height="28" alt="" />
+              )}
+              {isSmallScreen && (
+                <Image src="/images/logo.svg" width="110" height="22" alt="" />
+              )}
+              <span>について</span>
+            </a>
+          </Link>
+        </p>
       </section>
-      <div>
+      {/* <div>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <h2 className="font-bold">あなたのタイムライン</h2>
@@ -91,7 +101,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <AllUserTable></AllUserTable> */}
 
       <BackGroundGray>

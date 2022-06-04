@@ -53,12 +53,18 @@ module.exports = {
         no2: "url('/images/silver.svg')",
         no3: "url('/images/bronze.svg')",
         searchIcon: "url('/images/search.svg')",
+        hero_pc: "url('/images/hero_pc.png')",
+        hero_sp: "url('/images/hero_sp.png')",
       }),
       backgroundSize: {
         '50%': '50%',
         16: '4rem',
       },
       minHeight: { 100: '100px' },
+      spacing: {
+        '30%': '30%',
+        '50%': '50%',
+      },
     },
     container: {
       center: true,

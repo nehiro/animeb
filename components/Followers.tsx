@@ -14,10 +14,10 @@ import UserItem from './UserItem';
 
 const Following = (props: { otherUserId: string }) => {
   const { user, followUsers, followerUsers } = useAuth();
-  console.log(followerUsers);
-  console.log(followUsers);
+  // console.log(followerUsers);
+  // console.log(followUsers);
   const otherUserId = props.otherUserId;
-  console.log(otherUserId);
+  // console.log(otherUserId);
   // console.log(user?.uid);
   const [otherUserFollower, setOtherUserFollower] = useState<User[]>();
   useEffect(() => {

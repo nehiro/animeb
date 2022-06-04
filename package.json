@@ -36,6 +36,7 @@
     "react-hot-toast": "^2.2.0",
     "react-instantsearch-dom": "^6.19.0",
     "react-modal": "^3.14.4",
+    "react-responsive": "^9.0.0-beta.8",
     "react-sortablejs": "^6.0.3",
     "sortablejs": "^1.14.0",
     "swr": "^1.1.2",

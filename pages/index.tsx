@@ -48,14 +48,14 @@ const Home = () => {
     return snap.docs.map((doc) => doc.data() as User);
   });
 
+  const isBigScreen = useMediaQuery({ query: '(min-width: 640px)' });
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 639px)' });
+
   if (loading) return null;
 
   // if (user === undefined) {
   //   return null;
   // }
-
-  const isBigScreen = useMediaQuery({ query: '(min-width: 640px)' });
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 639px)' });
 
   return (
     <>

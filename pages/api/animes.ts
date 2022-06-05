@@ -1,35 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Anime } from '../../types/Anime';
+import { Anime, JsonAnime } from '../../types/Anime';
 import db from './db.json';
 
-type Response = Anime | string;
-
-export type Anime2 = {
-  items: [
-    {
-      id?: string;
-      doing: boolean;
-      media: string;
-      firstTime: boolean;
-      season: number;
-      title: string;
-      ruby: string;
-      url: string;
-      pv: string;
-      year: number;
-      quarter: number;
-      staff: string[][];
-      op: string[];
-      ed: string[];
-      summary: string;
-      cast: string[][];
-      subTitle: string[];
-      onair: string[][];
-      streaming: string[];
-    }
-  ];
-};
-type Response2 = Anime2 | string;
+type Response = JsonAnime | string;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
   try {

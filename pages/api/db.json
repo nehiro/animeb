@@ -44,7 +44,7 @@
         ["四条璃生奈", "田所あずさ"],
         ["神黙根子", "伊藤美来"]
       ],
-      "subTitle": [null],
+      "subTitle": null,
       "onair": [
         ["TOKYO MX", "2022年1月8日(土)24:30～"],
         ["群馬テレビ", "2022年1月8日(土)24:30～"],
@@ -103,8 +103,8 @@
       "ed": null,
       "summary": "酒、酒、肉、酒、寝！お酒と油っこいものとしょっぱいものと甘いものをこよなく愛する川尻こだまの、ほのぼの不摂生日常漫画。自堕落なライフスタイルが男女問わず共感を呼び、Twitterフォロワー数33万以上を獲得し、Twitterの総いいね数は1000万を超える。",
       "cast": [["川尻こだま役とだいたい全部の役", "悠木碧"]],
-      "subTitle": [null],
-      "onair": ["フジテレビ", "2022年1月13日(木)25:25～"],
+      "subTitle": null,
+      "onair": [["フジテレビ", "2022年1月13日(木)25:25～"]],
       "streaming": ["FOD"]
     },
     {
@@ -145,8 +145,8 @@
         ["フリード・バグアー", "小西克幸"],
         ["ミハイル", "石井真"]
       ],
-      "subTitle": [null],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "ｄアニメストア",
         "Amazon Prime Video",
@@ -203,8 +203,8 @@
         ["小仏凪", "佐倉薫"],
         ["箱部なる", "M・A・O"]
       ],
-      "subTitle": [null],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "YouTube",
         "Amazon Prime Video",
@@ -260,8 +260,8 @@
         ["ドンキ", "山下誠一郎"],
         ["各務恭子", "五十嵐麗"]
       ],
-      "subTitle": [null],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": ["WOWOWオンデマンド"]
     },
     {
@@ -298,7 +298,7 @@
         ["スピカ・ディアフェル", "仲村宗悟"]
       ],
       "subTitle": ["推しの王子と１８禁ルート突入！？"],
-      "onair": [],
+      "onair": null,
       "streaming": [
         "AnimeFesta",
         "AnimeFesta",
@@ -337,9 +337,9 @@
         ["", "榎木淳弥"],
         ["", "八代 拓"]
       ],
-      "subTitle": [null],
-      "onair": [],
-      "streaming": [null]
+      "subTitle": null,
+      "onair": null,
+      "streaming": null
     },
     {
       "media": "tv",
@@ -386,8 +386,8 @@
         ["鐘巻自斎", "小西克幸"],
         ["黒曜の女神", "桑島法子"]
       ],
-      "subTitle": [null],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "dTV",
         "アニメタイムズ",
@@ -439,7 +439,7 @@
         ["ナレーション", "川島 明（麒麟）"]
       ],
       "subTitle": ["ADはつらいよ"],
-      "onair": [],
+      "onair": null,
       "streaming": [
         "Paravi",
         "ｄTV",
@@ -507,8 +507,8 @@
         ["カミュラ", "竹達彩奈"],
         ["剣神ブレイダー／佐田巻健司", "寺島拓篤"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "dアニメストア",
         "dアニメストア ニコニコ支店",
@@ -565,8 +565,8 @@
         ["木村", "落合福嗣"],
         ["浜口", "内山昂輝"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "dアニメストア",
         "Netflix",
@@ -625,9 +625,9 @@
         ["森村タケオ", "木村昴"],
         ["羽村チノ", "杉山里穂"]
       ],
-      "subTitle": [],
-      "onair": [],
-      "streaming": []
+      "subTitle": null,
+      "onair": null,
+      "streaming": null
     },
     {
       "media": "tv",
@@ -662,9 +662,9 @@
         ["夜峰美晴", "安齋由香里"],
         ["神室絢", "松田彩希"]
       ],
-      "subTitle": [],
-      "onair": [],
-      "streaming": []
+      "subTitle": null,
+      "onair": null,
+      "streaming": null
     },
     {
       "media": "tv",
@@ -711,7 +711,7 @@
         ["タクト", "井澤佳の実"]
       ],
       "subTitle": ["わし、かわいい……"],
-      "onair": [],
+      "onair": null,
       "streaming": [
         "niconico(ニコニコ生放送／ニコニコチャンネル）",
         "GYAO!",
@@ -771,7 +771,7 @@
         ["ジャンヌ・ユーフォリア", "石川由依"]
       ],
       "subTitle": ["虎の威を借るアミドニア"],
-      "onair": [],
+      "onair": null,
       "streaming": ["FOD"]
     },
     {
@@ -819,7 +819,7 @@
         ["羅織女（らしょくじょ）", "大原さやか"]
       ],
       "subTitle": ["魎狩隊（りょうかたい）"],
-      "onair": [],
+      "onair": null,
       "streaming": [
         "Amazon Prime Video",
         "dアニメストア",
@@ -882,8 +882,8 @@
         ["ホー", "前野智昭"],
         ["ドニー", "大塚芳忠"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "dアニメストア",
         "ABEMA",
@@ -945,7 +945,7 @@
         ["光明三蔵", "宮本充"]
       ],
       "subTitle": ["青い目の天使"],
-      "onair": [],
+      "onair": null,
       "streaming": [
         "dTV",
         "アニメタイムズ",
@@ -1016,7 +1016,7 @@
         ["鍵浦昭", "島﨑信長"]
       ],
       "subTitle": ["青い目の天使"],
-      "onair": [],
+      "onair": null,
       "streaming": [
         "U-NEXT",
         "dアニメストア",
@@ -1079,8 +1079,8 @@
         ["不如帰", "崎山つばさ"],
         ["ルシオ・コルテス", "佐藤流司"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "Amazon Prime Video",
         "アニメ放題",
@@ -1146,7 +1146,7 @@
         ["黒革", "津田健次郎"]
       ],
       "subTitle": ["八十万日貨の男"],
-      "onair": [],
+      "onair": null,
       "streaming": [
         "niconico(ニコニコ生放送／ニコニコチャンネル)",
         "GYAO!",
@@ -1198,8 +1198,8 @@
         ["アルマ＝レプシウス", "白石晴香"],
         ["イリス", "井澤詩織"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "dアニメストア",
         "Netflix",
@@ -1272,7 +1272,7 @@
         ["黒田・レイン・ちふゆ", "高森奈津美"]
       ],
       "subTitle": ["女たちの世界"],
-      "onair": [],
+      "onair": null,
       "streaming": [
         "dアニメストア",
         "ABEMA",
@@ -1345,8 +1345,8 @@
         ["ゾフィア", "川島悠美"],
         ["コルト・グライス", "松風雅也"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "dTV",
         "dアニメストア",
@@ -1416,7 +1416,7 @@
         "サヴェジ・ガーデン作戦（中庭へ向かえ！） その②",
         "集中豪雨警報発令"
       ],
-      "onair": [],
+      "onair": null,
       "streaming": ["Netflix"]
     },
     {
@@ -1460,8 +1460,8 @@
         ["福元二葉", "村上奈津実"],
         ["二宮藍子", "井上ほの花"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "niconico(ニコニコ生放送／ニコニコチャンネル）",
         "GYAO!",
@@ -1521,8 +1521,8 @@
         ["乾心寿", "羊宮妃那"],
         ["五条薫", "斧アツシ"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "Prime Video",
         "dアニメストア",
@@ -1568,10 +1568,10 @@
       "op": null,
       "ed": null,
       "summary": "ブラック企業で働くペンギンが、社会の理不尽にテイコウするアニメ。上司からの無茶振りや、同僚からの押し付け。そして、な～んか憎めない後輩。一言言いたいけど、今後の関係を考えるとそうもいかない。そんな理不尽に対して、言いたかった一言を言ってくれるペンギンたちのお話。",
-      "cast": [],
-      "subTitle": [],
-      "onair": [],
-      "streaming": []
+      "cast": null,
+      "subTitle": null,
+      "onair": null,
+      "streaming": null
     },
     {
       "media": "tv",
@@ -1617,8 +1617,8 @@
         ["ラークルム", "濱野大輝"],
         ["グリュエール", "大塚明夫"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "dアニメストア",
         "Netflix",
@@ -1694,8 +1694,8 @@
         ["翠堂香苗", "大原さやか"],
         ["クナイ", "斉藤壮馬"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "ABEMA",
         "dアニメストア",
@@ -1757,8 +1757,8 @@
         ["鳳王次郎", "諏訪部順一"],
         ["神木結衣", "小松未可子"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "dアニメストア",
         "アニメカ",
@@ -1832,8 +1832,8 @@
         ["エクスキューショナー", "伊藤静"],
         ["クルーガー", "大塚明夫"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "ABEMA",
         "Amazon Prime Video",
@@ -1877,9 +1877,9 @@
         ["エマ", "潘めぐみ"],
         ["ガムッチ", "井上ほの花"]
       ],
-      "subTitle": [],
-      "onair": [],
-      "streaming": []
+      "subTitle": null,
+      "onair": null,
+      "streaming": null
     },
     {
       "media": "tv",
@@ -1923,8 +1923,8 @@
         ["山田武志", "土屋神葉"],
         ["牧高美和", "花澤香菜"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "dアニメストア",
         "AmazonPrime Video",
@@ -1994,8 +1994,8 @@
         ["ボブ・マッカーシー", "江原正士"],
         ["ナレーション", "古谷徹"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": ["NETFLIX"]
     },
     {
@@ -2028,9 +2028,9 @@
         ["スノウ", "長縄まりあ"],
         ["ヴィザルガ", "小山力也"]
       ],
-      "subTitle": [],
-      "onair": [],
-      "streaming": []
+      "subTitle": null,
+      "onair": null,
+      "streaming": null
     },
     {
       "media": "tv",
@@ -2082,8 +2082,8 @@
         ["アストルフォ", "村瀬歩"],
         ["ムル", "小牧未侑"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "Amazon プライム・ビデオ",
         "ｄアニメストア",
@@ -2150,8 +2150,8 @@
         ["エドワード王太子", "天﨑滉平"],
         ["ナレーション", "大塚芳忠"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "アニメ放題",
         "ABEMA（有料会員のみ視聴可）",
@@ -2208,8 +2208,8 @@
         ["ユグレイン", "牧野由依"],
         ["ナレーション", "江原正士"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "ABEMA",
         "Google Play",
@@ -2306,8 +2306,8 @@
         ["蓮美朔", "木津つばさ"],
         ["ハリケーン児玉", "福山潤"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "アニメ放題",
         "auスマートパスプレミアム",
@@ -2362,7 +2362,7 @@
         ["ユウキ", "阿部敦"]
       ],
       "subTitle": ["美食を訪ねて〜好奇心は最高のブーケガルニ〜"],
-      "onair": [],
+      "onair": null,
       "streaming": [
         "ABEMA",
         "Google Play",
@@ -2444,8 +2444,8 @@
         ["源頼朝", "杉田智和"],
         ["源義経", "梶裕貴"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": ["FOD"]
     },
     {
@@ -2476,9 +2476,9 @@
         ["アンベア・ナレーション", "龍田直樹"],
         ["ベイビーたち", "石橋桃、吉村那奈美、斉藤明日美"]
       ],
-      "subTitle": [],
-      "onair": [],
-      "streaming": []
+      "subTitle": null,
+      "onair": null,
+      "streaming": null
     },
     {
       "media": "tv",
@@ -2514,8 +2514,8 @@
         ["司波深夜", "井上喜久子"],
         ["桜井穂波", "遠藤綾"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": [
         "ABEMA",
         "dアニメストア",
@@ -2578,9 +2578,9 @@
         ["", "奈日抽ねね"],
         ["", "水科葵"]
       ],
-      "subTitle": [],
-      "onair": [],
-      "streaming": []
+      "subTitle": null,
+      "onair": null,
+      "streaming": null
     },
     {
       "media": "tv",
@@ -2619,8 +2619,8 @@
         ["ケイリナ", "田所あずさ"],
         ["ケイリック", "髙木朋弥"]
       ],
-      "subTitle": [],
-      "onair": [],
+      "subTitle": null,
+      "onair": null,
       "streaming": ["dアニメストア"]
     },
     {
@@ -2668,9 +2668,9 @@
         ["立花梓馬", "八代拓"],
         ["霧島琢磨", "内田雄馬"]
       ],
-      "subTitle": [],
-      "onair": [],
-      "streaming": []
+      "subTitle": null,
+      "onair": null,
+      "streaming": null
     }
   ]
 }

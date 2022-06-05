@@ -118,7 +118,6 @@ export const AuthProvider: FC = ({ children }) => {
     // console.log(user, 'user');
     if (user) {
       const unsubscribes: Unsubscribe[] = [];
-
       unsubscribes.push(
         subscribeFollowUsers(user.uid, (users) => setFollowUsers(users))
       );
@@ -127,10 +126,12 @@ export const AuthProvider: FC = ({ children }) => {
       );
       unsubscribes.push(subscribeLikes(user.uid, (ids) => setLikeIds(ids)));
 
-      const reviews = userReviews(user.uid, (reviews) => setReviews(reviews));
+      unsubscribes.push(
+        userReviews(user.uid, (reviews) => setReviews(reviews))
+      );
       // console.log(reviews, 'reviews');
 
-      const lists = userLists(user.uid, (lists) => setLists(lists));
+      unsubscribes.push(userLists(user.uid, (lists) => setLists(lists)));
 
       //Q:ここで何をしているか
       return () => {

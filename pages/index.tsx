@@ -39,6 +39,7 @@ const Home = () => {
   const { user, loading, reviews, lists } = useAuth();
 
   // console.log(lists, 'lists');
+  // console.log(typeof lists, 'type');
   // console.log(reviews, 'reviews');
   // console.log(user, 'user');
 
@@ -53,7 +54,7 @@ const Home = () => {
 
   if (loading) return null;
 
-  // if (user === undefined) {
+  // if (!user) {
   //   return null;
   // }
 
@@ -74,7 +75,7 @@ const Home = () => {
           </Link>
         </p>
       </section>
-      {/* <div>
+      <div>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <h2 className="font-bold">あなたのタイムライン</h2>
@@ -101,7 +102,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
       {/* <AllUserTable></AllUserTable> */}
 
       <BackGroundGray>

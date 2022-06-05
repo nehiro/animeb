@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Anime } from '../types/Anime';
+import { Anime, JsonAnime } from '../types/Anime';
 
 type AnimeContextProps = {
   animes: Anime[] | undefined;
@@ -15,7 +15,8 @@ type AnimeContextProps = {
 const AnimeContext = createContext<AnimeContextProps>({ animes: undefined });
 
 export const AnimeProvider = ({ children }: { children: ReactNode }) => {
-  const [animes, setAnimes] = useState();
+  const [animes, setAnimes] = useState<Anime[]>();
+  // console.log(animes, 'animes');
 
   useEffect(() => {
     getAllAnimeTitles();

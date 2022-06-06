@@ -134,26 +134,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       }
     } else {
-      //退会ユーザーにdeletedを入れる
+      //サブコレがなくなったら退会ユーザーにdeletedを入れる
       const ref = admin.firestore().collection('users').doc(uid);
-      // await ref
-      //   .set({
-      //     deleted: true,
-      //   })
-      //   .then(() => {
-      //     console.log('deleted代入成功', ref.id);
-      //   })
-      //   .catch(() => {
-      //     console.log('deleted代入失敗', ref.id);
-      //   });
       await ref
-        .delete()
+        .set({
+          deleted: true,
+        })
         .then(() => {
-          console.log('ユーザー情報削除成功', docRef.id);
+          console.log('deleted代入成功', ref.id);
         })
         .catch(() => {
-          console.log('ユーザー情報削除失敗', docRef.id);
+          console.log('deleted代入失敗', ref.id);
         });
+      // await ref
+      //   .delete()
+      //   .then(() => {
+      //     console.log('ユーザー情報削除成功', docRef.id);
+      //   })
+      //   .catch(() => {
+      //     console.log('ユーザー情報削除失敗', docRef.id);
+      //   });
     }
   };
 

@@ -46,6 +46,7 @@ export const AuthProvider: FC = ({ children }) => {
   //それぞれstateで保持
   //自分→User
   const [user, setUser] = useState<User | null>();
+  // console.log(user, 'user');
   //フォローしているユーザーたち→User[]
   const [followerUsers, setFollowerUsers] = useState<User[]>();
   //フォローしてくれているユーザーたち→User[]
@@ -136,8 +137,6 @@ export const AuthProvider: FC = ({ children }) => {
       //Q:ここで何をしているか
       return () => {
         unsubscribes.forEach((unsubscribe) => unsubscribe());
-        // reviews;
-        // lists;
       };
     }
   }, [user]);

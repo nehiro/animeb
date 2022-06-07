@@ -13,4 +13,5 @@ export type User = {
   createdAt: number;
   ranking: UserRanking[];
   admin?: boolean;
+  deleted?: boolean;
 };

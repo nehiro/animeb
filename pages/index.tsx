@@ -1,4 +1,11 @@
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 import Image from 'next/image';
 import React, { ReactElement, useEffect } from 'react';
 import BackGroundGray from '../components/BackGroundGray';
@@ -45,7 +52,8 @@ const Home = () => {
 
   const { data: users } = useSWR('users', async () => {
     const ref = collection(db, 'users');
-    const snap = await getDocs(ref);
+    const q = query(ref, where('createdAt', '>', 1));
+    const snap = await getDocs(q);
     return snap.docs.map((doc) => doc.data() as User);
   });
 

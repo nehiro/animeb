@@ -91,7 +91,7 @@ export const AuthProvider: FC = ({ children }) => {
             setUser(newUser);
           } else {
             // console.log('データが有ったらこっち、ユーザー作らない');
-            // console.log(snap.data(), 'data');
+            // console.log(snap.data().photoURL, 'data');
             setUser(snap.data() as User);
             setLoading(false);
           }

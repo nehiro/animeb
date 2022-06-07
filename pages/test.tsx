@@ -9,6 +9,9 @@ import { ReactElement, useMemo, useRef, useState } from 'react';
 import LayoutNoNav from '../layouts/LayoutNoNav';
 import { searchClient } from '../pages/api/client';
 import toast, { Toaster } from 'react-hot-toast';
+import useSWRInfinite from 'swr/infinite';
+import { Anime, JsonAnime } from '../types/Anime';
+import { useAnime } from '../utils/animeContext';
 
 export type AlgoliaData = {
   objectId: string;
@@ -21,124 +24,227 @@ type Debounce = {
   time: number;
 };
 
+export type Animes = {
+  items: {
+    id?: string;
+    doing: boolean;
+    media: string;
+    firstTime: boolean;
+    season: number;
+    title: string;
+    ruby: string;
+    url: string;
+    pv: string | null;
+    year: number;
+    quarter: number;
+    staff: string[][];
+    op: string[] | null;
+    ed: string[] | null;
+    summary: string | null;
+    cast: string[][] | null;
+    subTitle: string[] | null;
+    onair: string[][] | null;
+    streaming: string[] | null;
+  }[];
+};
+export type newData = {
+  id?: string;
+  doing: boolean;
+  media: string;
+  firstTime: boolean;
+  season: number;
+  title: string;
+  ruby: string;
+  url: string;
+  pv: string | null;
+  year: number;
+  quarter: number;
+  staff: string[][];
+  op: string[] | null;
+  ed: string[] | null;
+  summary: string | null;
+  cast: string[][] | null;
+  subTitle: string[] | null;
+  onair: string[][] | null;
+  streaming: string[] | null;
+}[];
 const test = () => {
-  const router = useRouter();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [autocompleteState, setAutocompleteState] =
-    useState<AutocompleteState<AlgoliaData>>();
+  // const router = useRouter();
+  // const inputRef = useRef<HTMLInputElement>(null);
+  // const [autocompleteState, setAutocompleteState] =
+  //   useState<AutocompleteState<AlgoliaData>>();
 
-  const debounced = debouncePromise(
-    (items: Debounce) => Promise.resolve(items),
-    1000
-  );
-  function debouncePromise(fn: any, time: number) {
-    // console.log(fn, 'fn');
-    let timerId: NodeJS.Timeout | undefined = undefined;
+  // const debounced = debouncePromise(
+  //   (items: Debounce) => Promise.resolve(items),
+  //   1000
+  // );
+  // function debouncePromise(fn: any, time: number) {
+  //   // console.log(fn, 'fn');
+  //   let timerId: NodeJS.Timeout | undefined = undefined;
 
-    return function debounced(...args: any[]) {
-      // console.log(args, 'args');
-      if (timerId) {
-        // console.log(typeof timerId, 'timerId');
-        clearTimeout(timerId);
-      }
+  //   return function debounced(...args: any[]) {
+  //     // console.log(args, 'args');
+  //     if (timerId) {
+  //       // console.log(typeof timerId, 'timerId');
+  //       clearTimeout(timerId);
+  //     }
 
-      return new Promise((resolve) => {
-        timerId = setTimeout(() => resolve(fn(...args)), time);
-        // console.log(timerId, 'timerId');
-      });
-    };
-  }
+  //     return new Promise((resolve) => {
+  //       timerId = setTimeout(() => resolve(fn(...args)), time);
+  //       // console.log(timerId, 'timerId');
+  //     });
+  //   };
+  // }
 
-  // useMemo：値が変わった時だけ実行
-  const autocomplete = useMemo(
+  // // useMemo：値が変わった時だけ実行
+  // const autocomplete = useMemo(
+  //   () =>
+  //     createAutocomplete<AlgoliaData>({
+  //       id: 'autocomplete-search',
+  //       //未入力でもタイトル出すか
+  //       openOnFocus: false,
+  //       //inputの状態が変わるたびに呼び出される
+  //       onStateChange({ state }) {
+  //         // {
+  //         //   console.log(state, 'state');
+  //         // }
+  //         setAutocompleteState(state);
+  //       },
+  //       placeholder: 'タイトルで検索',
+  //       // onSubmit(params) {
+  //       //   alert(`実際には「${params.state.query}」の検索結果画面に遷移します`);
+  //       // },
+
+  //       //データ取得場所
+  //       getSources() {
+  //         return debounced([
+  //           {
+  //             sourceId: 'animes',
+  //             getItemInputValue({ item }: { item: AlgoliaData }) {
+  //               {
+  //                 console.log(item, 'item');
+  //               }
+  //               return item.title;
+  //             },
+  //             //取得するアイテムを絞る
+  //             getItems({ query }: { query: string }) {
+  //               //query：入力された文字
+  //               // {
+  //               //   console.log(typeof query, 'query');
+  //               // }
+  //               return getAlgoliaResults({
+  //                 searchClient,
+  //                 //animesからqueryの文字で20件取得
+  //                 queries: [
+  //                   {
+  //                     indexName: 'animes',
+  //                     query,
+  //                     params: {
+  //                       hitsPerPage: 20,
+  //                     },
+  //                   },
+  //                 ],
+  //               });
+  //             },
+  //             //アイテムにリンクを返す
+  //             getItemUrl({ item }: { item: AlgoliaData }) {
+  //               // {
+  //               //   console.log(item, 'item');
+  //               // }
+  //               //itemはアルゴリアから引っ張ってきたそれぞれのデータ
+  //               return `/animes/${item.title}`;
+  //             },
+  //             //アイテムをクリックした時に走る
+  //             onSelect(params: { itemUrl: string }) {
+  //               // {
+  //               //   console.log(params, 'params');
+  //               // }
+  //               router.replace(params.itemUrl as string, undefined, {
+  //                 //ページをロードせずにurlを更新：ここでは無意味
+  //                 ///hoge?aaa=1 => /hoge?bbb=2はOK
+  //                 ///hoge => /fugaはNG
+  //                 shallow: true,
+  //               });
+  //             },
+  //           },
+  //         ]) as any;
+  //       },
+  //       navigator: {
+  //         navigate({ itemUrl }) {
+  //           router.push(itemUrl);
+  //         },
+  //       },
+  //     }),
+  //   []
+  // );
+
+  // const notify = () => toast('Here is your toast.');
+  const { animes } = useAnime();
+  const PAGE_SIZE = 2;
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    if (previousPageData && !previousPageData.length) return null;
+    return `http://localhost:3000/test?page=${
+      pageIndex + 1
+    }&PAGE_SIZE=${PAGE_SIZE}`;
+  };
+
+  const { data, size, setSize } = useSWRInfinite<
+    any,
+    number,
+    (pageIndex: number, previousPageData: any) => string | null
+  >(
+    getKey,
     () =>
-      createAutocomplete<AlgoliaData>({
-        id: 'autocomplete-search',
-        //未入力でもタイトル出すか
-        openOnFocus: false,
-        //inputの状態が変わるたびに呼び出される
-        onStateChange({ state }) {
-          // {
-          //   console.log(state, 'state');
-          // }
-          setAutocompleteState(state);
-        },
-        placeholder: 'タイトルで検索',
-        // onSubmit(params) {
-        //   alert(`実際には「${params.state.query}」の検索結果画面に遷移します`);
-        // },
-
-        //データ取得場所
-        getSources() {
-          return debounced([
-            {
-              sourceId: 'animes',
-              getItemInputValue({ item }: { item: AlgoliaData }) {
-                {
-                  console.log(item, 'item');
-                }
-                return item.title;
-              },
-              //取得するアイテムを絞る
-              getItems({ query }: { query: string }) {
-                //query：入力された文字
-                // {
-                //   console.log(typeof query, 'query');
-                // }
-                return getAlgoliaResults({
-                  searchClient,
-                  //animesからqueryの文字で20件取得
-                  queries: [
-                    {
-                      indexName: 'animes',
-                      query,
-                      params: {
-                        hitsPerPage: 20,
-                      },
-                    },
-                  ],
-                });
-              },
-              //アイテムにリンクを返す
-              getItemUrl({ item }: { item: AlgoliaData }) {
-                // {
-                //   console.log(item, 'item');
-                // }
-                //itemはアルゴリアから引っ張ってきたそれぞれのデータ
-                return `/animes/${item.title}`;
-              },
-              //アイテムをクリックした時に走る
-              onSelect(params: { itemUrl: string }) {
-                // {
-                //   console.log(params, 'params');
-                // }
-                router.replace(params.itemUrl as string, undefined, {
-                  //ページをロードせずにurlを更新：ここでは無意味
-                  ///hoge?aaa=1 => /hoge?bbb=2はOK
-                  ///hoge => /fugaはNG
-                  shallow: true,
-                });
-              },
-            },
-          ]) as any;
-        },
-        navigator: {
-          navigate({ itemUrl }) {
-            router.push(itemUrl);
-          },
-        },
-      }),
-    []
+      fetch('/api/animes', {
+        method: 'GET',
+      }).then((r) => r.json()),
+    {
+      initialSize: 2,
+    }
   );
 
-  const notify = () => toast('Here is your toast.');
+  if (!data) return 'loading';
+
+  // console.log(data, 'data');
+  // console.log(data?.flat(), 'data.flat()');
+
+  const newData: newData = data
+    .flat()
+    .map((item, index) => item.items)
+    .flat();
+
+  const dataLength = data.flat().map((item, index) => item.items);
+
+  console.log(newData, 'newData');
+  console.log(dataLength, 'dataLength');
+
+  // console.log(Array.isArray(newData), 'newData');
+
+  let totalAnimes = 0;
+  for (let i = 0; i < dataLength.length; i++) {
+    totalAnimes += dataLength[i].length;
+  }
+  const isEmpty = dataLength?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty ||
+    (dataLength && dataLength[dataLength.length - 1]?.length < PAGE_SIZE);
 
   return (
     <>
-      <div>
+      <h2>SWRを使った「もっと見る」機能</h2>
+      {newData.map((i: any, index) => (
+        <div key={index}>{i.title}</div>
+      ))}
+      {!isReachingEnd ? (
+        <button onClick={() => setSize(size + 1)}>もっと見る</button>
+      ) : (
+        'すべて読み込みました。'
+      )}
+
+      {/* <div>
         <button onClick={notify}>ボタン</button>
         <Toaster />
-      </div>
+      </div> */}
       {/* <div {...autocomplete.getRootProps({})}>
         <form
           {...(autocomplete.getFormProps({

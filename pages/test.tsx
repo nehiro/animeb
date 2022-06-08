@@ -180,60 +180,58 @@ const test = () => {
 
   // const notify = () => toast('Here is your toast.');
   const { animes } = useAnime();
-  const PAGE_SIZE = 2;
+  const limit = 5;
+
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `http://localhost:3000/test?page=${
+    return `http://localhost:3000/api/animes?page=${
       pageIndex + 1
-    }&PAGE_SIZE=${PAGE_SIZE}`;
+    }&limit=${limit}`;
   };
 
-  const { data, size, setSize } = useSWRInfinite<
-    any,
-    number,
-    (pageIndex: number, previousPageData: any) => string | null
-  >(
+  const { data, size, setSize } = useSWRInfinite(
     getKey,
-    () =>
-      fetch('/api/animes', {
+    (url) =>
+      fetch(url, {
         method: 'GET',
       }).then((r) => r.json()),
     {
-      initialSize: 2,
+      initialSize: 1,
     }
   );
 
   if (!data) return 'loading';
 
-  // console.log(data, 'data');
+  console.log(data, 'data');
   // console.log(data?.flat(), 'data.flat()');
 
-  const newData: newData = data
-    .flat()
-    .map((item, index) => item.items)
-    .flat();
+  const newData: newData = data.flat();
 
-  const dataLength = data.flat().map((item, index) => item.items);
+  // const dataLength = data.flat().map((item, index) => item.items);
 
-  console.log(newData, 'newData');
-  console.log(dataLength, 'dataLength');
+  // console.log(newData, 'newData');
+  // console.log(dataLength, 'dataLength');
 
   // console.log(Array.isArray(newData), 'newData');
 
   let totalAnimes = 0;
-  for (let i = 0; i < dataLength.length; i++) {
-    totalAnimes += dataLength[i].length;
+  for (let i = 0; i < data.length; i++) {
+    totalAnimes += data[i].length;
   }
-  const isEmpty = dataLength?.[0]?.length === 0;
+  const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
-    isEmpty ||
-    (dataLength && dataLength[dataLength.length - 1]?.length < PAGE_SIZE);
+    isEmpty || (data && data[data.length - 1]?.length < limit);
 
   return (
     <>
-      <h2>SWRを使った「もっと見る」機能</h2>
+      <h2>もっと見る機能</h2>
       {newData.map((i: any, index) => (
-        <div key={index}>{i.title}</div>
+        <div
+          className={`${i.title === 'リーマンズクラブ' ? 'bg-blue-700' : null}`}
+          key={index}
+        >
+          {i.title}
+        </div>
       ))}
       {!isReachingEnd ? (
         <button onClick={() => setSize(size + 1)}>もっと見る</button>

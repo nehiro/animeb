@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Anime, JsonAnime } from '../../types/Anime';
+import { Anime, JsonAnime, JsonAnime2 } from '../../types/Anime';
 import db from './db.json';
+import dbName from './dbName.json';
 
-type Response = JsonAnime | string;
+type Response = JsonAnime2[] | string;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
   try {
@@ -18,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
         // console.log('db', db);
         // console.log('res', res);
 
-        res.status(200).json(db);
+        res.status(200).json(dbName);
         return;
       // 削除
       case 'DELETE':

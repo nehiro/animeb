@@ -176,11 +176,65 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   //reviews
   //reviewsのuid削除
+  // collectiongroupでとってくる
   //それぞれのスコアをマイナス、reviewCount、unScoreCountをマイナス
+  const reviewRef = query(
+    collectionGroup(db, 'reviews'),
+    where('uid', '==', `${uid}`)
+  );
+  if (reviewRef) {
+    const snap = await getDocs(reviewRef);
+    const snapData = snap.docs.map((item) => {
+      return getAnimesLists(item.ref.parent.parent?.id as string);
+    });
+    //isScoreがtrueの場合それぞれのスコアをアニメのスコアからひく
+    // サブコレクションのuidを削除
+    // さらにreviewCountを1マイナス
+
+    // isScoreがfalseの場合、そのままサブコレクションのuidを削除
+    // unScoreReviewCountを1マイナス
+  }
 
   //lists
   //listsのuidを削除
   //listCountをマイナス
+  const listRef = query(
+    collectionGroup(db, 'lists'),
+    where('uid', '==', `${uid}`)
+  );
+  if (reviewRef) {
+    const snap = await getDocs(reviewRef);
+    const snapData = snap.docs.map(async (item) => {
+      const parentId = item.ref.parent.parent?.id;
+      const parentRef = doc(db, `users/${parentId}/lists/${uid}`);
+      // サブコレクションのuidを削除
+      await deleteDoc(parentRef)
+        .then(() => {
+          console.log('削除uidのデータ削除成功');
+        })
+        .catch(() => {
+          console.log('削除uidのデータ削除失敗');
+        });
+      // getListsはuser data
+      return getAnimesLists(item.ref.parent.parent?.id as string);
+    });
+    const lists = await Promise.all(snapData);
+    // console.log(lists, 'lists');
+
+    // さらにlistCountを1マイナス
+    lists.forEach(
+      async (item: any) =>
+        await updateDoc(doc(db, `animes/${item.uid}`), {
+          listCount: increment(-1),
+        })
+          .then(() => {
+            console.log('listCountマイナス成功');
+          })
+          .catch(() => {
+            console.log('listCountマイナス失敗');
+          })
+    );
+  }
 
   // すべてが成功
   res.status(200).json('success');
@@ -189,6 +243,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const getLists = async (id: string): Promise<any> => {
   const userRef = doc(db, `users/${id}`);
   const userSnap = await getDoc(userRef);
+  const userData = userSnap.data();
+  // console.log(userData, 'userData');
+  return userData as any;
+};
+
+const getAnimesLists = async (id: string): Promise<any> => {
+  const animeRef = doc(db, `animes/${id}`);
+  const userSnap = await getDoc(animeRef);
   const userData = userSnap.data();
   // console.log(userData, 'userData');
   return userData as any;

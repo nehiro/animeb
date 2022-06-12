@@ -2,8 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Anime, JsonAnime, JsonAnime2 } from '../../types/Anime';
 import db from './db.json';
 import dbName from './dbName.json';
-
-type Response = JsonAnime2[] | string;
+//test
+// type Response = JsonAnime2[] | string;
+type Response = JsonAnime | string;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
   try {
@@ -16,19 +17,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
         break;
       // 取得
       case 'GET':
-        // console.log('db', db);
-        // console.log('res', res);
-
-        res.status(200).json(dbName);
-        return;
+        //test
+        // return console.log(res.status(200).json(dbName), 'res');
+        // return res.status(200).json(dbName);
+        return res.status(200).json(db);
       // 削除
       case 'DELETE':
         break;
     }
-    res.status(200).send('OK');
+    return res.status(200).send('OK');
   } catch (error) {
     console.log(error);
-    res.status(500).send('Internal Server Error');
+    return res.status(500).send('Internal Server Error');
   }
 };
 

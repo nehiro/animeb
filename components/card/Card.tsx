@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { EyeIcon, BookmarkIcon, StarIcon } from '@heroicons/react/solid';
 import { Anime } from '../../types/Anime';
 import 'rc-slider/assets/index.css';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
 import { useAuth } from '../../utils/userContext';
 import { listButton, unlistButton } from '../../lib/card';
@@ -13,6 +13,7 @@ import Score from '../Score';
 import { userReviews } from '../../lib/getReviews';
 import { userLists } from '../../lib/getList';
 import toast from 'react-hot-toast';
+import { DbAnime } from '../../types/DbAnime';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -37,12 +38,23 @@ const Card = ({ anime }: { anime: Anime }) => {
 
   const { mutate } = useSWRConfig();
 
+  //レビューのモーダル
+  const [reviewModal, setReviewModal] = useState(false);
+  const modalOpen = () => {
+    if (!user) {
+      toast.error('ログインしてください');
+      return;
+    }
+    setReviewModal(true);
+  };
+
   //ログインユーザーがlistしているかどうか
   // const authUserListData = userLists(user?.uid as string);
   // console.log(authUseListData);
   // const listed = () => {
   //   return authUserListData?.find((list) => list.title === anime?.title);
   // };
+  // console.log(lists, 'Card lists');
   const listed = () => {
     return lists?.find((list) => list.title === anime?.title);
   };
@@ -54,27 +66,42 @@ const Card = ({ anime }: { anime: Anime }) => {
   };
 
   //animesコレクションにあるタイトル
-  const dbAnimes = useSWR('animes', async () => {
+  // const dbAnimes = useSWR('animes', async () => {
+  //   const ref = collection(db, 'animes');
+  //   const snap = await getDocs(ref);
+  //   return snap.docs.map((doc) => doc.data());
+  // });
+
+  const [dbAnimes, setDbAnimes] = useState<DbAnime[]>();
+  useEffect(() => {
     const ref = collection(db, 'animes');
-    const snap = await getDocs(ref);
-    return snap.docs.map((doc) => doc.data());
-  });
+    onSnapshot(ref, async (snap) => {
+      // console.log(
+      //   snap.docs.map((doc) => doc.data()),
+      //   'data'
+      // );
 
-  // console.log(dbAnimes.data, 'dbAnimes');
+      const data = snap.docs.map((doc) => doc.data());
+      // console.log(data);
+      setDbAnimes(data as any);
+      // return snap.docs.map((doc) => doc.data());
+    });
+  }, [user]);
 
-  //listCount取得
-  const listCount = dbAnimes?.data?.find(
-    (dbAnime) => dbAnime.title === anime.title
-  )?.listCount;
+  // console.log(dbAnimes, 'dbAnimes');
+  // console.log(dbAnimes(), 'dbAnimes');
+
+  // listCount取得;
+  const listCount = dbAnimes?.find((dbAnime) => dbAnime.title === anime.title)
+    ?.listCount as number;
   // console.log(listCount);
   //reviweCount取得
-  const reviewCount = dbAnimes?.data?.find(
-    (dbAnime) => dbAnime.title === anime.title
-  )?.reviewCount;
+  const reviewCount = dbAnimes?.find((dbAnime) => dbAnime.title === anime.title)
+    ?.reviewCount as number;
   // console.log(typeof reviewCount);
 
   //unScoreReviweCount取得
-  const unScoreReviewCount = dbAnimes?.data?.find(
+  const unScoreReviewCount = dbAnimes?.find(
     (dbAnime) => dbAnime.title === anime.title
   )?.unScoreReviewCount;
   // console.log(typeof unScoreReviewCount);
@@ -96,22 +123,22 @@ const Card = ({ anime }: { anime: Anime }) => {
   };
 
   //それぞれの平均値
-  const reviewStoryScore = dbAnimes?.data?.find(
+  const reviewStoryScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === anime.title
-  )?.storyScore;
+  )?.storyScore as number;
   // console.log(typeof reviewStoryScore);
-  const reviewDrawingScore = dbAnimes?.data?.find(
+  const reviewDrawingScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === anime.title
-  )?.drawingScore;
-  const reviewVoiceActorScore = dbAnimes?.data?.find(
+  )?.drawingScore as number;
+  const reviewVoiceActorScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === anime.title
-  )?.voiceActorScore;
-  const reviewMusicScore = dbAnimes?.data?.find(
+  )?.voiceActorScore as number;
+  const reviewMusicScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === anime.title
-  )?.musicScore;
-  const reviewCharacterScore = dbAnimes?.data?.find(
+  )?.musicScore as number;
+  const reviewCharacterScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === anime.title
-  )?.characterScore;
+  )?.characterScore as number;
   const reviewSum =
     reviewStoryScore +
     reviewDrawingScore +
@@ -138,15 +165,6 @@ const Card = ({ anime }: { anime: Anime }) => {
     }
   };
 
-  //レビューのモーダル
-  const [reviewModal, setReviewModal] = useState(false);
-  const modalOpen = () => {
-    if (!user) {
-      toast.error('ログインしてください');
-      return;
-    }
-    setReviewModal(true);
-  };
   return (
     <>
       <div className="mb-2">

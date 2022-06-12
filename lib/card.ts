@@ -39,7 +39,8 @@ type DeleteReviweButton = {
 export const listButton = async (props: ListButton) => {
   const user = props.user;
   const anime = props.anime;
-  const dbLists = props.dbAnimes.data;
+  const dbAnimes = props.dbAnimes;
+  // console.log(dbAnimes, 'dbAnimes List');
   if (!user) {
     // alert('ログインしてください');
     toast.error('ログインしてください');
@@ -60,11 +61,11 @@ export const listButton = async (props: ListButton) => {
 
   //animesの処理：listsの中にタイトルあるか
   if (
-    dbLists !== undefined &&
-    dbLists.find((dbList: { title: string }) => dbList.title === anime?.title)
+    dbAnimes !== undefined &&
+    dbAnimes.find((dbList: { title: string }) => dbList.title === anime?.title)
   ) {
     //id　を取得
-    const id = dbLists.find(
+    const id = dbAnimes.find(
       (dbList: { title: string }) => dbList.title === anime?.title
     ).id;
     // console.log(id, 'id');
@@ -114,7 +115,8 @@ export const unlistButton = async (props: UnlistButton) => {
   const user = props.user;
   const anime = props.anime;
   const lists = props.lists;
-  const dbLists = props.dbAnimes.data;
+  const dbAnimes = props.dbAnimes;
+  // console.log(dbAnimes, 'dbAnimes UnList');
   if (!user) {
     toast.error('ログインしてください');
     return;
@@ -123,11 +125,13 @@ export const unlistButton = async (props: UnlistButton) => {
   const id = lists?.find((listTitle) => listTitle.title === anime?.title)?.id;
   // console.log(id);
   const ref = doc(db, `animes/${id}/lists/${user?.uid}`);
+  // console.log(ref, 'card ref');
   deleteDoc(ref).then(() => {
     toast.success(`${anime?.title}を観たいリストから外しました`);
   });
 
-  const dbId = dbLists.find(
+  // console.log(dbAnimes, 'card dbAnimes');
+  const dbId = dbAnimes.find(
     (dbList: { title: string }) => dbList.title === anime?.title
   ).id;
   // console.log(id, 'id');
@@ -139,11 +143,13 @@ export const unlistButton = async (props: UnlistButton) => {
 };
 //reviewを消す
 export const deleteReviweButton = async (props: DeleteReviweButton) => {
+  console.log('走った');
   const user = props.user;
   const anime = props.anime;
   const reviews = props.reviews;
   const setReviewModal = props.setReviewModal;
   const dbLists = props.dbAnimes.data;
+  console.log(dbLists, 'dbLists');
   if (!user) {
     toast.error('ログインしてください');
     return;

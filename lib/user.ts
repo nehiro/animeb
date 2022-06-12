@@ -75,6 +75,7 @@ export const subscribeLikes = (
 ) => {
   const ref = collection(db, `users/${uid}/likes`);
   return onSnapshot(ref, async (snap) => {
+    // console.log(snap.docs, 'usersnap.docs');
     const ids = snap.docs.map((doc) => doc.id);
     callback(ids);
   });

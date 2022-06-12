@@ -11,7 +11,6 @@ import {
   HeartIcon,
   RefreshIcon,
 } from '@heroicons/react/outline';
-import { LoginIcon } from '@heroicons/react/outline';
 import { UserIcon } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/outline';
 import React, { ReactNode, useEffect, useState } from 'react';
@@ -64,7 +63,8 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                     src="/images/logo.svg"
                     width="175"
                     height="35"
-                    alt=""
+                    alt="アニメ部！"
+                    decoding="async"
                   />
                 </a>
               </Link>

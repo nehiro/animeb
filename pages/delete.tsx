@@ -66,7 +66,7 @@ const Delete = () => {
       .then((res) => {
         toast.success('ユーザー情報を削除しました。');
         // console.log(res.status, '成功');
-        signOut(auth);
+        // signOut(auth);
       })
       .catch((res) => {
         toast.error('ユーザー情報の削除に失敗しました。');
@@ -165,7 +165,7 @@ const Delete = () => {
                     onClick={() => setOpen(false)}
                     ref={cancelButtonRef}
                   >
-                    思い止まる
+                    キャンセル
                   </button>
                 </div>
               </div>

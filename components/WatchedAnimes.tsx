@@ -11,7 +11,7 @@ import { WatchedAnime } from '../types/WatchedAnime';
 import Image from 'next/image';
 
 const WatchedAnimes = () => {
-  const { user } = useAuth();
+  const { user, reviews } = useAuth();
   const router = useRouter();
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -44,35 +44,53 @@ const WatchedAnimes = () => {
 
   const WatchedAnimes = () => {
     const ref = collection(db, `users/${user?.uid}/reviews`);
-    // console.log(ref, 'ref');
-    return onSnapshot(ref, async (snap) => {
-      // console.log(snap, 'snap');
-      const tasks = snap.docs.map((doc) => {
-        // console.log(doc.id, 'doc.id');
-        return getWatchedAnimes(doc.id);
-      });
-      const animes = await Promise.all(tasks);
 
+    if (ranking) {
+      // console.log('上が走った');
+      // console.log(ranking, 'ranking');
+      // console.log(
+      //   ranking.map((item) => item.id),
+      //   'ranking.id'
+      // );
       // console.log(animes, 'animes');
+      const newAnimes = reviews?.filter(
+        (anime) => !ranking.map((anime) => anime.id).includes(anime.id)
+      );
+      // console.log(newAnimes, 'newAnimes');
+      setWatchedAnimes(newAnimes as WatchedAnime[]);
+    } else {
+      // console.log('下が走った');
+      setWatchedAnimes(reviews as WatchedAnime[]);
+    }
+    // console.log(ref, 'ref');
+    // return onSnapshot(ref, async (snap) => {
+    //   // console.log(snap, 'snap');
+    //   const tasks = snap.docs.map((doc) => {
+    //     // console.log(doc.id, 'doc.id');
+    //     return getWatchedAnimes(doc.id);
+    //   });
+    //   const animes = await Promise.all(tasks);
 
-      if (ranking) {
-        // console.log('上が走った');
-        // console.log(ranking, 'ranking');
-        // console.log(
-        //   ranking.map((item) => item.id),
-        //   'ranking.id'
-        // );
-        // console.log(animes, 'animes');
-        const newAnimes = animes.filter(
-          (anime) => !ranking.map((anime) => anime.id).includes(anime.id)
-        );
-        // console.log(newAnimes, 'newAnimes');
-        setWatchedAnimes(newAnimes);
-      } else {
-        // console.log('下が走った');
-        setWatchedAnimes(animes);
-      }
-    });
+    //   // console.log(animes, 'animes');
+
+    //   if (ranking) {
+    //     // console.log('上が走った');
+    //     // console.log(ranking, 'ranking');
+    //     // console.log(
+    //     //   ranking.map((item) => item.id),
+    //     //   'ranking.id'
+    //     // );
+    //     // console.log(animes, 'animes');
+    //     const newAnimes = animes.filter(
+    //       (anime) => !ranking.map((anime) => anime.id).includes(anime.id)
+    //     );
+    //     // console.log(newAnimes, 'newAnimes');
+    //     setWatchedAnimes(newAnimes);
+    //   } else {
+    //     // console.log('下が走った');
+    //     setWatchedAnimes(animes);
+    //   }
+    // });
   };
 
   const getWatchedAnimes = async (id: string): Promise<WatchedAnime> => {

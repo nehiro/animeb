@@ -46,6 +46,11 @@ const Score = ({
     const snap = await getDocs(ref);
     return snap.docs.map((doc) => doc.data());
   });
+  // const {data,mutate} = useSWR('animes', async () => {
+  //   const ref = collection(db, 'animes');
+  //   const snap = await getDocs(ref);
+  //   return snap.docs.map((doc) => doc.data());
+  // });
 
   const { mutate } = useSWRConfig();
 

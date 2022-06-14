@@ -15,22 +15,22 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import AnimeTag from '../../components/AnimeTag';
-import BackGroundGray from '../../components/BackGroundGray';
-import BackGroundWhite from '../../components/BackGroundWhite';
-import Breadcrumbs from '../../components/Breadcrumbs';
-import StreamingService from '../../components/StreamingService';
-import AnimeReviewTabs from '../../components/AnimeReviewTabs';
-import AnotherAnime from '../../components/card/AnotherAnime';
-import Button from '../../components/Button';
-import Layout from '../../layouts/Layout';
+import AnimeTag from '../../../../components/AnimeTag';
+import BackGroundGray from '../../../../components/BackGroundGray';
+import BackGroundWhite from '../../../../components/BackGroundWhite';
+import Breadcrumbs from '../../../../components/Breadcrumbs';
+import StreamingService from '../../../../components/StreamingService';
+import AnimeReviewTabs from '../../../../components/AnimeReviewTabs';
+import AnotherAnime from '../../../../components/card/AnotherAnime';
+import Button from '../../../../components/Button';
+import Layout from '../../../../layouts/Layout';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useAnime } from '../../utils/animeContext';
+import { useAnime } from '../../../../utils/animeContext';
 import Link from 'next/link';
 import * as path from 'path';
 import * as fs from 'fs';
-import { Anime } from '../../types/Anime';
-import { useAuth } from '../../utils/userContext';
+import { Anime } from '../../../../types/Anime';
+import { useAuth } from '../../../../utils/userContext';
 import useSWR, { useSWRConfig } from 'swr';
 import {
   collection,
@@ -40,13 +40,13 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { db } from '../../utils/firebase';
-import { listButton, unlistButton } from '../../lib/card';
-import Score from '../../components/Score';
+import { db } from '../../../../utils/firebase';
+import { listButton, unlistButton } from '../../../../lib/card';
+import Score from '../../../../components/Score';
 import { addMonths } from 'date-fns';
 import { Tab } from '@headlessui/react';
-import { userReviews } from '../../lib/getReviews';
-import { userLists } from '../../lib/getList';
+import { userReviews } from '../../../../lib/getReviews';
+import { userLists } from '../../../../lib/getList';
 
 type AnimeName = {
   name: string;
@@ -528,7 +528,9 @@ export const getStaticPaths: GetStaticPaths<Paths> = async () => {
   const jsonText = fs.readFileSync(jsonPath, 'utf-8');
   const animes = JSON.parse(jsonText).items as Anime[];
   // console.log(animes, 'animes');
-  const paths = animes.map((item) => `/animes/${encodeURI(item.title)}`);
+  const paths = animes.map(
+    (item) => `/animes/${item.year}/${item.quarter}/${encodeURI(item.title)}`
+  );
   // console.log(paths, 'paths');
   return {
     paths,

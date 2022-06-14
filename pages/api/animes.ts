@@ -7,6 +7,7 @@ import dbName from './dbName.json';
 type Response = JsonAnime | string;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
+  // console.log(req.query, 'req.query');
   try {
     switch (req.method) {
       // 追加
@@ -17,10 +18,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
         break;
       // 取得
       case 'GET':
-        //test
-        // return console.log(res.status(200).json(dbName), 'res');
         // return res.status(200).json(dbName);
-        return res.status(200).json(db);
+        if (req.query.per_page) {
+          return res.status(200).json(db);
+        } else {
+          return res.status(200).json(db);
+        }
       // 削除
       case 'DELETE':
         break;

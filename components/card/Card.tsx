@@ -35,6 +35,7 @@ type Card = {
 const Card = ({ anime }: { anime: Anime }) => {
   const { user, lists, reviews } = useAuth();
   // console.log(user, 'user');
+  // console.log(anime, 'anime');
 
   const { mutate } = useSWRConfig();
 
@@ -168,7 +169,7 @@ const Card = ({ anime }: { anime: Anime }) => {
   return (
     <>
       <div className="mb-2">
-        <Link href={`/animes/${anime?.title}`}>
+        <Link href={`/animes/${anime.year}/${anime.quarter}/${anime?.title}`}>
           <a className="relative block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72">
             <Image
               src={
@@ -184,7 +185,7 @@ const Card = ({ anime }: { anime: Anime }) => {
         </Link>
       </div>
       <h3 className="mb-2 text-center font-bold">
-        <Link href={`/animes/${anime?.title}`}>
+        <Link href={`/animes/${anime.year}/${anime.quarter}/${anime?.title}`}>
           <a>{anime?.title}</a>
         </Link>
       </h3>

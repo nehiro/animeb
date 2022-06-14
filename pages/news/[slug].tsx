@@ -196,7 +196,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const newsRef = adminDB.collection('news');
   const snap = await newsRef.get();
   const paths = snap.docs.map((doc) => `/news/${doc.id}`);
-  // console.log(paths, 'paths');
+  console.log(paths, 'paths');
   return {
     paths,
     fallback: false,

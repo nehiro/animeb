@@ -64,12 +64,14 @@ const Delete = () => {
       }),
     })
       .then((res) => {
+        signOut(auth);
         toast.success('ユーザー情報を削除しました。');
         // console.log(res.status, '成功');
-        // signOut(auth);
       })
       .catch((res) => {
-        toast.error('ユーザー情報の削除に失敗しました。');
+        toast.error(
+          'ユーザー情報の削除に失敗しました。お手数ですが、お問い合わせをお願いいたします。'
+        );
         // console.log(res.status, '失敗');
       });
   };

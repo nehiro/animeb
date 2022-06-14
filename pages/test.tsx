@@ -180,13 +180,16 @@ const test = () => {
 
   // const notify = () => toast('Here is your toast.');
   const { animes } = useAnime();
-  const limit = 5;
+  const PAGE_SIZE = 5;
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `http://localhost:3000/api/animes?page=${
+    return `http://localhost:3000/api/animes?per_page=${PAGE_SIZE}&page=${
       pageIndex + 1
-    }&limit=${limit}`;
+    }`;
+    // return `https://api.github.com/repos/reactjs/react-a11y/issues?per_page=${PAGE_SIZE}&page=${
+    //   pageIndex + 1
+    // }`;
   };
 
   const { data, size, setSize } = useSWRInfinite(
@@ -194,7 +197,8 @@ const test = () => {
     (url) =>
       fetch(url, {
         method: 'GET',
-      }).then((r) => r.json()),
+        // }).then((r) => r.json()),
+      }).then((r) => r.json().then((r) => r.items)),
     {
       initialSize: 1,
     }
@@ -220,7 +224,7 @@ const test = () => {
   }
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
-    isEmpty || (data && data[data.length - 1]?.length < limit);
+    isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
 
   return (
     <>

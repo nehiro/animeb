@@ -8,26 +8,79 @@ import BackGroundWhite from '../components/BackGroundWhite';
 import SubpageTitle from '../components/SubpageTitle';
 
 const Help = () => {
-  const faqs = [
+  const faqs01 = [
     {
       question: 'アカウントの作成',
+      answer: `アニメ部！では、SNSログインのみを採用しております。画面右上の【登録・ログイン】をタップ（クリック）。【ご希望の認証SNSの登録・ログイン】をタップ（クリック）をしていただくと、お名前、メールアドレス、アイコン画像よりアニメ部！に登録致します。`,
+    },
+    {
+      question: 'アカウントの削除（退会）',
+      answer: `アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「アカウント情報」を選択。「退会する」を選択。推移画面にて、退会が可能です。`,
+    },
+    {
+      question: 'アニメ部！IDを変更したい',
+      answer: '申し訳ございません。アニメ部！IDは変更できません。',
+    },
+  ];
+  const faqs02 = [
+    {
+      question: 'ログインする',
+      answer: `画面右上の【登録・ログイン】をタップ（クリック）。【ご希望の認証SNSの登録・ログイン】をタップ（クリック）をしていただくと、ログインが可能です。`,
+    },
+    {
+      question: 'ログアウトする',
+      answer: `アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「ログアウト」を選択。`,
+    },
+  ];
+  const faqs03 = [
+    {
+      question: 'アニメタイトルを検索',
+      answer: `画面上部の【タイトル検索】をタップ（クリック）。現れる検索欄に探したいアニメのタイトルを入力してください。ひらがな、カタカナ、漢字、英数字を区別してご入力してください。`,
+    },
+    {
+      question: 'マイページを確認',
       answer:
-        "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        'アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「マイページ」を選択。アイコン、名前、自己紹介、watched、checked、following、followerが確認できます。',
     },
     {
       question: 'プロフィールの編集',
       answer:
-        "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        'アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「プロフィールを編集」を選択。変更したい項目を変更後、【保存する】をタップ(クリック)。',
     },
     {
-      question: 'アイコンについて',
+      question: 'アカウント情報の確認、変更',
       answer:
-        "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        'アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「アカウント情報」を選択。情報を変更する場合、項目を選択。推移した画面にて変更後、【保存する】をタップ(クリック)。',
+    },
+    // {
+    //   question: 'ベストアニメの設定',
+    //   answer:
+    //     'アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「ベストアニメ設定」を選択。情報を変更する場合、項目を選択。推移した画面にて変更後、【保存する】をタップ(クリック)。',
+    // },
+    {
+      question: '管理者を応援する',
+      answer:
+        'アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「応援する」を選択。【応援する】ボタンををタップ(クリック)後に手続き。泣いて喜びます。',
     },
     {
-      question: 'アニメ部！ IDを変更したい',
+      question: 'アニメにレビューする',
       answer:
-        "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        'アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「応援する」を選択。【応援する】ボタンををタップ(クリック)後に手続き。泣いて喜びます。',
+    },
+    {
+      question: '見たいアニメを登録する',
+      answer:
+        'アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「応援する」を選択。【応援する】ボタンををタップ(クリック)後に手続き。泣いて喜びます。',
+    },
+    {
+      question: 'アニメ情報を確認する',
+      answer:
+        'アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「応援する」を選択。【応援する】ボタンををタップ(クリック)後に手続き。泣いて喜びます。',
+    },
+    {
+      question: 'ユーザーをフォローする',
+      answer:
+        'アニメ部！へログイン後、画面の右上に自分のアイコンをタップ(クリック)。「応援する」を選択。【応援する】ボタンををタップ(クリック)後に手続き。泣いて喜びます。',
     },
   ];
   function classNames(...classes: string[]) {
@@ -39,9 +92,11 @@ const Help = () => {
       <BackGroundWhite>
         <SubpageTitle>ヘルプ</SubpageTitle>
         <div className="mb-3 rounded-md bg-gray-100 p-5">
-          <h2 className="text-lg">アニメ部！の登録と利用の開始</h2>
+          <h2 className="text-lg">
+            アニメ部！の登録と利用の開始、退会について
+          </h2>
           <dl className="space-y-4 divide-y divide-gray-200">
-            {faqs.map((faq) => (
+            {faqs01.map((faq) => (
               <Disclosure as="div" key={faq.question} className="pt-5">
                 {({ open }) => (
                   <>
@@ -71,9 +126,9 @@ const Help = () => {
           </dl>
         </div>
         <div className="mb-3 rounded-md bg-gray-100 p-5">
-          <h2 className="text-lg">ログインについて</h2>
+          <h2 className="text-lg">ログイン、ログアウトについて</h2>
           <dl className="space-y-4 divide-y divide-gray-200">
-            {faqs.map((faq) => (
+            {faqs02.map((faq) => (
               <Disclosure as="div" key={faq.question} className="pt-5">
                 {({ open }) => (
                   <>
@@ -103,9 +158,9 @@ const Help = () => {
           </dl>
         </div>
         <div className="rounded-md bg-gray-100 p-5">
-          <h2 className="text-lg">Mark!・Clip!について</h2>
+          <h2 className="text-lg">機能について</h2>
           <dl className="space-y-4 divide-y divide-gray-200">
-            {faqs.map((faq) => (
+            {faqs03.map((faq) => (
               <Disclosure as="div" key={faq.question} className="pt-5">
                 {({ open }) => (
                   <>

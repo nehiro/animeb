@@ -23,7 +23,17 @@ const year = (props: Props) => {
   // console.log(animes);
   return (
     <>
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '放送・配信時期',
+            href: 'animes',
+          },
+          {
+            name: String(year) + '年アニメ',
+          },
+        ]}
+      />
       <BackGroundGray>
         <SubpageTitle>{year}年放送・配信アニメ一覧</SubpageTitle>
         {animes.length ? (
@@ -41,6 +51,17 @@ const year = (props: Props) => {
           <NoContents></NoContents>
         )}
       </BackGroundGray>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '放送・配信時期',
+            href: 'animes',
+          },
+          {
+            name: String(year) + '年アニメ',
+          },
+        ]}
+      />
     </>
   );
 };

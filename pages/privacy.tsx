@@ -8,7 +8,13 @@ import LayoutNoNav from '../layouts/LayoutNoNav';
 const Privacy = () => {
   return (
     <>
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'プライバシーポリシー',
+          },
+        ]}
+      />
       <BackGroundWhite>
         <SubpageTitle>プライバシーポリシー</SubpageTitle>
         <p>
@@ -262,6 +268,13 @@ const Privacy = () => {
 
         <p className="mt-8 text-right">以上</p>
       </BackGroundWhite>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'プライバシーポリシー',
+          },
+        ]}
+      />
     </>
   );
 };

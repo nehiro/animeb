@@ -27,7 +27,13 @@ const Trend = () => {
 
   return (
     <>
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '注目のアニメ',
+          },
+        ]}
+      />
       <BackGroundGray>
         <SubpageTitle>注目のアニメ</SubpageTitle>
         {/* 最もレビューが多いアニメ */}
@@ -38,6 +44,13 @@ const Trend = () => {
         <SubpageTitle>最近投稿されたレビュー</SubpageTitle>
         <LatestReview></LatestReview>
       </BackGroundGray>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '注目のアニメ',
+          },
+        ]}
+      />
     </>
   );
 };

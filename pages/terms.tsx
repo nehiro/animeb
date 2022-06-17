@@ -1,11 +1,19 @@
 import React, { ReactElement } from 'react';
 import BackGroundWhite from '../components/BackGroundWhite';
+import Breadcrumbs from '../components/Breadcrumbs';
 import SubpageTitle from '../components/SubpageTitle';
 import LayoutNoNav from '../layouts/LayoutNoNav';
 
 const Terms = () => {
   return (
     <>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '利用規約',
+          },
+        ]}
+      />
       <BackGroundWhite>
         <SubpageTitle>利用規約</SubpageTitle>
         <p>
@@ -421,6 +429,13 @@ const Terms = () => {
 
         <p className="mt-8 text-right">以上</p>
       </BackGroundWhite>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '利用規約',
+          },
+        ]}
+      />
     </>
   );
 };

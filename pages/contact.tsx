@@ -40,7 +40,13 @@ const Contact = () => {
   };
   return (
     <>
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'お問い合わせ',
+          },
+        ]}
+      />
       <BackGroundWhite>
         <SubpageTitle>お問い合わせ</SubpageTitle>
         <form onSubmit={handleSubmit(submit)}>
@@ -116,7 +122,14 @@ const Contact = () => {
           </div>
         </form>
       </BackGroundWhite>
-      <Breadcrumbs></Breadcrumbs>
+
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'お問い合わせ',
+          },
+        ]}
+      />
     </>
   );
 };

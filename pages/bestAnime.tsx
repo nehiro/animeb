@@ -67,7 +67,13 @@ const BestAnime = () => {
 
   return (
     <>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'ベストアニメ設定',
+          },
+        ]}
+      />
       <BackGroundWhite>
         <SubpageTitle>ベストアニメ設定</SubpageTitle>
         <p className="mb-4 text-center">ドラッグ&ドロップで並び替え</p>
@@ -178,7 +184,13 @@ const BestAnime = () => {
         {/* <Button>さらに表示する</Button> */}
       </BackGroundWhite>
 
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'ベストアニメ設定',
+          },
+        ]}
+      />
     </>
   );
 };

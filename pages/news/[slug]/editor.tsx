@@ -30,9 +30,11 @@ import { useRouter } from 'next/router';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { useAuth } from '../../../utils/userContext';
+import Breadcrumbs from '../../../components/Breadcrumbs';
 
 const Editor = ({ news }: { news: News }) => {
   const { user } = useAuth();
+  // console.log(news);
   const admin = user?.admin;
   const router = useRouter();
   useEffect(() => {
@@ -75,7 +77,7 @@ const Editor = ({ news }: { news: News }) => {
   const onSubmit: SubmitHandler<News> = async (data: News) => {
     // console.log(data, 'data');
     // console.log(data.title, 'data.title');
-    console.log(data.body, 'data.body');
+    // console.log(data.body, 'data.body');
 
     return await updateDoc(doc(db, `news/${news.id}`), {
       title: data.title,
@@ -90,7 +92,7 @@ const Editor = ({ news }: { news: News }) => {
 
   const onInvalid = (erros: FieldErrors) => {
     alert('入力項目にエラーがあります');
-    console.log(erros);
+    // console.log(erros);
   };
 
   const notifications = [
@@ -100,26 +102,31 @@ const Editor = ({ news }: { news: News }) => {
 
   const checked = () => {
     if (news.category === 'notice') {
-      console.log('notice');
+      // console.log('notice');
       return news.category === 'notice';
     } else {
-      console.log('function');
+      // console.log('function');
       return news.category === 'function';
     }
   };
 
   return (
     <>
-      {/* <Head>
-        <link
-          href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-          rel="stylesheet"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css"
-        ></link>
-      </Head> */}
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'news',
+            href: 'news',
+          },
+          {
+            name: news.title,
+            href: 'news/' + news.id,
+          },
+          {
+            name: 'editor',
+          },
+        ]}
+      />
       <div className="relative overflow-hidden bg-white py-16">
         <div className="relative px-4 sm:px-6 lg:px-8">
           <div className="prose prose-lg prose-indigo mx-auto mt-6">
@@ -213,7 +220,7 @@ const Editor = ({ news }: { news: News }) => {
           initialFocus={cancelButtonRef}
           onClose={setOpen}
         >
-          <div className="min-h-screen flex items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+          <div className="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -281,6 +288,21 @@ const Editor = ({ news }: { news: News }) => {
           </div>
         </Dialog>
       </Transition.Root>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'news',
+            href: 'news',
+          },
+          {
+            name: news.title,
+            href: news.id,
+          },
+          {
+            name: 'editor',
+          },
+        ]}
+      />
     </>
   );
 };
@@ -299,7 +321,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  console.log(params, 'params');
+  // console.log(params, 'params');
   const newsRef = adminDB.collection('news').doc(`${params?.slug}`);
   // console.log(newsRef, 'newsRef');
   const snap = await newsRef.get();

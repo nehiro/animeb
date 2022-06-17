@@ -15,19 +15,20 @@ import { useAuth } from '../../utils/userContext';
 import { User } from '../../types/User';
 
 const Index = ({ news }: { news: News[] }) => {
-  // console.log(news, 'news');
   const { user } = useAuth();
+  // const slug = useRouter().pathname;
+  // console.log(slug);
   const admin = user?.admin;
 
   return (
     <>
-      {/* <Head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css"
-        ></link>
-      </Head> */}
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'news',
+          },
+        ]}
+      />
       <BackGroundGray>
         <SubpageTitle>ニュース</SubpageTitle>
         <div className="mb-6 overflow-hidden rounded-md bg-white shadow">
@@ -88,7 +89,13 @@ const Index = ({ news }: { news: News[] }) => {
         ) : null}
       </BackGroundGray>
 
-      {/* <Tiptap editable={false} content={content}></Tiptap> */}
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'news',
+          },
+        ]}
+      />
     </>
   );
 };
@@ -98,17 +105,8 @@ export default Index;
 export const getStaticProps: GetStaticProps = async () => {
   const newsRef = adminDB.collection('news');
   const snap = await newsRef.orderBy('createdAt', 'desc').get();
-  // console.log(snap.docs, 'snap.docs');
-  // const article = snap.docs;
   const news = snap.docs.map((doc) => {
-    // console.log(doc.data().body.content, 'doc.data().body.content');
-    // return { id: doc.id, body: doc.data() };
-    // console.log(doc.data(), 'doc.data()');
-    // console.log(doc, 'doc');
     return doc.data();
-
-    // const news = doc.data();
-    // console.log(news, 'news');
   });
   console.log(news, 'news');
   return {

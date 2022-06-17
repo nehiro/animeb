@@ -39,7 +39,22 @@ const quarter = (props: Props) => {
 
   return (
     <>
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '放送・配信時期',
+            href: 'animes',
+          },
+          {
+            name: String(year) + '年アニメ',
+            href: 'animes/' + String(year),
+          },
+          {
+            name: quarter() as string,
+            href: 'animes/' + String(year) + quarter(),
+          },
+        ]}
+      />
       <BackGroundGray>
         <SubpageTitle>
           {year}年{`${quarter()}`}放送・配信アニメ一覧

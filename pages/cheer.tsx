@@ -12,12 +12,25 @@ const cheer = () => {
   const { user } = useAuth();
   return (
     <>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: '応援する',
+          },
+        ]}
+      />
       <BackGroundWhite>
         <SubpageTitle>応援する</SubpageTitle>
         {user && <CheerProductList />}
         {user && <CheerCheeredList />}
       </BackGroundWhite>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '応援する',
+          },
+        ]}
+      />
     </>
   );
 };

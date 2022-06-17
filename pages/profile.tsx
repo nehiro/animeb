@@ -152,7 +152,13 @@ const Profile = () => {
 
   return (
     <>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'プロフィール編集',
+          },
+        ]}
+      />
       <BackGroundWhite>
         <SubpageTitle>プロフィール編集</SubpageTitle>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -226,7 +232,13 @@ const Profile = () => {
           </ul>
         </form>
       </BackGroundWhite>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'プロフィール編集',
+          },
+        ]}
+      />
       <Modal
         isOpen={!!targetFile}
         onAfterOpen={initCropper}

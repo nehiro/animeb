@@ -117,7 +117,7 @@ const WatchedAnimes = () => {
         delay={2}
         tag="ul"
       >
-        {watchedAnimes.length ? (
+        {/* {watchedAnimes.length ? (
           watchedAnimes?.map((item) => (
             <li key={item.id} className="w-full text-center">
               <div className="relative mb-2 h-52 w-full">
@@ -139,7 +139,7 @@ const WatchedAnimes = () => {
           <li className="col-span-6 flex items-center justify-center">
             レビュー済みの作品がありません。
           </li>
-        )}
+        )} */}
       </ReactSortable>
       {/* <ul>
         {watchedAnimes?.map((WatchedAnime) => (

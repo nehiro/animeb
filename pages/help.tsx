@@ -96,7 +96,13 @@ const Help = () => {
   }
   return (
     <>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'ヘルプ',
+          },
+        ]}
+      />
       <BackGroundWhite>
         <SubpageTitle>ヘルプ</SubpageTitle>
         <div className="mb-3 rounded-md bg-gray-100 p-5">
@@ -200,6 +206,13 @@ const Help = () => {
           </dl>
         </div>
       </BackGroundWhite>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'ヘルプ',
+          },
+        ]}
+      />
     </>
   );
 };

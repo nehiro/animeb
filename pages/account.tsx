@@ -21,7 +21,13 @@ const Account = () => {
   }, []);
   return (
     <>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'アカウント情報',
+          },
+        ]}
+      />
       <BackGroundWhite>
         <SubpageTitle>アカウント情報</SubpageTitle>
         <h2 className="mb-8 text-center font-bold">非公開情報</h2>
@@ -71,7 +77,13 @@ const Account = () => {
           </li>
         </ul>
       </BackGroundWhite>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'アカウント情報',
+          },
+        ]}
+      />
     </>
   );
 };

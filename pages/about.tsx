@@ -8,11 +8,24 @@ import LayoutNoNav from '../layouts/LayoutNoNav';
 const About = () => {
   return (
     <>
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'アニメ部！について',
+          },
+        ]}
+      />
       <BackGroundGray>
         <SubpageTitle>アニメ部！について</SubpageTitle>
         <NoContents></NoContents>
       </BackGroundGray>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'アニメ部！について',
+          },
+        ]}
+      />
     </>
   );
 };

@@ -14,9 +14,9 @@ import { useAuth } from '../../utils/userContext';
 const Slug = ({ news }: { news: News }) => {
   const { user } = useAuth();
   const admin = user?.admin;
-  // console.log(news, 'news');
+  console.log(news, 'news');
   // console.log(news.title, 'news.title');
-  console.log(news.body, 'news.body');
+  // console.log(news.body, 'news.body');
 
   const {
     register,
@@ -42,7 +42,18 @@ const Slug = ({ news }: { news: News }) => {
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css"
         ></link>
       </Head> */}
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'news',
+            href: 'news',
+          },
+          {
+            name: news.title,
+            href: news.id,
+          },
+        ]}
+      ></Breadcrumbs>
       <div className="relative overflow-hidden bg-white py-16">
         <div className="hidden lg:absolute lg:inset-y-0 lg:block lg:h-full lg:w-full">
           <div
@@ -186,6 +197,18 @@ const Slug = ({ news }: { news: News }) => {
           </div>
         </div>
       </div>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'news',
+            href: 'news',
+          },
+          {
+            name: news.title,
+            href: news.id,
+          },
+        ]}
+      ></Breadcrumbs>
     </>
   );
 };
@@ -196,7 +219,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const newsRef = adminDB.collection('news');
   const snap = await newsRef.get();
   const paths = snap.docs.map((doc) => `/news/${doc.id}`);
-  console.log(paths, 'paths');
+  // console.log(paths, 'paths');
   return {
     paths,
     fallback: false,
@@ -204,7 +227,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  console.log(params, 'params');
+  // console.log(params, 'params');
   const newsRef = adminDB.collection('news').doc(`${params?.slug}`);
   // console.log(newsRef, 'newsRef');
   const snap = await newsRef.get();

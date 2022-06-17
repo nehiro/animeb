@@ -46,7 +46,13 @@ const currentQuarter = () => {
 
   return (
     <>
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '今期のアニメ',
+          },
+        ]}
+      />
       <BackGroundGray>
         <SubpageTitle>今期のアニメ</SubpageTitle>
         {animes ? (
@@ -70,6 +76,13 @@ const currentQuarter = () => {
           </p>
         )}
       </BackGroundGray>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '今期のアニメ',
+          },
+        ]}
+      />
     </>
   );
 };

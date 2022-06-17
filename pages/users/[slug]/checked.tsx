@@ -10,6 +10,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { ReactElement, useEffect, useState } from 'react';
+import Breadcrumbs from '../../../components/Breadcrumbs';
 import Card from '../../../components/card/Card';
 import { adminDB } from '../../../firebase/server';
 import Layout from '../../../layouts/Layout';
@@ -41,6 +42,7 @@ const MyPage = (props: { userInfo: User }) => {
   const [otherLists, setOtherLists] = useState<List[]>();
   const [followCount, setFollowCount] = useState<number>();
   const [followerCount, setFollowerCount] = useState<number>();
+  const [userUri, setUserUri] = useState<string>();
   useEffect(() => {
     const otherUserLists = userLists(userId, (lists) => setOtherLists(lists));
     const otherUserInfo = async () => {
@@ -52,11 +54,13 @@ const MyPage = (props: { userInfo: User }) => {
     if (userId === user?.uid) {
       setFollowCount(user.followCount);
       setFollowerCount(user.followerCount);
+      setUserUri('マイページ');
     } else {
       otherUserInfo().then((item) => {
         setFollowCount(item.followCount);
         setFollowerCount(item.followerCount);
       });
+      setUserUri(userData.name);
     }
   }, [userId]);
   const smTabs = [
@@ -118,6 +122,13 @@ const MyPage = (props: { userInfo: User }) => {
   }
   return (
     <>
+      <Breadcrumbs
+        pages={[
+          {
+            name: userUri as string,
+          },
+        ]}
+      />
       <MyPageSubHeader userData={userData} userId={userId} />
       <section className="block sm:hidden">
         <nav className="-mb-px flex justify-between" aria-label="Tabs">
@@ -198,6 +209,13 @@ const MyPage = (props: { userInfo: User }) => {
           </ul>
         </div>
       </section>
+      <Breadcrumbs
+        pages={[
+          {
+            name: userUri as string,
+          },
+        ]}
+      />
     </>
   );
 };

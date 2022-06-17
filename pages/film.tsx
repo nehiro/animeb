@@ -8,11 +8,24 @@ import Layout from '../layouts/Layout';
 const Film = () => {
   return (
     <>
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'アニメ映画',
+          },
+        ]}
+      />
       <BackGroundGray>
         <SubpageTitle>アニメ映画</SubpageTitle>
         <NoContents></NoContents>
       </BackGroundGray>
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'アニメ映画',
+          },
+        ]}
+      />
     </>
   );
 };

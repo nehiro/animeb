@@ -51,9 +51,14 @@ import { DbAnime } from '../../../../types/DbAnime';
 
 type AnimeName = {
   name: string;
+  year: number;
+  quarter: number;
 };
 
-const AnimeWork = (animeTitle: AnimeName) => {
+const AnimeWork = (anime: AnimeName) => {
+  const animeTitle = anime.name;
+  const animeYear = anime.year;
+  const animeQuarter = anime.quarter;
   // console.log(animeTitle, 'animeTitle');
   const { user, reviews, lists } = useAuth();
   const { animes } = useAnime();
@@ -75,7 +80,7 @@ const AnimeWork = (animeTitle: AnimeName) => {
 
   // console.log(dbAnimes);
 
-  const animeId = dbAnimes?.find((dbAnime) => dbAnime.title === animeTitle.name)
+  const animeId = dbAnimes?.find((dbAnime) => dbAnime.title === animeTitle)
     ?.id as string;
 
   //レビューのモーダル
@@ -120,24 +125,18 @@ const AnimeWork = (animeTitle: AnimeName) => {
 
   //ログインユーザーがreviewしているかどうか
   // const authUserReviewData = userReviews(user?.uid as string);
-  const reviewedRef = reviews?.find(
-    (review) => review.title === animeTitle?.name
-  );
+  const reviewedRef = reviews?.find((review) => review.title === animeTitle);
 
   //ログインユーザーがlistしているかどうか
   // const authUserListData = userLists(user?.uid as string);
   // console.log(authUseListData);
   const listed = () => {
-    return lists?.find((list) => list.title === animeTitle.name);
+    return lists?.find((list) => list.title === animeTitle);
   };
 
-  const animeInfoArray = animes?.filter(
-    (anime) => anime.title === animeTitle.name
-  );
+  const animeInfoArray = animes?.filter((anime) => anime.title === animeTitle);
   // console.log(animeInfoArray, 'animeInfoArray');
-  const animeInfo = animeInfoArray?.find(
-    (item) => item.title === animeTitle.name
-  );
+  const animeInfo = animeInfoArray?.find((item) => item.title === animeTitle);
   if (!animes || !animeInfo) {
     return null;
   }
@@ -159,31 +158,30 @@ const AnimeWork = (animeTitle: AnimeName) => {
   };
 
   const listCount = dbAnimes?.find(
-    (dbAnime) => dbAnime.title === animeTitle.name
+    (dbAnime) => dbAnime.title === animeTitle
   )?.listCount;
-  const reviewCount = dbAnimes?.find(
-    (dbAnime) => dbAnime.title === animeTitle.name
-  )?.reviewCount as number;
+  const reviewCount = dbAnimes?.find((dbAnime) => dbAnime.title === animeTitle)
+    ?.reviewCount as number;
   const sumReviewCount = dbAnimes?.find(
-    (dbAnime) => dbAnime.title === animeTitle.name
+    (dbAnime) => dbAnime.title === animeTitle
   )?.sumReviewCount as number;
 
   //それぞれの平均値
   const reviewStoryScore = dbAnimes?.find(
-    (dbAnime) => dbAnime.title === animeTitle.name
+    (dbAnime) => dbAnime.title === animeTitle
   )?.storyScore as number;
   // console.log(reviewStoryScore);
   const reviewDrawingScore = dbAnimes?.find(
-    (dbAnime) => dbAnime.title === animeTitle.name
+    (dbAnime) => dbAnime.title === animeTitle
   )?.drawingScore as number;
   const reviewVoiceActorScore = dbAnimes?.find(
-    (dbAnime) => dbAnime.title === animeTitle.name
+    (dbAnime) => dbAnime.title === animeTitle
   )?.voiceActorScore as number;
   const reviewMusicScore = dbAnimes?.find(
-    (dbAnime) => dbAnime.title === animeTitle.name
+    (dbAnime) => dbAnime.title === animeTitle
   )?.musicScore as number;
   const reviewCharacterScore = dbAnimes?.find(
-    (dbAnime) => dbAnime.title === animeTitle.name
+    (dbAnime) => dbAnime.title === animeTitle
   )?.characterScore as number;
   const reviewSum =
     reviewStoryScore +
@@ -236,7 +234,25 @@ const AnimeWork = (animeTitle: AnimeName) => {
 
   return (
     <>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: '放送・配信時期',
+            href: 'animes',
+          },
+          {
+            name: String(animeYear) + '年アニメ',
+            href: 'animes/' + String(animeYear),
+          },
+          {
+            name: quarter() as string,
+            href: 'animes/' + String(animeYear) + '/' + String(animeQuarter),
+          },
+          {
+            name: animeTitle,
+          },
+        ]}
+      />
       {animeInfo ? (
         <>
           <BackGroundWhite>
@@ -526,7 +542,25 @@ const AnimeWork = (animeTitle: AnimeName) => {
           <RefreshIcon className="w-10 animate-spin text-gray-700" />
         </p>
       )}
-
+      <Breadcrumbs
+        pages={[
+          {
+            name: '放送・配信時期',
+            href: 'animes',
+          },
+          {
+            name: String(animeYear) + '年アニメ',
+            href: 'animes/' + String(animeYear),
+          },
+          {
+            name: quarter() as string,
+            href: 'animes/' + String(animeYear) + '/' + String(animeQuarter),
+          },
+          {
+            name: animeTitle,
+          },
+        ]}
+      />
       <Score
         anime={animeInfo as Anime}
         setReviewModal={setReviewModal}
@@ -560,10 +594,14 @@ export const getStaticPaths: GetStaticPaths<Paths> = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   // console.log(params, 'params');
   // console.log(params?.anime, 'params');
-  const animeTitle = { name: params?.anime };
+  const anime = {
+    name: params?.anime,
+    year: params?.year,
+    quarter: params?.quarter,
+  };
   // console.log(animeTitle, 'animeTitle');
   return {
-    props: animeTitle,
+    props: anime,
   };
 };
 

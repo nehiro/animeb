@@ -64,7 +64,13 @@ const Index = ({ paths }: { paths: Anime[] }) => {
   ];
   return (
     <>
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '放送・配信時期',
+          },
+        ]}
+      />
       <BackGroundGray>
         <SubpageTitle>放送・配信時期</SubpageTitle>
         <div className="px-4 sm:px-6 lg:px-8">
@@ -105,6 +111,13 @@ const Index = ({ paths }: { paths: Anime[] }) => {
           </div>
         </div>
       </BackGroundGray>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '放送・配信時期',
+          },
+        ]}
+      />
     </>
   );
 };

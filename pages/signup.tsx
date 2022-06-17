@@ -11,6 +11,7 @@ import GoogleLogin from '../components/GoogleLogin';
 import { useAuth } from '../utils/userContext';
 import PasswordBaseSignup from '../components/PasswordBaseSignup';
 import LineLogin from '../components/LineLogin';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const Signup = () => {
   //user管理
@@ -24,6 +25,13 @@ const Signup = () => {
   }, []);
   return (
     <>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '登録・ログイン',
+          },
+        ]}
+      />
       <div className="container flex flex-col justify-center pt-8 pb-8 md:pt-12">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <SubpageTitle>登録・ログイン</SubpageTitle>
@@ -59,6 +67,13 @@ const Signup = () => {
           </div>
         </div>
       </div>
+      <Breadcrumbs
+        pages={[
+          {
+            name: '登録・ログイン',
+          },
+        ]}
+      />
     </>
   );
 };

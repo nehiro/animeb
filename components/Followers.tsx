@@ -4,6 +4,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   where,
 } from 'firebase/firestore';
@@ -25,7 +26,8 @@ const Following = (props: { otherUserId: string }) => {
       (async () => {
         const followerRef = query(
           collectionGroup(db, 'follows'),
-          where('uid', '==', `${otherUserId}`)
+          where('uid', '==', `${otherUserId}`),
+          orderBy('createAt', 'desc')
         );
         const snap = await getDocs(followerRef);
         const snapData = snap.docs.map((item) => {

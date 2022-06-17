@@ -1,4 +1,11 @@
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Follow } from '../types/Follow';
 import { User } from '../types/User';
@@ -16,7 +23,10 @@ const Following = (props: { otherUserId: string }) => {
     if (otherUserId !== user?.uid) {
       // console.log('走った');
       (async () => {
-        const ref = collection(db, `users/${otherUserId}/follows`);
+        const ref = query(
+          collection(db, `users/${otherUserId}/follows`),
+          orderBy('createAt', 'desc')
+        );
         const snap = await getDocs(ref);
         // console.log(snap.docs, 'snap.docs');
         const data = snap.docs.map((item) => {

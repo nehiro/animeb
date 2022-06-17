@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import BackGroundWhite from '../components/BackGroundWhite';
+import Breadcrumbs from '../components/Breadcrumbs';
 import SubpageTitle from '../components/SubpageTitle';
 import LayoutNoNav from '../layouts/LayoutNoNav';
 
 const Privacy = () => {
   return (
     <>
+      <Breadcrumbs></Breadcrumbs>
       <BackGroundWhite>
         <SubpageTitle>プライバシーポリシー</SubpageTitle>
         <p>

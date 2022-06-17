@@ -3,6 +3,7 @@ import {
   doc,
   getDoc,
   onSnapshot,
+  orderBy,
   query,
   where,
 } from 'firebase/firestore';
@@ -15,7 +16,8 @@ export const userLists = (
 ) => {
   const ref = query(
     collectionGroup(db, 'lists'),
-    where('uid', '==', `${userId}`)
+    where('uid', '==', `${userId}`),
+    orderBy('createAt', 'desc')
   );
 
   return onSnapshot(ref, async (snap) => {
@@ -40,8 +42,8 @@ const getLists = async (id: string, userId: string): Promise<List> => {
   const animeSnap = await getDoc(animeRef);
   const newId = animeSnap.data()?.id as string;
   const newTitle = animeSnap.data()?.title as string;
-
   const animeData = { id: newId, title: newTitle };
+
   const listRef = doc(db, `animes/${id}/lists/${userId}`);
   const listSnap = await getDoc(listRef);
   const uidOnly = listSnap.data()?.uid as string;

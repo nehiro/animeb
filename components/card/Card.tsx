@@ -33,6 +33,7 @@ type Card = {
 };
 
 const Card = ({ anime }: { anime: Anime }) => {
+  // console.log(anime, 'card anime');
   const { user, lists, reviews } = useAuth();
   // console.log(user, 'user');
   // console.log(anime, 'anime');
@@ -74,6 +75,7 @@ const Card = ({ anime }: { anime: Anime }) => {
   // });
 
   const [dbAnimes, setDbAnimes] = useState<DbAnime[]>();
+  // console.log(dbAnimes, 'dbAnimes');
   useEffect(() => {
     const ref = collection(db, 'animes');
     onSnapshot(ref, async (snap) => {
@@ -97,31 +99,36 @@ const Card = ({ anime }: { anime: Anime }) => {
     ?.listCount as number;
   // console.log(listCount);
   //reviweCount取得
+  // const reviewCount = dbAnimes?.find((dbAnime) => dbAnime.title === anime.title)
+  //   ?.reviewCount as number;
   const reviewCount = dbAnimes?.find((dbAnime) => dbAnime.title === anime.title)
     ?.reviewCount as number;
+  const sumReviewCount = dbAnimes?.find(
+    (dbAnime) => dbAnime.title === anime.title
+  )?.sumReviewCount as number;
   // console.log(typeof reviewCount);
 
   //unScoreReviweCount取得
-  const unScoreReviewCount = dbAnimes?.find(
-    (dbAnime) => dbAnime.title === anime.title
-  )?.unScoreReviewCount;
+  // const unScoreReviewCount = dbAnimes?.find(
+  //   (dbAnime) => dbAnime.title === anime.title
+  // )?.unScoreReviewCount;
   // console.log(typeof unScoreReviewCount);
 
-  const reviewedCount = () => {
-    if (reviewCount === undefined) {
-      if (unScoreReviewCount === undefined) {
-        return 0;
-      } else {
-        return unScoreReviewCount;
-      }
-    } else {
-      if (unScoreReviewCount === undefined) {
-        return reviewCount;
-      } else {
-        return reviewCount + unScoreReviewCount;
-      }
-    }
-  };
+  // const reviewedCount = () => {
+  //   if (reviewCount === undefined) {
+  //     if (unScoreReviewCount === undefined) {
+  //       return 0;
+  //     } else {
+  //       return unScoreReviewCount;
+  //     }
+  //   } else {
+  //     if (unScoreReviewCount === undefined) {
+  //       return reviewCount;
+  //     } else {
+  //       return reviewCount + unScoreReviewCount;
+  //     }
+  //   }
+  // };
 
   //それぞれの平均値
   const reviewStoryScore = dbAnimes?.find(
@@ -196,14 +203,14 @@ const Card = ({ anime }: { anime: Anime }) => {
               <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
                 <EyeIcon className="mx-auto h-5 w-5" />
                 <span className="inline-block h-full w-full">
-                  {reviewedCount()}
+                  {sumReviewCount ? sumReviewCount : 0}
                 </span>
               </a>
             ) : (
               <a className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
                 <EyeIcon className="mx-auto h-5 w-5 text-amber-400" />
                 <span className="inline-block h-full w-full text-amber-400">
-                  {reviewedCount()}
+                  {sumReviewCount ? sumReviewCount : 0}
                 </span>
               </a>
             )}

@@ -9,5 +9,6 @@ export type DbAnime = {
   createAt: number;
   reviewCount: number;
   unScoreReviewCount: number;
+  sumReviewCount: number;
   listCount: number;
 };

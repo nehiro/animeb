@@ -47,6 +47,7 @@ import { addMonths } from 'date-fns';
 import { Tab } from '@headlessui/react';
 import { userReviews } from '../../../../lib/getReviews';
 import { userLists } from '../../../../lib/getList';
+import { DbAnime } from '../../../../types/DbAnime';
 
 type AnimeName = {
   name: string;
@@ -57,17 +58,25 @@ const AnimeWork = (animeTitle: AnimeName) => {
   const { user, reviews, lists } = useAuth();
   const { animes } = useAnime();
   //animesコレクションにあるタイトル
-  const dbAnimes = useSWR('animes', async () => {
+
+  const [dbAnimes, setDbAnimes] = useState<DbAnime[]>();
+  useEffect(() => {
+    getDbAnimes();
+  }, []);
+
+  const getDbAnimes = async () => {
     const ref = collection(db, 'animes');
-    const snap = await getDocs(ref);
-    return snap.docs.map((doc) => doc.data());
-  });
+    onSnapshot(ref, (snap) => {
+      const data = snap.docs.map((doc) => doc.data() as DbAnime);
+      setDbAnimes(data);
+    });
+    // const snap = await getDocs(ref);
+  };
 
-  const animeId = dbAnimes?.data?.find(
-    (dbAnime) => dbAnime.title === animeTitle.name
-  )?.id;
+  // console.log(dbAnimes);
 
-  const { mutate } = useSWRConfig();
+  const animeId = dbAnimes?.find((dbAnime) => dbAnime.title === animeTitle.name)
+    ?.id as string;
 
   //レビューのモーダル
   const [reviewModal, setReviewModal] = useState(false);
@@ -149,47 +158,33 @@ const AnimeWork = (animeTitle: AnimeName) => {
     }
   };
 
-  const listCount = dbAnimes?.data?.find(
+  const listCount = dbAnimes?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
   )?.listCount;
-  const reviewCount = dbAnimes?.data?.find(
+  const reviewCount = dbAnimes?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
-  )?.reviewCount;
-  const unScoreReviewCount = dbAnimes?.data?.find(
+  )?.reviewCount as number;
+  const sumReviewCount = dbAnimes?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
-  )?.unScoreReviewCount;
-  const reviewedCount = () => {
-    if (reviewCount === undefined) {
-      if (unScoreReviewCount === undefined) {
-        return 0;
-      } else {
-        return unScoreReviewCount;
-      }
-    } else {
-      if (unScoreReviewCount === undefined) {
-        return reviewCount;
-      } else {
-        return reviewCount + unScoreReviewCount;
-      }
-    }
-  };
+  )?.sumReviewCount as number;
+
   //それぞれの平均値
-  const reviewStoryScore = dbAnimes?.data?.find(
+  const reviewStoryScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
-  )?.storyScore;
+  )?.storyScore as number;
   // console.log(reviewStoryScore);
-  const reviewDrawingScore = dbAnimes?.data?.find(
+  const reviewDrawingScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
-  )?.drawingScore;
-  const reviewVoiceActorScore = dbAnimes?.data?.find(
+  )?.drawingScore as number;
+  const reviewVoiceActorScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
-  )?.voiceActorScore;
-  const reviewMusicScore = dbAnimes?.data?.find(
+  )?.voiceActorScore as number;
+  const reviewMusicScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
-  )?.musicScore;
-  const reviewCharacterScore = dbAnimes?.data?.find(
+  )?.musicScore as number;
+  const reviewCharacterScore = dbAnimes?.find(
     (dbAnime) => dbAnime.title === animeTitle.name
-  )?.characterScore;
+  )?.characterScore as number;
   const reviewSum =
     reviewStoryScore +
     reviewDrawingScore +
@@ -245,9 +240,35 @@ const AnimeWork = (animeTitle: AnimeName) => {
       {animeInfo ? (
         <>
           <BackGroundWhite>
-            <div className="flex justify-start">
-              <div className="mr-8 min-w-200 max-w-242">
-                <div className="relative mb-2 block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72">
+            <h1 className="mb-1 block text-lg font-bold md:hidden">
+              {animeInfo?.title}
+            </h1>
+            <div className="mb-1 block text-sm md:hidden">
+              公開時期: {`${animeInfo?.year}年`} {`${quarter()}アニメ`}
+            </div>
+            <div className="mb-2 flex flex-wrap items-end justify-items-start md:hidden">
+              <div className="flex items-end">
+                <StarIcon className="h-5 w-5 text-yellow" />
+                <span className="mr-4 text-2xl leading-none text-yellow">
+                  {reviewAverage()}
+                </span>
+              </div>
+              <ul className="flex flex-wrap items-center justify-start">
+                {evaluationItems.map((item) => (
+                  <li className="mr-3 text-sm" key={item.heading}>
+                    {item.heading}
+                    <span className="ml-2">
+                      {item.value === undefined || item.value === 0
+                        ? '-'
+                        : (item.value / reviewCount).toFixed(1)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex justify-between sm:justify-start">
+              <div className="mr-4 min-w-146 sm:mr-8 sm:min-w-200 sm:max-w-242">
+                <div className="relative mb-2 block h-60 leading-none sm:h-72">
                   <Image
                     src={
                       'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
@@ -266,14 +287,14 @@ const AnimeWork = (animeTitle: AnimeName) => {
                         <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
                           <EyeIcon className="mx-auto h-5 w-5" />
                           <span className="inline-block h-full w-full">
-                            {reviewedCount()}
+                            {sumReviewCount ? sumReviewCount : 0}
                           </span>
                         </a>
                       ) : (
                         <a className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
                           <EyeIcon className="mx-auto h-5 w-5 text-amber-400" />
                           <span className="inline-block h-full w-full text-amber-400">
-                            {reviewedCount()}
+                            {sumReviewCount ? sumReviewCount : 0}
                           </span>
                         </a>
                       )}
@@ -290,7 +311,6 @@ const AnimeWork = (animeTitle: AnimeName) => {
                             lists,
                             dbAnimes,
                           });
-                          mutate(user?.uid && `lists`);
                         }}
                       >
                         <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
@@ -309,7 +329,6 @@ const AnimeWork = (animeTitle: AnimeName) => {
                             user,
                             dbAnimes,
                           });
-                          mutate(user?.uid && `lists`);
                         }}
                       >
                         <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
@@ -347,14 +366,14 @@ const AnimeWork = (animeTitle: AnimeName) => {
                   ''
                 )}
               </div>
-              <div>
+              <div className="w-full sm:w-auto">
                 <h1 className="mb-6 hidden text-2xl font-bold md:block">
                   {animeInfo?.title}
                 </h1>
                 <div className="mb-1 hidden md:block">
                   公開時期: {`${animeInfo?.year}年`} {`${quarter()}アニメ`}
                 </div>
-                <div className="mb-6 flex flex-wrap items-end justify-items-start">
+                <div className="mb-6 hidden flex-wrap items-end justify-items-start md:flex">
                   <div className="flex items-end">
                     <StarIcon className="h-6 w-6 text-yellow" />
                     <span className="mr-4 text-3xl leading-none text-yellow">
@@ -374,9 +393,9 @@ const AnimeWork = (animeTitle: AnimeName) => {
                     ))}
                   </ul>
                 </div>
-                <div className="mb-6">
+                <div className="mb-3 sm:mb-6">
                   <h3 className="mb-2 text-sm font-bold">スタッフ</h3>
-                  <ul className="mb-1 grid grid-cols-4 gap-4">
+                  <ul className="mb-1 flex flex-col sm:grid sm:grid-cols-4 sm:gap-4">
                     {/* <ul className="mb-1 flex flex-wrap"> */}
                     {animeInfo.staff.slice(0, loadStaffIndex).map((item) => (
                       <li key={item[0]} className="">
@@ -406,7 +425,7 @@ const AnimeWork = (animeTitle: AnimeName) => {
                 </div>
                 {animeInfo.op || animeInfo.ed ? (
                   // <div className="mb-6 flex flex-wrap">
-                  <div className="mb-6 grid grid-cols-4 gap-4">
+                  <div className="mb-3 flex flex-col sm:mb-6 sm:grid sm:grid-cols-4 sm:gap-4">
                     {animeInfo.op ? (
                       <div className="">
                         <h3 className="mb-1 rounded bg-gray-200 px-2 py-1 text-sm font-bold">
@@ -435,9 +454,9 @@ const AnimeWork = (animeTitle: AnimeName) => {
                 ) : (
                   ''
                 )}
-                <div className="mb-6">
+                <div className="sm:mb-6">
                   <h3 className="mb-2 text-sm font-bold">キャスト</h3>
-                  <ul className="mb-1 grid grid-cols-4 gap-4">
+                  <ul className="mb-1  flex flex-col sm:grid sm:grid-cols-4 sm:gap-4">
                     {/* <ul className="mb-1 flex flex-wrap"> */}
                     {animeInfo.cast.slice(0, loadCastIndex).map((item) => (
                       <li key={item[0]} className="">
@@ -466,7 +485,7 @@ const AnimeWork = (animeTitle: AnimeName) => {
             </div>
           </BackGroundWhite>
           <BackGroundGray>
-            <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
+            <h2 className="mb-4 flex items-center justify-center text-lg font-bold sm:mb-8 sm:text-xl">
               あらすじ
             </h2>
             <p className="tracking-wider">{animeInfo?.summary}</p>
@@ -487,8 +506,8 @@ const AnimeWork = (animeTitle: AnimeName) => {
         <AnimeTag animeId={animeId} />
       </BackGroundGray> */}
           <BackGroundWhite>
-            <h2 className="mb-8 flex items-center justify-center text-xl font-bold">
-              <ChatAltIcon className="mr-2 h-5 w-5" />
+            <h2 className="mb-4 flex items-center justify-center text-lg font-bold sm:mb-8 sm:text-xl">
+              <ChatAltIcon className="mr-2 h-10 w-10 sm:h-5 sm:w-5" />
               {animeInfo?.title}
               に投稿された感想・評価
             </h2>

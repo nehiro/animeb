@@ -94,6 +94,7 @@ export const listButton = async (props: ListButton) => {
       createAt: Date.now(),
       reviewCount: 0,
       unScoreReviewCount: 0,
+      sumReviewCount: 0,
       listCount: 1,
       storyScore: 0,
       drawingScore: 0,
@@ -181,6 +182,7 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
       musicScore: increment(-(userMusicScore as number)),
       characterScore: increment(-(userCharacterScore as number)),
       reviewCount: increment(-1),
+      sumReviewCount: increment(-1),
     });
     await deleteDoc(animesReviewsIDRef).then(() => {
       toast.success(`${anime?.title}のレビューを削除しました`);
@@ -189,6 +191,7 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
   } else {
     await updateDoc(animesIDRef, {
       unScoreReviewCount: increment(-1),
+      sumReviewCount: increment(-1),
     });
     await deleteDoc(animesReviewsIDRef).then(() => {
       toast.success(`${anime?.title}のレビューを削除しました`);

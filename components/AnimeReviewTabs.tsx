@@ -8,7 +8,7 @@ const AnimeReviewTabs = (props: { animeId: string }) => {
   const id = props.animeId;
 
   const tabNames = [
-    { name: 'すべての感想・評価' },
+    { name: 'すべての感想' },
     { name: 'ネタバレなし' },
     { name: 'ネタバレあり' },
   ];
@@ -22,8 +22,8 @@ const AnimeReviewTabs = (props: { animeId: string }) => {
               <Tab
                 className={({ selected }) =>
                   selected
-                    ? 'w-1/3 cursor-pointer bg-yellow py-4 text-center'
-                    : 'w-1/3 cursor-pointer bg-lightYellow py-4 text-center'
+                    ? 'w-1/3 cursor-pointer bg-yellow py-2 text-center sm:py-4'
+                    : 'w-1/3 cursor-pointer bg-lightYellow py-2 text-center sm:py-4'
                 }
                 key={tabName.name}
               >

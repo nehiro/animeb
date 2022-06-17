@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
+  orderBy,
   query,
   where,
 } from 'firebase/firestore';
@@ -19,7 +20,8 @@ export const userReviews = (
 ) => {
   const ref = query(
     collectionGroup(db, 'reviews'),
-    where('uid', '==', `${userId}`)
+    where('uid', '==', `${userId}`),
+    orderBy('createAt', 'desc')
   );
 
   return onSnapshot(ref, async (snap) => {

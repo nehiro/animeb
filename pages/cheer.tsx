@@ -5,6 +5,7 @@ import CheerCheeredList from '../components/CheerCheeredList';
 import CheerProductList from '../components/CheerProductList';
 import SubpageTitle from '../components/SubpageTitle';
 import Layout from '../layouts/Layout';
+import LayoutNoNav from '../layouts/LayoutNoNav';
 import { useAuth } from '../utils/userContext';
 
 const cheer = () => {
@@ -22,4 +23,4 @@ const cheer = () => {
 };
 
 export default cheer;
-cheer.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
+cheer.getLayout = (page: ReactElement) => <LayoutNoNav>{page}</LayoutNoNav>;

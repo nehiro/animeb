@@ -42,7 +42,7 @@ const AnimeReviewAll = ({ id }: { id: string }) => {
       <div className="mb-8 grid grid-cols-1">
         {reviews.map((item) => (
           <div
-            className="container bg-white py-8 even:bg-gray-50"
+            className="container bg-white py-4 even:bg-gray-50 sm:py-8"
             key={item.uid}
           >
             <Link href={`/users/${item.uid}`}>

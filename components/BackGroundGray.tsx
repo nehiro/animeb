@@ -7,7 +7,7 @@ interface Props {
 
 const BackGroundGray = ({ children }: Props) => {
   return (
-    <section className="bg-gray-50 py-12">
+    <section className="bg-gray-50 py-6 sm:py-12">
       <div className="container">{children}</div>
     </section>
   );

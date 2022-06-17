@@ -58,7 +58,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                 <MenuAlt1Icon className="h-6 w-6" />
               </button>
               <Link href="/">
-                <a className="mx-2 flex items-center">
+                <a className="mx-0 flex w-36 items-center sm:mx-2 sm:w-auto">
                   <Image
                     src="/images/logo.svg"
                     width="175"
@@ -69,13 +69,17 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                 </a>
               </Link>
             </div>
-            <button
-              className="relative hidden h-10 max-w-xl flex-1 items-center justify-start rounded-full bg-white px-4 focus-visible:outline-none md:flex"
-              onClick={() => setIsOpen(true)}
-            >
-              <SearchIcon className="mr-3 inline-block h-5 w-5 text-gray-500" />
-              <p>タイトル検索</p>
-            </button>
+            <div className="block flex-1 sm:hidden sm:flex-none"></div>
+            {user ? (
+              <button
+                className="relative mr-4 h-10 max-w-xl items-center justify-start rounded-full focus-visible:outline-none sm:flex sm:flex-1 sm:bg-white sm:px-4 md:mr-0"
+                onClick={() => setIsOpen(true)}
+              >
+                <SearchIcon className="mr-2 inline-block h-6 w-6 text-gray-900 sm:h-5 sm:w-5 sm:text-gray-500" />
+                <p className="hidden sm:block">タイトル検索</p>
+              </button>
+            ) : null}
+
             <div className="flex justify-between">
               <Link href="/help">
                 <a className="mx-4 hidden items-center justify-center md:flex">
@@ -183,22 +187,14 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                 </>
               ) : (
                 <>
-                  {/* <Link href="/signin">
-                    <a className="px-8 mx-2 rounded-full hidden md:flex items-center justify-center min-w-146 max-h-40 bg-buttonBlack">
-                      <i className="mr-1.5 leading-none">
-                        <LoginIcon className="h-5 w-5 inline-block text-yellow" />
-                      </i>
-                      <span className="text-sm text-yellow font-bold">
-                        ログイン
-                      </span>
-                    </a>
-                  </Link> */}
                   <Link href="/signup">
-                    <a className="mx-2 hidden max-h-40 min-w-146 items-center justify-center rounded-full bg-yellow px-8 md:flex">
+                    <a className="flex max-h-40 min-w-146 items-center justify-center rounded-full bg-yellow px-2 sm:mx-2 sm:px-8">
                       <i className="mr-1.5 leading-none">
                         <UserIcon className="inline-block h-5 w-5" />
                       </i>
-                      <span className="text-sm font-bold">登録・ログイン</span>
+                      <span className="text-xs font-bold sm:text-sm">
+                        登録・ログイン
+                      </span>
                     </a>
                   </Link>
                 </>

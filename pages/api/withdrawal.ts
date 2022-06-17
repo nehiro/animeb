@@ -196,6 +196,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             getAnimesLists(parentId as string).then(async (item) => {
               await updateDoc(doc(db, `animes/${item.id}`), {
                 unScoreReviewCount: increment(-1),
+                sumReviewCount: increment(-1),
               })
                 .then(() => {
                   console.log(
@@ -226,6 +227,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             characterScore: increment(-userData.characterScore),
             voiceActorScore: increment(-userData.voiceActorScore),
             reviewCount: increment(-1),
+            sumReviewCount: increment(-1),
           }).then(async () => {
             await deleteDoc(parentRef)
               .then(() => {

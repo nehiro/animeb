@@ -10,6 +10,7 @@ import {
   PencilAltIcon,
   LockClosedIcon,
   QuestionMarkCircleIcon,
+  MailIcon,
 } from '@heroicons/react/solid';
 import { Dialog, Transition } from '@headlessui/react';
 import { SideMenu } from '../types/SideMenu';
@@ -18,7 +19,7 @@ import Link from 'next/link';
 const Nav = ({ open, toggle }: SideMenu) => {
   const sideNavList01 = [
     {
-      href: '/releaseDate',
+      href: '/currentQuarter',
       label: '今期のアニメ',
       icon: <SparklesIcon className="h-5 w-5 text-purple" />,
     },
@@ -64,6 +65,11 @@ const Nav = ({ open, toggle }: SideMenu) => {
       label: 'プライバシー',
       icon: <LockClosedIcon className="h-5 w-5 text-purple" />,
     },
+    {
+      href: '/contact',
+      label: 'お問い合せ',
+      icon: <MailIcon className="h-5 w-5 text-purple" />,
+    },
   ];
   return (
     <>
@@ -82,7 +88,7 @@ const Nav = ({ open, toggle }: SideMenu) => {
               >
                 <div className="w-screen max-w-md">
                   <div className="flex h-full flex-col bg-white py-6 shadow-xl">
-                    <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                    <div className="relative mt-0 flex-1 px-4 sm:mt-6 sm:px-6">
                       <nav>
                         <ul className="mb-7 border-b">
                           {sideNavList01.map((item) => (

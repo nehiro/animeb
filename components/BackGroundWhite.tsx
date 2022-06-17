@@ -7,7 +7,7 @@ import { ReactNode } from 'react';
 
 const BackGroundWhite = (props: { children: ReactNode }) => {
   return (
-    <section className="bg-white py-12">
+    <section className="bg-white py-6 sm:py-12">
       <div className="container">{props.children}</div>
     </section>
   );

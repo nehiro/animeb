@@ -230,6 +230,7 @@ const Score = ({
             musicScore: increment(data.musicScore),
             characterScore: increment(data.characterScore),
             reviewCount: increment(1),
+            sumReviewCount: increment(1),
           });
           console.log('5つ目');
           await setDoc(animesUserRef, {
@@ -249,6 +250,7 @@ const Score = ({
         } else {
           await updateDoc(animesIDRef, {
             unScoreReviewCount: increment(1),
+            sumReviewCount: increment(1),
           });
           console.log('6つ目');
           await setDoc(animesUserRef, {
@@ -282,6 +284,7 @@ const Score = ({
           createAt: Date.now(),
           reviewCount: 1,
           unScoreReviewCount: 0,
+          sumReviewCount: 1,
           listCount: 0,
           storyScore: data.storyScore,
           drawingScore: data.drawingScore,
@@ -311,6 +314,7 @@ const Score = ({
           createAt: Date.now(),
           reviewCount: 0,
           unScoreReviewCount: 1,
+          sumReviewCount: 1,
           listCount: 0,
           storyScore: 0,
           drawingScore: 0,

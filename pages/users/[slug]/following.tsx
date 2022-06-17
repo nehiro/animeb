@@ -52,7 +52,7 @@ const MyPage = (props: { userInfo: User }) => {
       });
     }
   }, [userId]);
-  const tabs = [
+  const smTabs = [
     {
       name: 'watched',
       href: `/users/${userId}`,
@@ -78,44 +78,92 @@ const MyPage = (props: { userInfo: User }) => {
       current: false,
     },
   ];
+  const workTabs = [
+    {
+      name: 'watched',
+      href: `/users/${userId}`,
+      icon: EyeIcon,
+      current: false,
+    },
+    {
+      name: 'checked',
+      href: `/users/${userId}/checked`,
+      icon: BookmarkIcon,
+      current: false,
+    },
+  ];
 
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
   }
   return (
     <>
-      <MyPageSubHeader userData={userData} />
-      <section>
+      <MyPageSubHeader userData={userData} userId={userId} />
+      <section className="block sm:hidden">
+        <nav
+          className="-mb-px flex justify-between border-b border-gray-200"
+          aria-label="Tabs"
+        >
+          {workTabs.map((tab) => (
+            <Link href={tab.href} key={tab.name}>
+              <a
+                key={tab.name}
+                className={classNames(
+                  tab.current
+                    ? 'bg-yellow'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                  'group inline-flex flex-1 items-center justify-center border-b-2 py-4 px-1 text-sm font-medium'
+                )}
+                aria-current={tab.current ? 'page' : undefined}
+              >
+                <tab.icon
+                  className={classNames(
+                    tab.current
+                      ? 'text-black'
+                      : 'text-gray-400 group-hover:text-gray-500',
+                    '-ml-0.5 mr-2 h-5 w-5'
+                  )}
+                  aria-hidden="true"
+                />
+                <span>{tab.name}</span>
+              </a>
+            </Link>
+          ))}
+        </nav>
+      </section>
+      <section className="hidden sm:block">
         <div className="container">
-          <div className="sm:block">
-            <div className="border-b border-gray-200">
-              <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-                {tabs.map((tab) => (
-                  <Link href={tab.href} key={tab.name}>
-                    <a
+          <div className="border-b border-gray-200">
+            <nav
+              className="-mb-px flex justify-between sm:justify-start sm:space-x-8"
+              aria-label="Tabs"
+            >
+              {smTabs.map((tab) => (
+                <Link href={tab.href} key={tab.name}>
+                  <a
+                    key={tab.name}
+                    className={classNames(
+                      tab.current
+                        ? 'border-indigo-500 text-indigo-600'
+                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                      'group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium'
+                    )}
+                    aria-current={tab.current ? 'page' : undefined}
+                  >
+                    <tab.icon
                       className={classNames(
                         tab.current
-                          ? 'border-indigo-500 text-indigo-600'
-                          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                        'group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium'
+                          ? 'text-indigo-500'
+                          : 'text-gray-400 group-hover:text-gray-500',
+                        '-ml-0.5 mr-2 h-5 w-5'
                       )}
-                      aria-current={tab.current ? 'page' : undefined}
-                    >
-                      <tab.icon
-                        className={classNames(
-                          tab.current
-                            ? 'text-indigo-500'
-                            : 'text-gray-400 group-hover:text-gray-500',
-                          '-ml-0.5 mr-2 h-5 w-5'
-                        )}
-                        aria-hidden="true"
-                      />
-                      <span>{tab.name}</span>
-                    </a>
-                  </Link>
-                ))}
-              </nav>
-            </div>
+                      aria-hidden="true"
+                    />
+                    <span>{tab.name}</span>
+                  </a>
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
       </section>

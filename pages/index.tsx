@@ -1,8 +1,11 @@
 import {
   collection,
+  collectionGroup,
   doc,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
   query,
   where,
 } from 'firebase/firestore';
@@ -26,6 +29,8 @@ import Link from 'next/link';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Anime } from '../types/Anime';
 import { userReviews } from '../lib/getReviews';
+import BackGroundWhite from '../components/BackGroundWhite';
+import LatestReview from '../components/LatestReview';
 
 const Home = () => {
   //アニメ管理
@@ -83,7 +88,7 @@ const Home = () => {
           </Link>
         </p>
       </section>
-      <div>
+      {/* <div>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <h2 className="font-bold">あなたのタイムライン</h2>
@@ -110,7 +115,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <AllUserTable></AllUserTable> */}
 
       <BackGroundGray>
@@ -138,6 +143,12 @@ const Home = () => {
         )}
         {/* <Button>もっと見る</Button> */}
       </BackGroundGray>
+
+      <BackGroundWhite>
+        <TopTitle>最近投稿されたレビュー</TopTitle>
+        <LatestReview></LatestReview>
+      </BackGroundWhite>
+
       {/* <BackGroundWhite>
         <TopTitle>注目のアニメ</TopTitle>
         <Card></Card>

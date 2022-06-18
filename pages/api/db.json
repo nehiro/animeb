@@ -2,7 +2,7 @@
   "items": [
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "明日ちゃんのセーラー服",
@@ -30,7 +30,7 @@
         ["音響監督", "濱野高年"]
       ],
       "op": ["蠟梅学園中等部1年3組", "はじまりのセツナ"],
-      "ed": null,
+      "ed": ["明日小路(CV.村上まなつ)", "Baton"],
       "summary": "舞台は、田舎の名門女子中学・私立蠟梅ろうばい学園。あるきっかけから、この学園のセーラー服を着ることが「夢」だった少女、明日あけび小路こみち。念願叶い、ドキドキで入学式当日を迎えるが―「私はセーラー服に決めました」決意を胸に、夢の中学生ライフが始まる♪クラスメート、給食、部活動…“初めて”だらけの毎日を、小路は全力で駆け抜ける！少女たちの、キラキラ輝く青春日記。「友達いっぱいできるかな？」",
       "cast": [
         ["明日小路", "村上まなつ"],
@@ -45,15 +45,7 @@
         ["神黙根子", "伊藤美来"]
       ],
       "subTitle": null,
-      "onair": [
-        ["TOKYO MX", "2022年1月8日(土)24:30～"],
-        ["群馬テレビ", "2022年1月8日(土)24:30～"],
-        ["とちぎテレビ", "2022年1月8日(土)24:30～"],
-        ["BS11", "2022年1月8日(土)24:30～"],
-        ["MBS", "2022年1月8日(土)26:08～"],
-        ["BS朝日", "2022年1月9日(日)23:00～"],
-        ["AT-X", "2022年1月10日(月)21:00～"]
-      ],
+      "onair": [["TOKYO MX・BS11ほか", "2022年1月8日（土）～"]],
       "streaming": [
         "ｄアニメストア",
         "ｄアニメストア for Prime Video",
@@ -78,7 +70,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "あたしゃ川尻こだまだよ～デンジャラスライフハッカーのただれた生活～",
@@ -104,12 +96,12 @@
       "summary": "酒、酒、肉、酒、寝！お酒と油っこいものとしょっぱいものと甘いものをこよなく愛する川尻こだまの、ほのぼの不摂生日常漫画。自堕落なライフスタイルが男女問わず共感を呼び、Twitterフォロワー数33万以上を獲得し、Twitterの総いいね数は1000万を超える。",
       "cast": [["川尻こだま役とだいたい全部の役", "悠木碧"]],
       "subTitle": null,
-      "onair": [["フジテレビ", "2022年1月13日(木)25:25～"]],
+      "onair": [["フジテレビ", "2022年1月13日(木)～"]],
       "streaming": ["FOD"]
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": false,
       "season": 2,
       "title": "ありふれた職業で世界最強 2ndシーズン",
@@ -118,7 +110,6 @@
       "pv": "https://youtu.be/T3ExQQ7s5QI",
       "year": 2022,
       "quarter": 4,
-
       "staff": [
         ["原作", "白米良"],
         ["アニメーション制作", "アスリード、studio MOTHER"],
@@ -129,7 +120,7 @@
         ["音楽", "高橋諒"]
       ],
       "op": ["MindaRyn", "Daylight"],
-      "ed": null,
+      "ed": ["FantasticYouth", "外道賛歌"],
       "summary": "かつてのクラスメイトたちと別れた後、主人公ハジメが率いるパーティーは新たな神代魔法を手に入れるため大迷宮へと向かっていた。様々な試練を突破し、元の世界に帰るために着々と力をつけていく一行。しかし、その裏では魔人族たちも不穏な動きをみせていた。王都に忍び寄る影と暗躍する謎の人物。「敵はすべて倒す――たとえそれが神だとしても」彼らの前に立ちはだかる真の敵とは一体何者なのか――!?“最強”異世界ファンタジー、セカンドシーズン開幕！",
       "cast": [
         ["南雲ハジメ", "深町寿成"],
@@ -146,7 +137,7 @@
         ["ミハイル", "石井真"]
       ],
       "subTitle": null,
-      "onair": null,
+      "onair": [["AT-X・TOKYO MXほか", "2022年1月13日（木）～"]],
       "streaming": [
         "ｄアニメストア",
         "Amazon Prime Video",
@@ -167,7 +158,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "イロドリミドリ",
@@ -193,7 +184,7 @@
         ["プロデュース・宣伝", "SEGA、フロントウイング"],
         ["製作", "イロドリミドリ新聞部"]
       ],
-      "op": null,
+      "op": ["", "brilliant better"],
       "ed": null,
       "summary": "舞ヶ原音楽大学付属舞ヶ原高等学校（通称まいまい）。才能あるミュージシャンの卵が全国から集まるこの学び舎には、 ある噂がある。「ライブですごいパフォーマンスができたら、 追加で特別な点数がもらえる（らしい）」。単位の危ない芹菜は噂を信じてバンドを結成！　演奏したり、 お泊りしたり、 コスプレしたり？な、 いろとりどりの毎日。学園フェスでいい演奏をして無事に単位をゲットできるのか!?　ゆるゆる日常系ガールズバンドストーリー開演！",
       "cast": [
@@ -204,7 +195,7 @@
         ["箱部なる", "M・A・O"]
       ],
       "subTitle": null,
-      "onair": null,
+      "onair": ["2022年1月4日（火）～2022年2月22日", "TOKYO MXほか"],
       "streaming": [
         "YouTube",
         "Amazon Prime Video",
@@ -226,7 +217,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "永遠の831",
@@ -235,7 +226,6 @@
       "pv": null,
       "year": 2022,
       "quarter": 4,
-
       "staff": [
         ["アニメーション制作", "CRAFTER"],
         ["監督・脚本", "神山健治"],
@@ -266,7 +256,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "王子の本命は悪役令嬢",
@@ -312,7 +302,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "お昼のショッカーさん",
@@ -343,7 +333,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "オリエント",
@@ -407,7 +397,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "オンエアできない！",
@@ -459,7 +449,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "怪人開発部の黒井津さん",
@@ -533,7 +523,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": false,
       "season": 3,
       "title": "からかい上手の高木さん3",
@@ -595,7 +585,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": false,
       "season": 2,
       "title": "ガル学。Ⅱ～Lucky Stars～",
@@ -631,7 +621,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "CUE!",
@@ -668,7 +658,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "賢者の弟子を名乗る賢者",
@@ -731,7 +721,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": false,
       "season": 2,
       "title": "現実主義勇者の王国再建記 第二部",
@@ -776,7 +766,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "幻想三國誌 -天元霊心記-",
@@ -840,7 +830,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "殺し愛",
@@ -905,7 +895,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "最遊記RELOAD -ZEROIN-",
@@ -972,7 +962,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "佐々木と宮野",
@@ -1040,7 +1030,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "錆色のアーマ-黎明-",
@@ -1104,7 +1094,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "錆喰いビスコ",
@@ -1166,7 +1156,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "失格紋の最強賢者",
@@ -1224,7 +1214,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "終末のハーレム",
@@ -1292,7 +1282,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": false,
       "season": 2,
       "title": "進撃の巨人 The Final Season Part2",
@@ -1360,7 +1350,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "ジョジョの奇妙な冒険　ストーンオーシャン",
@@ -1421,7 +1411,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "スローループ",
@@ -1480,7 +1470,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "その着せ替え人形は恋をする",
@@ -1552,7 +1542,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "テイコウペンギン",
@@ -1575,7 +1565,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "天才王子の赤字国家再生術～そうだ、売国しよう～",
@@ -1646,7 +1636,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "東京24区",
@@ -1720,7 +1710,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "トライブナイン",
@@ -1791,7 +1781,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "ドールズフロントライン",
@@ -1845,7 +1835,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "ニンジャラ",
@@ -1883,7 +1873,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "ハコヅメ～交番女子の逆襲～",
@@ -1948,7 +1938,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "範馬刃牙",
@@ -2000,7 +1990,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "バトルスピリッツ -コアの光主たち-",
@@ -2034,7 +2024,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": false,
       "season": 2,
       "title": "ヴァニタスの手記 第2クール",
@@ -2109,7 +2099,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "薔薇王の葬列",
@@ -2170,7 +2160,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "異世界美少女受肉おじさんと",
@@ -2240,7 +2230,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "フットサルボーイズ!!!!!",
@@ -2326,7 +2316,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": false,
       "season": 2,
       "title": "プリンセスコネクト！ReDive Season 2",
@@ -2394,7 +2384,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "平家物語",
@@ -2450,7 +2440,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "BABY-HAMITANG",
@@ -2482,7 +2472,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": false,
       "season": 3,
       "title": "魔法科高校の劣等生 追憶編",
@@ -2538,7 +2528,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": false,
       "season": 10,
       "title": "闇芝居（第10期）",
@@ -2584,7 +2574,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "リアデイルの大地にて",
@@ -2625,7 +2615,7 @@
     },
     {
       "media": "tv",
-      "doing": true,
+      "doing": false,
       "firstTime": true,
       "season": 1,
       "title": "リーマンズクラブ",

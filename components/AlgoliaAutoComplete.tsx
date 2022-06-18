@@ -13,6 +13,8 @@ export type AlgoliaData = {
   objectId: string;
   objectID: string;
   title: string;
+  year: number;
+  quarter: number;
 };
 
 type Debounce = {
@@ -107,7 +109,7 @@ const AlgoliaAutoComplete = ({ setIsOpen }: Props) => {
                 //   console.log(item, 'item');
                 // }
                 //itemはアルゴリアから引っ張ってきたそれぞれのデータ
-                return `/animes/${item.title}`;
+                return `/animes/${item.year}/${item.quarter}/${item.title}`;
               },
               //アイテムをクリックした時に走る
               onSelect(params: { itemUrl: string }) {

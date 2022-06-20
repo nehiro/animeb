@@ -12,7 +12,6 @@ import Layout from '../layouts/Layout';
 const Review = () => {
   return (
     <>
-      <Breadcrumbs />
       <BackGroundWhite>
         <div className="grid justify-items-center gap-4 lg:grid-cols-2">
           <div>

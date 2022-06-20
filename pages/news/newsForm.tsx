@@ -19,8 +19,8 @@ const newsForm = () => {
 
   const onSubmit = async (data: News) => {
     console.log(data, 'data');
-    console.log(data.title, 'data.title');
-    console.log(data.body.content, 'data.body.content');
+    // console.log(data.title, 'data.title');
+    // console.log(data.body.content, 'data.body.content');
 
     const ref = doc(collection(db, 'news'));
     const id = ref.id;
@@ -38,7 +38,7 @@ const newsForm = () => {
 
   const onInvalid = (erros: FieldErrors) => {
     alert('入力項目にエラーがあります');
-    console.log(erros);
+    // console.log(erros);
   };
   const notifications = [
     { id: 'notice', title: 'お知らせ' },

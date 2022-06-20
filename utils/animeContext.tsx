@@ -30,7 +30,7 @@ export const AnimeProvider = ({ children }: { children: ReactNode }) => {
     // console.log(response, 'response');
 
     const json = await response.json();
-    // console.log('json', json);
+    // console.log(json, 'json');
 
     //全部のアニメ
     setAnimes(json.items);

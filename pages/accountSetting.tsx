@@ -57,7 +57,17 @@ const AccountSetting = () => {
 
   return (
     <>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'アカウント情報',
+            href: 'account',
+          },
+          {
+            name: 'アカウント設定',
+          },
+        ]}
+      />
       <BackGroundWhite>
         <SubpageTitle>アカウント設定</SubpageTitle>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -147,7 +157,17 @@ const AccountSetting = () => {
           </ul>
         </form>
       </BackGroundWhite>
-      <Breadcrumbs />
+      <Breadcrumbs
+        pages={[
+          {
+            name: 'アカウント情報',
+            href: 'account',
+          },
+          {
+            name: 'アカウント設定',
+          },
+        ]}
+      />
     </>
   );
 };

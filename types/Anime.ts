@@ -38,7 +38,7 @@ export type JsonAnime = {
     summary: string | null;
     cast: string[][] | null;
     subTitle: string[] | null;
-    onair: string[][] | null;
+    onair: string[][] | string[] | null;
     streaming: string[] | null;
   }[];
 };

@@ -20,7 +20,6 @@ const Password = () => {
   }, []);
   return (
     <>
-      <Breadcrumbs />
       <BackGroundWhite>
         <SubpageTitle>パスワード設定</SubpageTitle>
         <form action="">
@@ -28,39 +27,39 @@ const Password = () => {
             <li className=" mb-4">
               <label htmlFor="" className="block font-bold">
                 現在のパスワード
-                <span className="inline-block bg-red-600 text-white px-2 ml-2 mb-2">
+                <span className="ml-2 mb-2 inline-block bg-red-600 px-2 text-white">
                   必須
                 </span>
               </label>
               <input
                 type="text"
-                className="border rounded w-full box-border h-10 p-2"
+                className="box-border h-10 w-full rounded border p-2"
                 placeholder="パスワードを入力してください"
               />
             </li>
             <li className="mb-4">
               <label htmlFor="" className="block font-bold">
                 新しいパスワード
-                <span className="inline-block bg-red-600 text-white px-2 ml-2 mb-2">
+                <span className="ml-2 mb-2 inline-block bg-red-600 px-2 text-white">
                   必須
                 </span>
               </label>
               <input
                 type="text"
-                className="border rounded w-full box-border h-10 p-2"
+                className="box-border h-10 w-full rounded border p-2"
                 placeholder="パスワードを入力してください"
               />
             </li>
             <li>
               <label htmlFor="" className="block font-bold">
                 新しいパスワードを再入力
-                <span className="inline-block bg-red-600 text-white px-2 ml-2 mb-2">
+                <span className="ml-2 mb-2 inline-block bg-red-600 px-2 text-white">
                   必須
                 </span>
               </label>
               <input
                 type="text"
-                className="border rounded w-full box-border h-10 p-2"
+                className="box-border h-10 w-full rounded border p-2"
                 placeholder="パスワードを入力してください"
               />
             </li>
@@ -69,7 +68,6 @@ const Password = () => {
           <Button>保存する</Button>
         </form>
       </BackGroundWhite>
-      <Breadcrumbs />
     </>
   );
 };

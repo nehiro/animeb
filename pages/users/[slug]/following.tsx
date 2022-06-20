@@ -202,7 +202,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const usersRef = adminDB.collection('users');
   const snap = await usersRef.get();
   const paths = snap.docs.map((doc) => `/users/${doc.id}/following`);
-  console.log(paths, 'paths');
+  // console.log(paths, 'paths');
   return {
     paths,
     fallback: false,

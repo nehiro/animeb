@@ -60,6 +60,13 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
               <Link href="/">
                 <a className="mx-0 flex w-36 items-center sm:mx-2 sm:w-auto">
                   <Image
+                    src="/images/logo-2.png"
+                    width="35"
+                    height="35"
+                    alt="アニメ部！"
+                    decoding="async"
+                  />
+                  <Image
                     src="/images/logo.svg"
                     width="175"
                     height="35"

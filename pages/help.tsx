@@ -105,7 +105,7 @@ const Help = () => {
       />
       <BackGroundWhite>
         <SubpageTitle>ヘルプ</SubpageTitle>
-        <div className="mb-3 rounded-md bg-gray-100 p-5">
+        <div className="mb-3 rounded-md bg-gray-50 p-5">
           <h2 className="text-base font-medium">
             アニメ部！の登録と利用の開始、退会について
           </h2>
@@ -139,7 +139,7 @@ const Help = () => {
             ))}
           </dl>
         </div>
-        <div className="mb-3 rounded-md bg-gray-100 p-5">
+        <div className="mb-3 rounded-md bg-gray-50 p-5">
           <h2 className="text-base font-medium">
             ログイン、ログアウトについて
           </h2>
@@ -173,7 +173,7 @@ const Help = () => {
             ))}
           </dl>
         </div>
-        <div className="rounded-md bg-gray-100 p-5">
+        <div className="rounded-md bg-gray-50 p-5">
           <h2 className="text-base font-medium">機能について</h2>
           <dl className="space-y-4 divide-y divide-gray-200">
             {faqs03.map((faq) => (

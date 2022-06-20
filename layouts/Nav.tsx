@@ -118,7 +118,7 @@ const Nav = ({ open, toggle }: SideMenu) => {
                             </li>
                           ))}
                         </ul>
-                        <small>&copy; 2021 アニメ部！</small>
+                        <small>&copy; 2022 アニメ部！</small>
                       </nav>
                     </div>
                   </div>

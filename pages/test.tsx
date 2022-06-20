@@ -179,7 +179,6 @@ const test = () => {
   // );
 
   // const notify = () => toast('Here is your toast.');
-  const { animes } = useAnime();
   const PAGE_SIZE = 5;
 
   const getKey = (pageIndex: number, previousPageData: any) => {

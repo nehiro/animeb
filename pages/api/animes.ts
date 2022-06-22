@@ -6,10 +6,13 @@ import db from './db.json';
 import dbName from './dbName.json';
 //test
 // type Response = JsonAnime | string;
-type Response = JsonAnime | string;
+type Response = JsonAnime[] | string;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
-  console.log(req.query, 'req.query');
+  let limit = Number(req.query.limit);
+  let page = Number(req.query.page);
+  console.log(limit, 'limit');
+  console.log(page, 'page');
   try {
     switch (req.method) {
       // 追加
@@ -20,22 +23,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
         break;
       // 取得
       case 'GET':
-        // return res.status(200).json(dbName);
-        if (req.query.per_page) {
-          
-          // const myRequest = new Request('http://localhost:3000/api/db');
-          // fetch(myRequest)
-          //   .then((response) => response.json())
-          //   .then((data) => {
-          //     console.log(data, 'data');
-          //   });
-          // return res
-          //   .status(200)
-          //   .json(db)
-          //   .then((data: JsonAnime[]) => {
-          //     console.log(data, 'data');
-          //   });
-          return res.status(200).json(db);
+        // return res.status(200).json(db);
+        const data = db.items;
+        const dataLength = db.items.length;
+        console.log(dataLength, 'dataLength');
+        if (req.query) {
+          if (page > 1) {
+            const result = data.slice(limit * page - 2, limit * page);
+            return res.status(200).json(result);
+          } else {
+            const result = data.slice(0, limit);
+            return res.status(200).json(result);
+          }
         } else {
           return res.status(200).json(db);
         }

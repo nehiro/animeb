@@ -88,7 +88,7 @@ const Home = () => {
           </Link>
         </p>
       </section>
-      {/* <div>
+      <div>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <h2 className="font-bold">あなたのタイムライン</h2>
@@ -115,7 +115,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
       {/* <AllUserTable></AllUserTable> */}
 
       <BackGroundGray>
@@ -123,7 +123,7 @@ const Home = () => {
         {/* <ul>{animesMap}</ul> */}
 
         {/* <ul id="animeTitle">{animeMap}</ul> */}
-        {animes ? (
+        {/* {animes ? (
           <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {animes
               ?.filter((anime) => anime.year === 2022 && anime.quarter === 4)
@@ -140,13 +140,13 @@ const Home = () => {
           <p className="flex justify-center">
             <RefreshIcon className="w-10 animate-spin text-gray-700" />
           </p>
-        )}
+        )} */}
         {/* <Button>もっと見る</Button> */}
       </BackGroundGray>
 
       <BackGroundWhite>
         <TopTitle>最近投稿されたレビュー</TopTitle>
-        <LatestReview></LatestReview>
+        {/* <LatestReview></LatestReview> */}
       </BackGroundWhite>
 
       {/* <BackGroundWhite>

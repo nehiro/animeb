@@ -179,11 +179,11 @@ const test = () => {
   // );
 
   // const notify = () => toast('Here is your toast.');
-  const PAGE_SIZE = 5;
+  const limit = 2;
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `http://localhost:3000/api/animes?per_page=${PAGE_SIZE}&page=${
+    return `http://localhost:3000/api/animes?limit=${limit}&page=${
       pageIndex + 1
     }`;
     // return `https://api.github.com/repos/reactjs/react-a11y/issues?per_page=${PAGE_SIZE}&page=${
@@ -196,10 +196,10 @@ const test = () => {
     (url) =>
       fetch(url, {
         method: 'GET',
-        // }).then((r) => r.json()),
-      }).then((r) => r.json().then((r) => r.items)),
+      }).then((r) => r.json()),
+    // }).then((r) => r.json().then((r) => r.items)),
     {
-      initialSize: 1,
+      initialSize: 10,
     }
   );
 
@@ -217,20 +217,25 @@ const test = () => {
 
   // console.log(Array.isArray(newData), 'newData');
 
-  let totalAnimes = 0;
-  for (let i = 0; i < data.length; i++) {
-    totalAnimes += data[i].length;
-  }
+  console.log(data.length, 'data.length');
+  // let totalAnimes = 0;
+  // for (let i = 0; i < data.length; i++) {
+  //   totalAnimes += data[i].length;
+  // }
+  // console.log(totalAnimes, 'totalAnimes');
+
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
-    isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+    isEmpty || (data && data[data.length - 1]?.length < limit);
 
   return (
     <>
       <h2>もっと見る機能</h2>
       {newData.map((i: any, index) => (
         <div
-          className={`${i.title === 'リーマンズクラブ' ? 'bg-blue-700' : null}`}
+          className={`${
+            i.title === 'リーマンズクラブ' ? 'bg-blue-700' : null
+          } border-b-2`}
           key={index}
         >
           {i.title}

@@ -64,9 +64,11 @@ const Delete = () => {
       }),
     })
       .then((res) => {
-        signOut(auth);
         toast.success('ユーザー情報を削除しました。');
         // console.log(res.status, '成功');
+      })
+      .then(() => {
+        signOut(auth);
       })
       .catch((res) => {
         toast.error(
@@ -81,7 +83,6 @@ const Delete = () => {
 
   return (
     <>
-      <Breadcrumbs />
       <BackGroundWhite>
         <SubpageTitle>退会</SubpageTitle>
         <p className="mb-8 text-center">
@@ -98,7 +99,6 @@ const Delete = () => {
           </button>
         </p>
       </BackGroundWhite>
-      <Breadcrumbs />
       <Transition.Root show={open} as={Fragment}>
         <Dialog
           as="div"

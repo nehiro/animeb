@@ -103,7 +103,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                       <>
                         <Popover.Button>
                           <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                            {user ? (
+                            {user?.photoURL ? (
                               <Image src={user.photoURL} alt="" layout="fill" />
                             ) : (
                               <p className="flex justify-center">

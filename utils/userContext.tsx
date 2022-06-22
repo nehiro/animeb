@@ -87,19 +87,25 @@ export const AuthProvider: FC = ({ children }) => {
               ranking: [],
             };
             // console.log('データが無かったらこっち、ユーザー作る');
+            console.log('create user');
             setDoc(userDoc, newUser);
             setUser(newUser);
           } else {
-            // console.log('データが有ったらこっち、ユーザー作らない');
-            // console.log(snap.data().photoURL, 'data');
-            setUser(snap.data() as User);
-            setLoading(false);
+            // console.log(snap.data(), 'data');
+            if (snap.data().deleted === true) {
+              console.log('deleted user');
+              return null;
+            } else {
+              console.log('dont create user');
+              setUser(snap.data() as User);
+              setLoading(false);
+            }
           }
         });
       } else {
         //authUserがあればログイン
         // console.log(authUser, 'authUser');
-        // console.log('ログインしてない');
+        console.log('ログインしてない');
         setUser(null);
         setLoading(false);
       }

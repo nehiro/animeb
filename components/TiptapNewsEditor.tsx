@@ -55,7 +55,7 @@ const TiptapNewsEditor = ({
   }, [editor]);
 
   // console.log(editor?.commands.setContent(value));
-  console.log(value);
+  // console.log(value);
 
   // classの連結
   const classNames = (...classes: (string | boolean | undefined)[]) =>

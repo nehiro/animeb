@@ -45,11 +45,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await updateDoc(doc(db, `users/${item.uid}`), {
           followerCount: increment(-1),
         })
-          .then(() => {
+          .then((s) => {
             console.log('フォロワー数マイナス成功', new Date(), item.uid);
           })
-          .catch(() => {
-            console.log('フォロワー数マイナス失敗', new Date(), item.uid);
+          .catch((e) => {
+            console.log('フォロワー数マイナス失敗', e);
           })
     );
   } else {
@@ -98,82 +98,82 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   //ユーザー情報
   //サブコレ削除
-  const deleteDocumentRecursively = async (
-    docRef: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
-  ) => {
-    const collections = await docRef.listCollections();
-    // console.log(docRef.id, 'docRef.id');
+  // const deleteDocumentRecursively = async (
+  //   docRef: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
+  // ) => {
+  //   const collections = await docRef.listCollections();
+  //   // console.log(docRef.id, 'docRef.id');
 
-    if (collections.length > 0) {
-      for (const collection of collections) {
-        const snapshot = await collection.get();
-        // console.log(snapshot, 'snapshot');
-        for (const docc of snapshot.docs) {
-          const ref = doc(db, `users/${uid}/follows/${docc.id}`);
-          deleteDoc(ref)
-            .then(() => {
-              console.log('サブコレ削除成功', docc.id);
-            })
-            .then(async () => {
-              //auth情報
-              await getAuth()
-                .deleteUser(uid)
-                .then(() => {
-                  console.log(new Date(), 'アカウント削除成功');
-                })
-                .catch(() => {
-                  console.log('アカウント削除失敗');
-                });
-            })
-            .catch(() => {
-              console.log('サブコレ削除失敗', docc.id);
-            });
-          // console.log(doc, 'doc');
-          // console.log(doc.ref, 'doc.ref');
-          // console.log(docc.data(), 'doc.data()');
-          await deleteDocumentRecursively(docc.ref);
-        }
-      }
-    } else {
-      //サブコレがなくなったら退会ユーザーにdeletedを入れる
-      const ref = admin.firestore().collection('users').doc(uid);
-      await ref
-        .set({
-          deleted: true,
-        })
-        .then(() => {
-          console.log('deleted代入成功', ref.id);
-        })
-        .catch(() => {
-          console.log('deleted代入失敗', ref.id);
-        });
-      // await ref
-      //   .delete()
-      //   .then(() => {
-      //     console.log('ユーザー情報削除成功', docRef.id);
-      //   })
-      //   .catch(() => {
-      //     console.log('ユーザー情報削除失敗', docRef.id);
-      //   });
-    }
-  };
+  //   if (collections.length > 0) {
+  //     for (const collection of collections) {
+  //       const snapshot = await collection.get();
+  //       // console.log(snapshot, 'snapshot');
+  //       for (const docc of snapshot.docs) {
+  //         const ref = doc(db, `users/${uid}/follows/${docc.id}`);
+  //         deleteDoc(ref)
+  //           .then(() => {
+  //             console.log('サブコレ削除成功', docc.id);
+  //           })
+  //           .then(async () => {
+  //             //auth情報
+  //             await getAuth()
+  //               .deleteUser(uid)
+  //               .then(() => {
+  //                 console.log(new Date(), 'アカウント削除成功');
+  //               })
+  //               .catch(() => {
+  //                 console.log('アカウント削除失敗');
+  //               });
+  //           })
+  //           .catch(() => {
+  //             console.log('サブコレ削除失敗', docc.id);
+  //           });
+  //         // console.log(doc, 'doc');
+  //         // console.log(doc.ref, 'doc.ref');
+  //         // console.log(docc.data(), 'doc.data()');
+  //         await deleteDocumentRecursively(docc.ref);
+  //       }
+  //     }
+  //   } else {
+  //     //サブコレがなくなったら退会ユーザーにdeletedを入れる
+  //     const ref = admin.firestore().collection('users').doc(uid);
+  //     await ref
+  //       .set({
+  //         deleted: true,
+  //       })
+  //       .then(() => {
+  //         console.log('deleted代入成功', ref.id);
+  //       })
+  //       .catch(() => {
+  //         console.log('deleted代入失敗', ref.id);
+  //       });
+  //     // await ref
+  //     //   .delete()
+  //     //   .then(() => {
+  //     //     console.log('ユーザー情報削除成功', docRef.id);
+  //     //   })
+  //     //   .catch(() => {
+  //     //     console.log('ユーザー情報削除失敗', docRef.id);
+  //     //   });
+  //   }
+  // };
 
-  (async () => {
-    const db = admin.firestore();
-    // サブコレクション含め再帰的に削除する＝中身が空になるまで
-    await deleteDocumentRecursively(db.collection('users').doc(uid));
-  })().catch((e) => {
-    console.log(e);
-  });
+  // (async () => {
+  //   const db = admin.firestore();
+  //   // サブコレクション含め再帰的に削除する＝中身が空になるまで
+  //   await deleteDocumentRecursively(db.collection('users').doc(uid));
+  // })().catch((e) => {
+  //   console.log(e);
+  // });
 
-  // stripe履歴
-  await deleteDoc(doc(db, `customers/${uid}`))
-    .then(() => {
-      console.log('ストライプ削除成功');
-    })
-    .catch(() => {
-      console.log('ストライプ削除失敗');
-    });
+  // // stripe履歴
+  // await deleteDoc(doc(db, `customers/${uid}`))
+  //   .then(() => {
+  //     console.log('ストライプ削除成功');
+  //   })
+  //   .catch(() => {
+  //     console.log('ストライプ削除失敗');
+  //   });
 
   //reviews
   //reviewsのuid削除

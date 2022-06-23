@@ -11,8 +11,8 @@ type Response = JsonAnime[] | string;
 const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
   let limit = Number(req.query.limit);
   let page = Number(req.query.page);
-  console.log(limit, 'limit');
-  console.log(page, 'page');
+  // console.log(limit, 'limit');
+  // console.log(page, 'page');
   try {
     switch (req.method) {
       // 追加
@@ -23,20 +23,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
         break;
       // 取得
       case 'GET':
-        // return res.status(200).json(db);
+        // return res.status(200).json(db.items);
         const data = db.items;
         const dataLength = db.items.length;
-        console.log(dataLength, 'dataLength');
-        if (req.query) {
+        // console.log(dataLength, 'dataLength');
+        if (req.query.limit) {
           if (page > 1) {
-            const result = data.slice(limit * page - 2, limit * page);
+            const result = data.slice(limit * page - limit, limit * page);
             return res.status(200).json(result);
           } else {
             const result = data.slice(0, limit);
             return res.status(200).json(result);
           }
         } else {
-          return res.status(200).json(db);
+          return res.status(200).json(db.items);
         }
       // 削除
       case 'DELETE':
@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
     }
     return res.status(200).send('OK');
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(500).send('Internal Server Error');
   }
 };

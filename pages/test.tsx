@@ -180,9 +180,10 @@ const test = () => {
   // );
 
   // const notify = () => toast('Here is your toast.');
-  const limit = 2;
+  const limit = 10;
 
-  const getKey = (pageIndex: number, previousPageData: any) => {
+  const getKey = (pageIndex: number, previousPageData: JsonAnime[]) => {
+    console.log(previousPageData, 'previousPageData');
     if (previousPageData && !previousPageData.length) return null;
     return `http://localhost:3000/api/animes?limit=${limit}&page=${
       pageIndex + 1

@@ -27,10 +27,11 @@ import UserItem from '../components/UserItem';
 import Profile from '../components/Profile';
 import Link from 'next/link';
 import { RefreshIcon } from '@heroicons/react/outline';
-import { Anime } from '../types/Anime';
+import { Anime, JsonAnime } from '../types/Anime';
 import { userReviews } from '../lib/getReviews';
 import BackGroundWhite from '../components/BackGroundWhite';
 import LatestReview from '../components/LatestReview';
+import useSWRInfinite from 'swr/infinite';
 
 const Home = () => {
   //アニメ管理
@@ -38,13 +39,13 @@ const Home = () => {
   // console.log(animes, 'animes');
   // console.log(animes, 'anime.items');
 
-  const animesMap = animes?.map((item) => (
-    <li key={item.title}>
-      <Link href={encodeURI('animes/' + `${item.title}`)}>
-        <a>{item.title}</a>
-      </Link>
-    </li>
-  ));
+  // const animesMap = animes?.map((item) => (
+  //   <li key={item.title}>
+  //     <Link href={encodeURI('animes/' + `${item.title}`)}>
+  //       <a>{item.title}</a>
+  //     </Link>
+  //   </li>
+  // ));
   // console.log(animesMap, 'animesMap');
 
   // followとuser管理
@@ -64,6 +65,30 @@ const Home = () => {
 
   const isBigScreen = useMediaQuery({ query: '(min-width: 640px)' });
   const isSmallScreen = useMediaQuery({ query: '(max-width: 639px)' });
+
+  //もっと見る
+  const limit = 20;
+  const getKey = (pageIndex: number, previousPageData: JsonAnime[]) => {
+    if (previousPageData && !previousPageData.length) return null;
+    return `http://localhost:3000/api/animes?limit=${limit}&page=${
+      pageIndex + 1
+    }`;
+  };
+  const { data, size, setSize } = useSWRInfinite(
+    getKey,
+    (url) =>
+      fetch(url, {
+        method: 'GET',
+      }).then((r) => r.json()),
+    {
+      initialSize: 1,
+    }
+  );
+  if (!data) return 'loading';
+  const newData: JsonAnime[] = data.flat();
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < limit);
 
   if (loading) return null;
 
@@ -141,12 +166,42 @@ const Home = () => {
             <RefreshIcon className="w-10 animate-spin text-gray-700" />
           </p>
         )} */}
-        {/* <Button>もっと見る</Button> */}
+        {newData ? (
+          <>
+            <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+              {newData
+                ?.filter((anime) => anime.year === 2022 && anime.quarter === 4)
+                .map((anime) => (
+                  <li
+                    key={anime.title}
+                    className="flex w-full flex-col justify-between"
+                  >
+                    <Card anime={anime}></Card>
+                  </li>
+                ))}
+            </ul>
+            {!isReachingEnd ? (
+              <div className="relative mx-auto block  text-center">
+                <button
+                  onClick={() => setSize(size + 1)}
+                  className="inline-block rounded-full bg-buttonBlack py-3 px-12 text-white"
+                >
+                  もっと見る
+                </button>
+              </div>
+            ) : // 'すべて読み込みました。'
+            null}
+          </>
+        ) : (
+          <p className="flex justify-center">
+            <RefreshIcon className="w-10 animate-spin text-gray-700" />
+          </p>
+        )}
       </BackGroundGray>
 
       <BackGroundWhite>
         <TopTitle>最近投稿されたレビュー</TopTitle>
-        {/* <LatestReview></LatestReview> */}
+        <LatestReview></LatestReview>
       </BackGroundWhite>
 
       {/* <BackGroundWhite>

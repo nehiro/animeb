@@ -33,7 +33,8 @@ export const AnimeProvider = ({ children }: { children: ReactNode }) => {
     // console.log(json, 'json');
 
     //全部のアニメ
-    setAnimes(json.items);
+    // setAnimes(json.items);
+    setAnimes(json);
   }
 
   return (

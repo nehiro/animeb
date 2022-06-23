@@ -26,11 +26,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await auth.verifyIdToken(token);
   } catch (error) {
-    console.log(error);
+    // console.log(error, 'ここのエラー');
     return res.status(500).send('error');
   }
 
-  // console.log('走った');
+  console.log('走った');
 
   // //フォローフォロワー
 

@@ -67,9 +67,9 @@ const Delete = () => {
         toast.success('ユーザー情報を削除しました。');
         // console.log(res.status, '成功');
       })
-      .then(() => {
-        signOut(auth);
-      })
+      // .then(() => {
+      //   signOut(auth);
+      // })
       .catch((res) => {
         toast.error(
           'ユーザー情報の削除に失敗しました。お手数ですが、お問い合わせをお願いいたします。'

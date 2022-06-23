@@ -12,6 +12,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import useSWRInfinite from 'swr/infinite';
 import { Anime, JsonAnime } from '../types/Anime';
 import { useAnime } from '../utils/animeContext';
+import Link from 'next/link';
 
 export type AlgoliaData = {
   objectId: string;
@@ -199,46 +200,67 @@ const test = () => {
       }).then((r) => r.json()),
     // }).then((r) => r.json().then((r) => r.items)),
     {
-      initialSize: 10,
+      initialSize: 1,
     }
   );
 
   if (!data) return 'loading';
 
-  console.log(data, 'data');
+  // console.log(data, 'data');
   // console.log(data?.flat(), 'data.flat()');
 
   const newData: newData = data.flat();
 
   // const dataLength = data.flat().map((item, index) => item.items);
-
   // console.log(newData, 'newData');
   // console.log(dataLength, 'dataLength');
-
   // console.log(Array.isArray(newData), 'newData');
+  // console.log(data.length, 'data.length');
 
-  console.log(data.length, 'data.length');
+  // 全体でいくらのデータ引っ張ってきたか
   // let totalAnimes = 0;
   // for (let i = 0; i < data.length; i++) {
   //   totalAnimes += data[i].length;
   // }
   // console.log(totalAnimes, 'totalAnimes');
 
+  // data配列インデックス[0が空かどうか]
+  //　どっちも一緒
+  // console.log(data[0], 'data[0]');
+  // console.log(data?.[0], 'data?.[0]');
   const isEmpty = data?.[0]?.length === 0;
+
+  // data[]の中のオブジェクトにデータがあるか
+  // console.log(data?.[0]?.length, 'data?.[0]?.length');
+
+  // 初回1
+  // console.log(data?.length, 'data?.length');
+
   const isReachingEnd =
+    //　空かどうか || データがあって && 配列の中の最後のオブジェクトの中のデータ個数が[limit]より少ないかどうか
     isEmpty || (data && data[data.length - 1]?.length < limit);
+
+  console.log(data, 'data');
+  // console.log(data.length, 'data.length');
+  // console.log(data[data.length], 'data[data.length]');
+  // 最後のオブジェクトのデータ
+  // console.log(data[data.length - 1], 'data[data.length - 1]');
+  // 最後のオブジェクトのデータの長さ＝最後に何個のデータが入っているか
+  // console.log(data[data.length - 1]?.length, 'data[data.length - 1]?.length');
 
   return (
     <>
       <h2>もっと見る機能</h2>
-      {newData.map((i: any, index) => (
+      {newData.map((i: JsonAnime, index) => (
         <div
           className={`${
             i.title === 'リーマンズクラブ' ? 'bg-blue-700' : null
           } border-b-2`}
           key={index}
         >
-          {i.title}
+          <Link href={`/animes/${i.year}/${i.quarter}/${i.title}`}>
+            <a>{i.title}</a>
+          </Link>
         </div>
       ))}
       {!isReachingEnd ? (

@@ -35,7 +35,7 @@ export type Anime = {
   op: string[] | null;
   ed: string[] | null;
   summary: string | null;
-  cast: string[][] | null;
+  cast: string[][];
   subTitle: string[] | null;
   onair: string[][] | string[] | null;
   streaming: string[] | null;

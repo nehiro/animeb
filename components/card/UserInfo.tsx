@@ -12,9 +12,9 @@ const UserInfo = (props: { uid: string }) => {
     const ref = doc(db, `users/${uid}`);
     return onSnapshot(ref, async (snap) => {
       const data = snap.data() as User;
-      if (!data.deleted || data.deleted !== true) {
-        setUser(data);
-      }
+      // if (!data.deleted || data.deleted !== true) {
+      setUser(data);
+      // }
     });
   }, []);
 

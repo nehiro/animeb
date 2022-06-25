@@ -14,13 +14,10 @@ export const userLists = (
   userId: string,
   callback: (lists: List[]) => void
 ) => {
-  const ref = query(
-    collectionGroup(db, 'lists'),
-    where('uid', '==', `${userId}`),
-    orderBy('createAt', 'desc')
-  );
-
-  return onSnapshot(ref, async (snap) => {
+  const ref = collectionGroup(db, 'lists');
+  const q = query(ref, where('uid', '==', userId), orderBy('createAt', 'desc'));
+  // console.log('走ったuserLists');
+  return onSnapshot(q, async (snap) => {
     // const snap = await getDocs(ref);
 
     const datas = snap.docs.map((item) => {
@@ -56,7 +53,7 @@ const getLists = async (id: string, userId: string): Promise<List> => {
     ...animeData,
     ...addId,
   };
-  // console.log(newData, '5');
+  // console.log(newData, 'newData');
 
   return newData as List;
 };

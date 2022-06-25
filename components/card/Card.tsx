@@ -57,6 +57,7 @@ const Card = ({ anime }: { anime: Anime }) => {
   //   return authUserListData?.find((list) => list.title === anime?.title);
   // };
   // console.log(lists, 'Card lists');
+  // console.log(lists, 'lists');
   const listed = () => {
     return lists?.find((list) => list.title === anime?.title);
   };

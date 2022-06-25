@@ -53,34 +53,36 @@ const Timeline = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <textarea
-          className="rounded border border-gray-300 w-full mb-1 block resize-none"
-          {...register('body')}
-        />
-        <div className="text-right">
-          <button className="rounded text-sm px-3 py-1.5 bg-sky-500 text-white">
-            投稿
-          </button>
-        </div>
-      </form>
-      <InstantSearch searchClient={searchClient} indexName="posts">
-        <Configure
-          facetFilters={[
-            [...followUsers, user].map((user) => `authorId:${user.uid}`),
-          ]}
-        />
-        <Hits hitComponent={PostItem} />
-        <Stats
-          translations={{
-            stats(nbHits) {
-              return !nbHits ? '投稿がありません' : '';
-            },
-          }}
-        />
-      </InstantSearch>
-    </div>
+    <>
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <textarea
+            className="mb-1 block w-full resize-none rounded border border-gray-300"
+            {...register('body')}
+          />
+          <div className="text-right">
+            <button className="rounded bg-sky-500 px-3 py-1.5 text-sm text-white">
+              投稿
+            </button>
+          </div>
+        </form>
+        <InstantSearch searchClient={searchClient} indexName="posts">
+          <Configure
+            facetFilters={[
+              [...followUsers, user].map((user) => `authorId:${user.uid}`),
+            ]}
+          />
+          <Hits hitComponent={PostItem} />
+          <Stats
+            translations={{
+              stats(nbHits) {
+                return !nbHits ? '投稿がありません' : '';
+              },
+            }}
+          />
+        </InstantSearch>
+      </div>
+    </>
   );
 };
 

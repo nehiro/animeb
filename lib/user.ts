@@ -44,7 +44,7 @@ export const subscribeFollowUsers = (
       return getUser(doc.id);
     });
     const users = await Promise.all(tasks);
-    // console.log(users);
+    // console.log(users, 'users');
     callback(users);
   });
 };

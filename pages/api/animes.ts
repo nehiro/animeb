@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import useSWR from 'swr';
-import { Anime, JsonAnime, JsonAnime2 } from '../../types/Anime';
+import { Anime, JsonAnime } from '../../types/Anime';
 import Slug from '../news/[slug]';
 import db from './db.json';
 import dbName from './dbName.json';

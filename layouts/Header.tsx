@@ -58,7 +58,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                 <MenuAlt1Icon className="h-6 w-6" />
               </button>
               <Link href="/">
-                <a className="mx-0 flex w-36 items-center sm:mx-2 sm:w-auto">
+                <a className="mx-0 flex w-44 items-center sm:mx-2 sm:w-auto">
                   <Image
                     src="/images/logo-2.png"
                     width="35"

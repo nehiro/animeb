@@ -150,7 +150,7 @@ export const deleteReviweButton = async (props: DeleteReviweButton) => {
   const reviews = props.reviews;
   const setReviewModal = props.setReviewModal;
   const dbLists = props.dbAnimes.data;
-  console.log(dbLists, 'dbLists');
+  // console.log(dbLists, 'dbLists');
   if (!user) {
     toast.error('ログインしてください');
     return;

@@ -9,8 +9,12 @@ import { Post } from '../types/post';
 import PostItem from './PostItem';
 import { getIdToken } from 'firebase/auth';
 
+type TimeLine = {
+  body: string;
+};
+
 const Timeline = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm<TimeLine>();
   const { user, followUsers } = useAuth();
   if (!user || !followUsers) {
     return null;

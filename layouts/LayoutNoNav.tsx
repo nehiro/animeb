@@ -8,7 +8,7 @@ type Props = {
 };
 
 const LayoutNoNav = ({ children }: Props) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const toggle = () => {
     setOpen((prevState) => !prevState);
   };

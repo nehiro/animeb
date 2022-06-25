@@ -113,7 +113,7 @@ const Home = () => {
           </Link>
         </p>
       </section>
-      <div>
+      {/* <div>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <h2 className="font-bold">あなたのタイムライン</h2>
@@ -140,7 +140,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <AllUserTable></AllUserTable> */}
 
       <BackGroundGray>

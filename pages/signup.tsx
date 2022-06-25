@@ -9,7 +9,6 @@ import FacebookLogin from '../components/FacebookLogin';
 import TwitterLogin from '../components/TwitterLogin';
 import GoogleLogin from '../components/GoogleLogin';
 import { useAuth } from '../utils/userContext';
-import PasswordBaseSignup from '../components/PasswordBaseSignup';
 import LineLogin from '../components/LineLogin';
 import Breadcrumbs from '../components/Breadcrumbs';
 

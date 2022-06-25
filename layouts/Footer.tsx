@@ -1,8 +1,8 @@
 import { ChevronUpIcon } from '@heroicons/react/outline';
 import React from 'react';
-import { SideMenuProps } from './Layout';
+import { SideMenu } from '../types/SideMenu';
 
-const Footer = ({ open, toggle }: SideMenuProps) => {
+const Footer = ({ open, toggle }: SideMenu) => {
   // console.log(open);
   // console.log(toggle);
   const returnTop = () => {

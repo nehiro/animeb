@@ -14,7 +14,7 @@ import { useAuth } from '../../utils/userContext';
 const Slug = ({ news }: { news: News }) => {
   const { user } = useAuth();
   const admin = user?.admin;
-  console.log(news, 'news');
+  // console.log(news, 'news');
   // console.log(news.title, 'news.title');
   // console.log(news.body, 'news.body');
 
@@ -219,7 +219,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const newsRef = adminDB.collection('news');
   const snap = await newsRef.get();
   const paths = snap.docs.map((doc) => `/news/${doc.id}`);
-  // console.log(paths, 'paths');
+  console.log(paths, 'paths');
   return {
     paths,
     fallback: false,

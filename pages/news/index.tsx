@@ -108,7 +108,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const news = snap.docs.map((doc) => {
     return doc.data();
   });
-  console.log(news, 'news');
+  // console.log(news, 'news');
   return {
     props: { news },
   };

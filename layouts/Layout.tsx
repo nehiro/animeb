@@ -9,13 +9,13 @@ type Props = {
 };
 
 const Layout = ({ children }: Props) => {
-  const [width, height] = useWindowSize();
-  console.log(width, 'width');
+  // const [width, height] = useWindowSize();
+  // console.log(width, 'width');
   // console.log(height, 'height');
 
   // const [open, setOpen] = useState<boolean>(width < 768 ? false : true);
   const [open, setOpen] = useState<boolean>(true);
-  console.log(open);
+  // console.log(open);
   const toggle = () => {
     setOpen((prevState) => !prevState);
   };

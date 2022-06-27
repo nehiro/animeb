@@ -264,7 +264,7 @@ const Privacy = () => {
         </p>
         <p>[お問合せ先]</p>
         <p>アニメ部！</p>
-        <p>E-mail：</p>
+        <p>E-mail：contact@anime-club.online</p>
 
         <p className="mt-8 text-right">以上</p>
       </BackGroundWhite>

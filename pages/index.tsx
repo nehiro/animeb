@@ -70,7 +70,7 @@ const Home = () => {
   const limit = 20;
   const getKey = (pageIndex: number, previousPageData: JsonAnime[]) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `http://localhost:3000/api/animes?limit=${limit}&page=${
+    return `https://anime-club.online/api/animes?limit=${limit}&page=${
       pageIndex + 1
     }`;
   };
@@ -91,6 +91,7 @@ const Home = () => {
     isEmpty || (data && data[data.length - 1]?.length < limit);
 
   if (loading) return null;
+  // console.log(loading, 'loading');
 
   // if (!user) {
   //   return null;
@@ -103,12 +104,22 @@ const Home = () => {
           <Link href="/about">
             <a className="flex items-center justify-center px-4 py-3 sm:px-6 sm:py-3">
               {isBigScreen && (
-                <Image src="/images/logo.svg" width="140" height="28" alt="" />
+                <Image
+                  src="/images/logo-text.png"
+                  width="125"
+                  height="25.641 "
+                  alt=""
+                />
               )}
               {isSmallScreen && (
-                <Image src="/images/logo.svg" width="110" height="22" alt="" />
+                <Image
+                  src="/images/logo-text.png"
+                  width="100"
+                  height="20.5128 "
+                  alt=""
+                />
               )}
-              <span>について</span>
+              <span className="ml-2 sm:ml-3">について</span>
             </a>
           </Link>
         </p>

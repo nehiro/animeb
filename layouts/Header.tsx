@@ -22,6 +22,7 @@ import { signOut } from '@firebase/auth';
 import { auth } from '../utils/firebase';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { useMediaQuery } from 'react-responsive';
 
 const logout = () => {
   signOut(auth)
@@ -40,6 +41,9 @@ function classNames(...classes: any[]) {
 const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
   const { user } = useAuth();
 
+  const isBigScreen = useMediaQuery({ query: '(min-width: 640px)' });
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 639px)' });
+
   // console.log(user, 'user');
   // console.log(user?.photoURL, 'photoURL');
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -50,8 +54,8 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
         onClose={() => setIsOpen(false)}
         setIsOpen={setIsOpen}
       />
-      <header className="fixed top-0 left-0 z-40 flex h-14 w-full items-center justify-between bg-purple">
-        <div className="w-full px-4">
+      <header className="fixed top-0 left-0 z-40 flex h-14 w-full items-center justify-between bg-purple px-4">
+        <div className="w-full">
           <div className="flex justify-between">
             <div className="flex items-center">
               <button className="mr-3" onClick={toggleSideNav}>
@@ -59,20 +63,23 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
               </button>
               <Link href="/">
                 <a className="mx-0 flex w-44 items-center sm:mx-2 sm:w-auto">
-                  <Image
-                    src="/images/logo-2.png"
-                    width="35"
-                    height="35"
-                    alt="アニメ部！"
-                    decoding="async"
-                  />
-                  <Image
-                    src="/images/logo.svg"
-                    width="175"
-                    height="35"
-                    alt="アニメ部！"
-                    decoding="async"
-                  />
+                  {isBigScreen && (
+                    <Image
+                      src="/images/logo.png"
+                      width="191"
+                      height="32"
+                      alt="アニメ部！"
+                      decoding="async"
+                    />
+                  )}
+                  {isSmallScreen && (
+                    <Image
+                      src="/images/logo.png"
+                      width="150"
+                      height="25.1309"
+                      alt=""
+                    />
+                  )}
                 </a>
               </Link>
             </div>
@@ -153,7 +160,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                                     </span>
                                   </a>
                                 </Link>
-                                <Link href="/bestAnime">
+                                {/* <Link href="/bestAnime">
                                   <a>
                                     <i className="mr-1.5 leading-none">
                                       <MusicNoteIcon className="inline-block h-5 w-5 text-purple" />
@@ -162,7 +169,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                                       ベストアニメ設定
                                     </span>
                                   </a>
-                                </Link>
+                                </Link> */}
                                 <Link href="/cheer">
                                   <a>
                                     <i className="mr-1.5 leading-none">
@@ -195,7 +202,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
               ) : (
                 <>
                   <Link href="/signup">
-                    <a className="flex max-h-40 min-w-146 items-center justify-center rounded-full bg-yellow px-2 sm:mx-2 sm:px-8">
+                    <a className="flex max-h-40 items-center justify-center rounded-full bg-yellow py-2 px-3 sm:mx-2 sm:px-4">
                       <i className="mr-1.5 leading-none">
                         <UserIcon className="inline-block h-5 w-5" />
                       </i>

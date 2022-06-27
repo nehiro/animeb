@@ -18,7 +18,7 @@ type Props = {
 };
 const quarter = (props: Props) => {
   const animes = props.datas;
-  // console.log(animes, 'animes');
+  console.log(animes, 'animes');
   const year = props.year;
 
   const quarter = () => {
@@ -92,7 +92,7 @@ export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
       { params: { year: '2022', quarter: `3` } },
       { params: { year: '2022', quarter: `4` } },
     ],
-    fallback: true,
+    fallback: false,
   };
 };
 

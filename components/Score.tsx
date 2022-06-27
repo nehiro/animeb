@@ -343,6 +343,11 @@ const Score = ({
     setReviewModal(false);
   };
 
+  // console.log(watch('storyScore'), anime.title, 'storyScore');
+  // console.log(watch('drawingScore'), anime.title, 'drawingScore');
+  // console.log(watch('voiceActorScore'), anime.title, 'voiceActorScore');
+  // console.log(watch('musicScore'), anime.title, 'musicScore');
+  // console.log(watch('characterScore'), anime.title, 'characterScore');
   const scoreItems = [
     {
       heading: '物語',

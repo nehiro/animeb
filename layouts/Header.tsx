@@ -41,9 +41,6 @@ function classNames(...classes: any[]) {
 const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
   const { user } = useAuth();
 
-  const isBigScreen = useMediaQuery({ query: '(min-width: 640px)' });
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 639px)' });
-
   // console.log(user, 'user');
   // console.log(user?.photoURL, 'photoURL');
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -61,9 +58,21 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
               <button className="mr-3" onClick={toggleSideNav}>
                 <MenuAlt1Icon className="h-6 w-6" />
               </button>
-              <Link href="/">
-                <a className="mx-0 flex w-44 items-center sm:mx-2 sm:w-auto">
-                  {isBigScreen && (
+              <div className="block sm:hidden">
+                <Link href="/">
+                  <a className="mx-0 flex w-44 items-center sm:mx-2 sm:w-auto">
+                    <Image
+                      src="/images/logo.png"
+                      width="150"
+                      height="25.1309"
+                      alt=""
+                    />
+                  </a>
+                </Link>
+              </div>
+              <div className="hidden sm:block">
+                <Link href="/">
+                  <a className="mx-0 flex w-44 items-center sm:mx-2 sm:w-auto">
                     <Image
                       src="/images/logo.png"
                       width="191"
@@ -71,17 +80,27 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                       alt="アニメ部！"
                       decoding="async"
                     />
-                  )}
-                  {isSmallScreen && (
-                    <Image
-                      src="/images/logo.png"
-                      width="150"
-                      height="25.1309"
-                      alt=""
-                    />
-                  )}
+                  </a>
+                </Link>
+              </div>
+              {/* <Link href="/">
+                <a className="mx-0 flex w-36 items-center sm:mx-2 sm:w-auto">
+                  <Image
+                    src="/images/logo-2.png"
+                    width="35"
+                    height="35"
+                    alt="アニメ部！"
+                    decoding="async"
+                  />
+                  <Image
+                    src="/images/logo.svg"
+                    width="175"
+                    height="35"
+                    alt="アニメ部！"
+                    decoding="async"
+                  />
                 </a>
-              </Link>
+              </Link> */}
             </div>
             <div className="block flex-1 sm:hidden sm:flex-none"></div>
             {user ? (

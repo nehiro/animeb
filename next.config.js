@@ -8,6 +8,7 @@ module.exports = {
       'lh3.googleusercontent.com',
       'raw.githubusercontent.com',
       'profile.line-scdn.net',
+      'graph.facebook.com',
     ],
   },
 };

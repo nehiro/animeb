@@ -5,10 +5,10 @@ import {
   FacebookAuthProvider,
 } from 'firebase/auth';
 import { auth, db } from '../utils/firebase';
+import toast from 'react-hot-toast';
 
-//Google signIn
 const provider = new FacebookAuthProvider();
-provider.addScope('user_birthday');
+// provider.addScope('user_birthday');
 
 const FacebookLogin = () => {
   const Login = () => {
@@ -19,16 +19,16 @@ const FacebookLogin = () => {
     getRedirectResult(auth)
       .then((result) => {
         const user = result?.user;
-        // console.log(user);
+        console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
+        console.log(errorCode);
         const errorMessage = error.message;
         const email = error.email;
         const credential = FacebookAuthProvider.credentialFromError(error);
       });
   }, []);
-
   return (
     <button
       onClick={Login}

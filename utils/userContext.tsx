@@ -68,9 +68,10 @@ export const AuthProvider: FC = ({ children }) => {
       // console.log(unsubscribeUser?.(), 'unsubscribeUser');
       if (authUser) {
         const userDoc = doc(db, `users/${authUser.uid}`);
-        // console.log(authUser, 'authUser');
+        console.log(authUser, 'authUser');
         //参照idが無かったらnewUserを登録
         unsubscribeUser = onSnapshot(userDoc, (snap) => {
+          console.log(snap, 'snap');
           if (!snap.exists()) {
             //データ同期
             const newUser: User = {
@@ -91,6 +92,7 @@ export const AuthProvider: FC = ({ children }) => {
             setDoc(userDoc, newUser);
             setUser(newUser);
           } else {
+            console.log('アドレスあった');
             // console.log(snap.data(), 'data');
             if (snap.data().deleted === true) {
               console.log('deleted user');

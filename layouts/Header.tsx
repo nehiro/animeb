@@ -66,7 +66,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                   {isBigScreen && (
                     <Image
                       src="/images/logo.png"
-                      width="201"
+                      width="191"
                       height="32"
                       alt="アニメ部！"
                       decoding="async"
@@ -76,7 +76,7 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                     <Image
                       src="/images/logo.png"
                       width="150"
-                      height="23.8806"
+                      height="25.1309"
                       alt=""
                     />
                   )}

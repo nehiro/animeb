@@ -70,7 +70,7 @@ const Home = () => {
   const limit = 20;
   const getKey = (pageIndex: number, previousPageData: JsonAnime[]) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `http://localhost:3000/api/animes?limit=${limit}&page=${
+    return `https://anime-club.online/api/animes?limit=${limit}&page=${
       pageIndex + 1
     }`;
   };
@@ -91,7 +91,7 @@ const Home = () => {
     isEmpty || (data && data[data.length - 1]?.length < limit);
 
   if (loading) return null;
-  console.log(loading, 'loading');
+  // console.log(loading, 'loading');
 
   // if (!user) {
   //   return null;

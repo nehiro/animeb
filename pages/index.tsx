@@ -32,6 +32,7 @@ import { userReviews } from '../lib/getReviews';
 import BackGroundWhite from '../components/BackGroundWhite';
 import LatestReview from '../components/LatestReview';
 import useSWRInfinite from 'swr/infinite';
+import { Site } from '../lib/site';
 
 const Home = () => {
   //アニメ管理
@@ -70,9 +71,7 @@ const Home = () => {
   const limit = 20;
   const getKey = (pageIndex: number, previousPageData: JsonAnime[]) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `https://anime-club.online/api/animes?limit=${limit}&page=${
-      pageIndex + 1
-    }`;
+    return `${Site.origin}/api/animes?limit=${limit}&page=${pageIndex + 1}`;
   };
   const { data, size, setSize } = useSWRInfinite(
     getKey,

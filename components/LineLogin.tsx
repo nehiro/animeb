@@ -30,7 +30,7 @@ const LineLogin = () => {
     url.search = new URLSearchParams({
       response_type: 'code',
       client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
-      redirect_uri: `${Site.origin}/signup`,
+      redirect_uri: `${Site().origin}/signup`,
       state,
       scope: 'profile openid email',
     }).toString();

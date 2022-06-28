@@ -57,7 +57,7 @@ const Home = () => {
   // console.log(reviews, 'reviews');
   // console.log(user, 'user');
 
-  console.log(Site().origin, 'Site().origin');
+  // console.log(Site().origin, 'Site().origin');
 
   const { data: users } = useSWR('users', async () => {
     const ref = collection(db, 'users');

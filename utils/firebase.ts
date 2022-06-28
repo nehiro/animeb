@@ -43,10 +43,12 @@ const firebaseConfig = {
 // );
 if (!getApps()?.length) {
   initializeApp(
-    process.env.NEXT_PUBLIC_PROD ? firebaseConfig.prod : firebaseConfig.dev
+    process.env.NEXT_PUBLIC_PROD === 'true'
+      ? firebaseConfig.prod
+      : firebaseConfig.dev
   );
 }
-console.log(process.env.NEXT_PUBLIC_PROD, 'process.env.NEXT_PUBLIC_PROD');
+// console.log(process.env.NEXT_PUBLIC_PROD, 'process.env.NEXT_PUBLIC_PROD');
 // if (!getApps()?.length) {
 //   initializeApp(firebaseConfig.dev);
 // }

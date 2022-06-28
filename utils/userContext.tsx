@@ -68,10 +68,10 @@ export const AuthProvider: FC = ({ children }) => {
       // console.log(unsubscribeUser?.(), 'unsubscribeUser');
       if (authUser) {
         const userDoc = doc(db, `users/${authUser.uid}`);
-        console.log(authUser, 'authUser');
+        // console.log(authUser, 'authUser');
         //参照idが無かったらnewUserを登録
         unsubscribeUser = onSnapshot(userDoc, (snap) => {
-          console.log(snap, 'snap');
+          // console.log(snap, 'snap');
           if (!snap.exists()) {
             //データ同期
             const newUser: User = {
@@ -88,17 +88,17 @@ export const AuthProvider: FC = ({ children }) => {
               ranking: [],
             };
             // console.log('データが無かったらこっち、ユーザー作る');
-            console.log('create user');
+            // console.log('create user');
             setDoc(userDoc, newUser);
             setUser(newUser);
           } else {
-            console.log('アドレスあった');
+            // console.log('アドレスあった');
             // console.log(snap.data(), 'data');
             if (snap.data().deleted === true) {
-              console.log('deleted user');
+              // console.log('deleted user');
               return null;
             } else {
-              console.log('dont create user');
+              // console.log('dont create user');
               setUser(snap.data() as User);
               setLoading(false);
             }

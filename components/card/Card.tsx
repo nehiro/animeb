@@ -263,6 +263,7 @@ const Card = ({ anime }: { anime: Anime }) => {
         anime={anime}
         setReviewModal={setReviewModal}
         reviewModal={reviewModal}
+        dbAnimes={dbAnimes as DbAnime[]}
       ></Score>
     </>
   );

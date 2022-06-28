@@ -19,11 +19,11 @@ const FacebookLogin = () => {
     getRedirectResult(auth)
       .then((result) => {
         const user = result?.user;
-        console.log(user);
+        // console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
-        console.log(errorCode);
+        // console.log(errorCode);
         const errorMessage = error.message;
         const email = error.email;
         const credential = FacebookAuthProvider.credentialFromError(error);

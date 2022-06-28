@@ -21,15 +21,18 @@ import SwitchButton from './SwitchButton';
 import { deleteReviweButton } from '../lib/card';
 import { userReviews } from '../lib/getReviews';
 import toast from 'react-hot-toast';
+import { DbAnime } from '../types/DbAnime';
 
 const Score = ({
   anime,
   setReviewModal,
   reviewModal,
+  dbAnimes,
 }: {
   anime: Anime;
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   reviewModal: boolean;
+  dbAnimes: DbAnime[];
 }) => {
   const { user, reviews } = useAuth();
   // console.log(reviews, 'reviews');
@@ -41,11 +44,11 @@ const Score = ({
   // console.log(reviewedRef, 'reviewedRef');
 
   //animesコレクションにあるタイトル
-  const dbAnimes = useSWR('animes', async () => {
-    const ref = collection(db, 'animes');
-    const snap = await getDocs(ref);
-    return snap.docs.map((doc) => doc.data());
-  });
+  // const dbAnimes = useSWR('animes', async () => {
+  //   const ref = collection(db, 'animes');
+  //   const snap = await getDocs(ref);
+  //   return snap.docs.map((doc) => doc.data());
+  // });
   // const {data,mutate} = useSWR('animes', async () => {
   //   const ref = collection(db, 'animes');
   //   const snap = await getDocs(ref);
@@ -105,8 +108,8 @@ const Score = ({
   const onSubmit = async (data: ReviewData) => {
     //animesコレクションの処理
     if (
-      dbAnimes.data !== undefined &&
-      dbAnimes.data.find((dbList) => dbList.title === anime?.title)
+      dbAnimes !== undefined &&
+      dbAnimes.find((dbList) => dbList.title === anime?.title)
     ) {
       //既に誰かがこのタイトルをレビューまたはリストしていたら
 
@@ -117,9 +120,7 @@ const Score = ({
       const userMusicScore = reviewedRef?.musicScore;
       const userCharacterScore = reviewedRef?.characterScore;
       const userIsScore = reviewedRef?.isScore;
-      const id = dbAnimes.data.find(
-        (dbList) => dbList.title === anime?.title
-      )?.id;
+      const id = dbAnimes.find((dbList) => dbList.title === anime?.title)?.id;
       const animesIDRef = doc(db, `animes/${id}`);
       const animesUserRef = doc(db, `animes/${id}/reviews/${user?.uid}`);
       if (reviewedRef) {

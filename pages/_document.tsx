@@ -1,5 +1,4 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-
 class MyDocument extends Document {
   render(): JSX.Element {
     return (
@@ -13,33 +12,70 @@ class MyDocument extends Document {
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css"
           ></link>
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/favicons/apple-touch-icon.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicons/favicon-32x32.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicons/favicon-16x16.png"
-          />
-          <link rel="manifest" href="/favicons/site.webmanifest" />
-          <link
-            rel="mask-icon"
-            href="/favicons/safari-pinned-tab.svg"
-            color="#7f80f3"
-          />
-          <meta name="apple-mobile-web-app-title" content="アニメ部！" />
-          <meta name="application-name" content="アニメ部！" />
-          <meta name="msapplication-TileColor" content="#7f80f3" />
-          <meta name="theme-color" content="#ffffff"></meta>
+          {process.env.NEXT_PUBLIC_PROD === 'true' ? (
+            <>
+              <link
+                rel="apple-touch-icon"
+                sizes="180x180"
+                href="/favicons/apple-touch-icon.png"
+              />
+              <link
+                rel="icon"
+                type="image/png"
+                sizes="32x32"
+                href="/favicons/favicon-32x32.png"
+              />
+              <link
+                rel="icon"
+                type="image/png"
+                sizes="16x16"
+                href="/favicons/favicon-16x16.png"
+              />
+              <link rel="manifest" href="/favicons/site.webmanifest" />
+              <link
+                rel="mask-icon"
+                href="/favicons/safari-pinned-tab.svg"
+                color="#7f80f3"
+              />
+              <meta name="apple-mobile-web-app-title" content="アニメ部！" />
+              <meta name="application-name" content="アニメ部！" />
+              <meta name="msapplication-TileColor" content="#7f80f3" />
+              <meta name="theme-color" content="#ffffff"></meta>
+            </>
+          ) : (
+            <>
+              <link
+                rel="apple-touch-icon"
+                sizes="180x180"
+                href="/favicons-dev/apple-touch-icon.png"
+              />
+              <link
+                rel="icon"
+                type="image/png"
+                sizes="32x32"
+                href="/favicons-dev/favicon-32x32.png"
+              />
+              <link
+                rel="icon"
+                type="image/png"
+                sizes="16x16"
+                href="/favicons-dev/favicon-16x16.png"
+              />
+              <link rel="manifest" href="/favicons-dev/site.webmanifest" />
+              <link
+                rel="mask-icon"
+                href="/favicons-dev/safari-pinned-tab.svg"
+                color="#7f80f3"
+              />
+              <meta
+                name="apple-mobile-web-app-title"
+                content="アニメ部！開発"
+              />
+              <meta name="application-name" content="アニメ部！開発" />
+              <meta name="msapplication-TileColor" content="#7f80f3" />
+              <meta name="theme-color" content="#ffffff" />
+            </>
+          )}
         </Head>
         <body className="bg-gray-50">
           <Main />

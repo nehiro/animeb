@@ -197,7 +197,7 @@ const MyPage = (props: { userInfo: User }) => {
       </section>
       <section>
         <div className="container py-4">
-          <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <ul className="mb-8 grid grid-cols-3 justify-items-center gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {newLists?.map((newList) => (
               <li
                 key={newList?.title}

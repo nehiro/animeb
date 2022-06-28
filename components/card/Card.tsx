@@ -197,18 +197,18 @@ const Card = ({ anime }: { anime: Anime }) => {
           <a>{anime?.title}</a>
         </Link>
       </h3>
-      <div className="grid grid-cols-3 items-center justify-items-center gap-2">
+      <div className="grid grid-cols-3 items-center justify-items-center gap-1 sm:gap-2">
         <div className="w-full">
           <button className="w-full" onClick={modalOpen}>
             {reviewed() ? (
-              <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
+              <a className="inline-block h-full w-full bg-yellow bg-no-repeat py-1 text-center sm:py-2">
                 <EyeIcon className="mx-auto h-5 w-5" />
                 <span className="inline-block h-full w-full">
                   {sumReviewCount ? sumReviewCount : 0}
                 </span>
               </a>
             ) : (
-              <a className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
+              <a className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-1 text-center sm:py-2">
                 <EyeIcon className="mx-auto h-5 w-5 text-amber-400" />
                 <span className="inline-block h-full w-full text-amber-400">
                   {sumReviewCount ? sumReviewCount : 0}
@@ -226,7 +226,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                 // mutate(user?.uid && `lists`);
               }}
             >
-              <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-2 text-center">
+              <span className="inline-block h-full w-full bg-yellow bg-no-repeat py-1 text-center sm:py-2">
                 <BookmarkIcon className="mx-auto h-5 w-5" />
                 <span className="inline-block h-full w-full">
                   {!listCount ? 0 : listCount}
@@ -241,7 +241,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                 // mutate(user?.uid && `lists`);
               }}
             >
-              <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-2 text-center">
+              <span className="inline-block h-full w-full bg-amber-100 bg-no-repeat py-1 text-center sm:py-2">
                 <BookmarkIcon className="mx-auto h-5 w-5 text-amber-400" />
                 <span className="inline-block h-full w-full text-amber-400">
                   {!listCount ? 0 : listCount}
@@ -251,7 +251,7 @@ const Card = ({ anime }: { anime: Anime }) => {
           )}
         </div>
         <div className="w-full">
-          <span className="inline-block h-full w-full bg-buttonBlack bg-no-repeat py-2 text-center text-yellow">
+          <span className="inline-block h-full w-full bg-buttonBlack bg-no-repeat py-1 text-center text-yellow sm:py-2">
             <StarIcon className="mx-auto h-5 w-5 text-yellow" />
             <span className="inline-block h-full w-full select-none">
               {reviewAverage()}

@@ -56,7 +56,7 @@ const currentQuarter = () => {
       <BackGroundGray>
         <SubpageTitle>今期のアニメ</SubpageTitle>
         {animes ? (
-          <ul className="mb-8 grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <ul className="mb-8 grid grid-cols-3 justify-items-center gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {animes
               ?.filter(
                 (anime) => anime.year === year && anime.quarter === quarter()

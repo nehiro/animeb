@@ -565,6 +565,7 @@ const AnimeWork = (anime: AnimeName) => {
         anime={animeInfo as Anime}
         setReviewModal={setReviewModal}
         reviewModal={reviewModal}
+        dbAnimes={dbAnimes as DbAnime[]}
       ></Score>
     </>
   );

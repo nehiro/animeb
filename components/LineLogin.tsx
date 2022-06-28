@@ -39,11 +39,11 @@ const LineLogin = () => {
     url.search = new URLSearchParams({
       response_type: 'code',
       client_id: getLineClientId(),
-      redirect_uri: `${Site().origin}/signup`,
+      redirect_uri: `https://anime-club.online/signup`,
       state,
       scope: 'profile openid email',
     }).toString();
-
+    // redirect_uri: `${Site().origin}/signup`,
     //上で作成したURIを読み込む
     location.assign(url);
   };

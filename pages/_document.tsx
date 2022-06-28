@@ -45,26 +45,30 @@ class MyDocument extends Document {
           ) : (
             <>
               <link
+                rel="icon"
+                href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%2250%%22 y=%2250%%22 style=%22dominant-baseline:central;text-anchor:middle;font-size:90px;%22>⚠️</text></svg>"
+              ></link>
+              {/* <link
                 rel="apple-touch-icon"
                 sizes="180x180"
-                href="/favicons-dev/apple-touch-icon.png"
+                href="/faviconsDev/apple-touch-icon.png"
               />
               <link
                 rel="icon"
                 type="image/png"
                 sizes="32x32"
-                href="/favicons-dev/favicon-32x32.png"
+                href="/faviconsDev/favicon-32x32.png"
               />
               <link
                 rel="icon"
                 type="image/png"
                 sizes="16x16"
-                href="/favicons-dev/favicon-16x16.png"
+                href="/faviconsDev/favicon-16x16.png"
               />
-              <link rel="manifest" href="/favicons-dev/site.webmanifest" />
+              <link rel="manifest" href="/faviconsDev/site.webmanifest" />
               <link
                 rel="mask-icon"
-                href="/favicons-dev/safari-pinned-tab.svg"
+                href="/faviconsDev/safari-pinned-tab.svg"
                 color="#7f80f3"
               />
               <meta
@@ -73,7 +77,7 @@ class MyDocument extends Document {
               />
               <meta name="application-name" content="アニメ部！開発" />
               <meta name="msapplication-TileColor" content="#7f80f3" />
-              <meta name="theme-color" content="#ffffff" />
+              <meta name="theme-color" content="#ffffff" /> */}
             </>
           )}
         </Head>

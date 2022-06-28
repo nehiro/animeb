@@ -22,6 +22,14 @@ const LineLogin = () => {
       createdAt: Date.now(),
     });
 
+    const getLineClientId = () => {
+      if (process.env.NEXT_PUBLIC_PROD === 'true') {
+        return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_PROD as string;
+      } else {
+        return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_DEV as string;
+      }
+    };
+
     //認証先URLのオブジェクトを作成
     const url = new URL('https://access.line.me/oauth2/v2.1/authorize');
     //url.search：パラメーターを置換する
@@ -29,7 +37,7 @@ const LineLogin = () => {
     //取り出したPを置換する
     url.search = new URLSearchParams({
       response_type: 'code',
-      client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
+      client_id: getLineClientId(),
       redirect_uri: `${Site().origin}/signup`,
       state,
       scope: 'profile openid email',

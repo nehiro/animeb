@@ -9,7 +9,20 @@ type LineUser = {
   picture: string;
   email: string;
 };
-
+const getLineClientId = () => {
+  if (process.env.NEXT_PUBLIC_PROD === 'true') {
+    return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_PROD as string;
+  } else {
+    return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_DEV as string;
+  }
+};
+const getLineChannelSecret = () => {
+  if (process.env.NEXT_PUBLIC_PROD === 'true') {
+    return process.env.LINE_CHANNEL_SECRET_PROD as string;
+  } else {
+    return process.env.LINE_CHANNEL_SECRET_DEV as string;
+  }
+};
 const getIdToken = async (code: string) => {
   // console.log(code, 'code走った');
   // console.log(
@@ -22,6 +35,7 @@ const getIdToken = async (code: string) => {
   //   },
   //   'URLSearchParams'
   // );
+
   const res = await fetch('https://api.line.me/oauth2/v2.1/token', {
     method: 'POST',
     headers: {
@@ -30,8 +44,8 @@ const getIdToken = async (code: string) => {
     body: new URLSearchParams({
       grant_type: 'authorization_code',
       redirect_uri: `${Site().origin}/signup`,
-      client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
-      client_secret: process.env.LINE_CHANNEL_SECRET as string,
+      client_id: getLineClientId(),
+      client_secret: getLineChannelSecret(),
       code,
     }),
   });
@@ -53,7 +67,7 @@ const getUserData = async (idToken: string) => {
     },
     body: new URLSearchParams({
       id_token: idToken,
-      client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
+      client_id: getLineClientId(),
     }),
   });
 

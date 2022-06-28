@@ -12,7 +12,13 @@ provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
 const GoogleLogin = () => {
   const Login = () => {
-    signInWithRedirect(auth, provider);
+    signInWithRedirect(auth, provider)
+      .then(() => {
+        '成功';
+      })
+      .catch((e) => {
+        console.log(e, '失敗');
+      });
   };
 
   useEffect(() => {

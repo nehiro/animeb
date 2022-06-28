@@ -29,7 +29,7 @@ const getIdToken = async (code: string) => {
     },
     body: new URLSearchParams({
       grant_type: 'authorization_code',
-      redirect_uri: `${Site.origin}/signup`,
+      redirect_uri: `${Site().origin}/signup`,
       client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
       client_secret: process.env.LINE_CHANNEL_SECRET as string,
       code,

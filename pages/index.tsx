@@ -57,6 +57,8 @@ const Home = () => {
   // console.log(reviews, 'reviews');
   // console.log(user, 'user');
 
+  console.log(Site().origin, 'Site().origin');
+
   const { data: users } = useSWR('users', async () => {
     const ref = collection(db, 'users');
     const q = query(ref, where('createdAt', '>', 1));
@@ -71,7 +73,7 @@ const Home = () => {
   const limit = 20;
   const getKey = (pageIndex: number, previousPageData: JsonAnime[]) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `${Site.origin}/api/animes?limit=${limit}&page=${pageIndex + 1}`;
+    return `${Site().origin}/api/animes?limit=${limit}&page=${pageIndex + 1}`;
   };
   const { data, size, setSize } = useSWRInfinite(
     getKey,

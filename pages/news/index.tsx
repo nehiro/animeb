@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { userLists } from '../../lib/getList';
 import { useAuth } from '../../utils/userContext';
 import { User } from '../../types/User';
+import LayoutNoNav from '../../layouts/LayoutNoNav';
 
 const Index = ({ news }: { news: News[] }) => {
   const { user } = useAuth();
@@ -114,4 +115,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-Index.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
+Index.getLayout = (page: ReactElement) => <LayoutNoNav>{page}</LayoutNoNav>;

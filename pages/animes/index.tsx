@@ -44,27 +44,27 @@ const Index = ({ paths }: { paths: Anime[] }) => {
               <tbody className="divide-y divide-gray-200 bg-white">
                 {contents.map((content) => (
                   <tr key={content.year}>
-                    <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
+                    <td className="py-4 pl-4 pr-3 text-center text-sm font-medium text-gray-900">
                       <Link href={`/animes/${content.year}`}>
                         <a>{content.year}</a>
                       </Link>
                     </td>
-                    <td className="px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                    <td className="px-3 py-4 text-center text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/1`}>
                         <a>{content.quarter1}</a>
                       </Link>
                     </td>
-                    <td className="px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                    <td className="px-3 py-4 text-center text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/2`}>
                         <a>{content.quarter2}</a>
                       </Link>
                     </td>
-                    <td className="px-3 py-4 text-sm text-gray-500">
+                    <td className="px-3 py-4 text-center text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/3`}>
                         <a>{content.quarter3}</a>
                       </Link>
                     </td>
-                    <td className="px-3 py-4 text-sm text-gray-500">
+                    <td className="px-3 py-4 text-center text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/4`}>
                         <a>{content.quarter4}</a>
                       </Link>

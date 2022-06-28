@@ -13,14 +13,13 @@ const Layout = ({ children }: Props) => {
 
   const [open, setOpen] = useState<boolean>(true);
   useEffect(() => {
-    if (width < 768) {
+    if (width < 1024) {
       setOpen(false);
     } else {
       setOpen(true);
     }
   }, [width]);
 
-  // console.log(open);
   const toggle = () => {
     setOpen((prevState) => !prevState);
   };
@@ -28,7 +27,7 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <Header toggleSideNav={toggle} />
-      <Nav open={open} toggle={toggle} />
+      {width ? <Nav open={open} toggle={toggle} /> : null}
       <main
         className={`z-20 mt-14 transition-all duration-500 ease-in-out sm:duration-700 ${
           open ? ' lg:ml-52' : ''

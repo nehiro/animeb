@@ -218,4 +218,4 @@ const Help = () => {
 };
 
 export default Help;
-Help.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
+Help.getLayout = (page: ReactElement) => <LayoutNoNav>{page}</LayoutNoNav>;

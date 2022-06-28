@@ -90,9 +90,9 @@ const Nav = ({ open, toggle }: SideMenu) => {
                   <div className="flex h-full flex-col bg-white py-5 shadow-xl sm:py-6">
                     <div className="relative mt-0 flex-1 px-4 sm:mt-6 sm:px-6">
                       <nav>
-                        <ul className="mb-5 border-b sm:mb-7">
+                        <ul className="mb-6 border-b sm:mb-7">
                           {sideNavList01.map((item) => (
-                            <li className="mb-5 sm:mb-7" key={item.label}>
+                            <li className="mb-6 sm:mb-7" key={item.label}>
                               <Link href={item.href}>
                                 <a className="flex items-center">
                                   <i className="mr-3 leading-none">
@@ -104,9 +104,9 @@ const Nav = ({ open, toggle }: SideMenu) => {
                             </li>
                           ))}
                         </ul>
-                        <ul className="mb-5 border-b sm:mb-7">
+                        <ul className="mb-6 border-b sm:mb-7">
                           {sideNavList02.map((item) => (
-                            <li className="mb-5 sm:mb-7" key={item.label}>
+                            <li className="mb-6 sm:mb-7" key={item.label}>
                               <Link href={item.href}>
                                 <a className="flex items-center">
                                   <i className="mr-3 leading-none">

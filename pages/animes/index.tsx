@@ -39,32 +39,35 @@ const Index = ({ paths }: { paths: Anime[] }) => {
       <BackGroundGray>
         <SubpageTitle>放送・配信時期</SubpageTitle>
         <div className="px-4 sm:px-6 lg:px-8">
-          <div className="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
+          <div className="-mx-4 mt-8 overflow-hidden rounded-lg shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0">
             <table className="min-w-full divide-y divide-gray-300">
               <tbody className="divide-y divide-gray-200 bg-white">
                 {contents.map((content) => (
-                  <tr key={content.year}>
-                    <td className="py-4 pl-4 pr-3 text-center text-sm font-medium text-gray-900">
+                  <tr
+                    key={content.year}
+                    className="flex items-center justify-around py-4"
+                  >
+                    <td className="text-sm font-medium text-gray-900">
                       <Link href={`/animes/${content.year}`}>
                         <a>{content.year}</a>
                       </Link>
                     </td>
-                    <td className="px-3 py-4 text-center text-xs text-gray-500 sm:text-sm">
+                    <td className="text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/1`}>
                         <a>{content.quarter1}</a>
                       </Link>
                     </td>
-                    <td className="px-3 py-4 text-center text-xs text-gray-500 sm:text-sm">
+                    <td className="text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/2`}>
                         <a>{content.quarter2}</a>
                       </Link>
                     </td>
-                    <td className="px-3 py-4 text-center text-xs text-gray-500 sm:text-sm">
+                    <td className="text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/3`}>
                         <a>{content.quarter3}</a>
                       </Link>
                     </td>
-                    <td className="px-3 py-4 text-center text-xs text-gray-500 sm:text-sm">
+                    <td className="text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/4`}>
                         <a>{content.quarter4}</a>
                       </Link>

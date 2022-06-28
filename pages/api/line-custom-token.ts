@@ -35,7 +35,7 @@ const getIdToken = async (code: string) => {
   //   },
   //   'URLSearchParams'
   // );
-
+  console.log(Site().origin, 'Site().origin linecustomtken');
   const res = await fetch('https://api.line.me/oauth2/v2.1/token', {
     method: 'POST',
     headers: {

@@ -35,7 +35,7 @@ const LineLogin = () => {
     //url.search：パラメーターを置換する
     //new URLSearchParams：パラメーターと取り出す
     //取り出したPを置換する
-    console.log(Site().origin, 'Site().origin');
+    console.log(Site().origin, 'Site().origin LineLogin.tsx');
     url.search = new URLSearchParams({
       response_type: 'code',
       client_id: getLineClientId(),

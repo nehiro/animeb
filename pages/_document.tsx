@@ -13,7 +13,6 @@ class MyDocument extends Document {
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css"
           ></link>
-
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -35,10 +34,12 @@ class MyDocument extends Document {
           <link
             rel="mask-icon"
             href="/favicons/safari-pinned-tab.svg"
-            color="#ffd400"
+            color="#7f80f3"
           />
-          <meta name="msapplication-TileColor" content="#da532c" />
-          <meta name="theme-color" content="#ffffff" />
+          <meta name="apple-mobile-web-app-title" content="アニメ部！" />
+          <meta name="application-name" content="アニメ部！" />
+          <meta name="msapplication-TileColor" content="#7f80f3" />
+          <meta name="theme-color" content="#ffffff"></meta>
         </Head>
         <body className="bg-gray-50">
           <Main />

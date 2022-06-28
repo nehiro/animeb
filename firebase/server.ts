@@ -9,8 +9,8 @@ if (!getApps()?.length) {
       // 環境変数から認証情報を取得
       JSON.parse(
         process.env.NEXT_PUBLIC_PROD === 'true'
-          ? (process.env.GOOGLE_APPLICATION_CREDENTIALS_PROD as string)
-          : (process.env.GOOGLE_APPLICATION_CREDENTIALS_DEV as string)
+          ? (process.env.GOOGLE_APPLICATION as string)
+          : (process.env.GOOGLE_APPLICATION_DEV as string)
       )
     ),
   });

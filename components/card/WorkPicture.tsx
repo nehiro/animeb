@@ -44,7 +44,11 @@ const WorkPicture = (props: { id: string }) => {
       const ref = doc(db, `animes/${id}`);
       const snap = await getDoc(ref);
       const data = snap.data() as DbAnime;
-      animes?.map((anime) => {
+      // console.log(data, 'data');
+      const newData = animes?.filter((anime) => {
+        return data.title === anime.title;
+      });
+      newData?.map((anime) => {
         setWorkData({
           year: anime.year,
           quarter: anime.quarter,
@@ -53,6 +57,7 @@ const WorkPicture = (props: { id: string }) => {
       });
     })();
   }, [id]);
+  // console.log(workData, 'workData');
 
   // useEffect(() => {
   //   getWorkData();
@@ -73,7 +78,6 @@ const WorkPicture = (props: { id: string }) => {
   //     });
   //   });
   // };
-  // console.log(workData);
   if (!workData) {
     return null;
   }

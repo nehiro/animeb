@@ -44,7 +44,10 @@ const WorkTitle = (props: { id: string }) => {
       const ref = doc(db, `animes/${id}`);
       const snap = await getDoc(ref);
       const data = snap.data() as DbAnime;
-      animes?.map((anime) => {
+      // console.log(data, 'data');
+      const newData = animes?.filter((anime) => anime.title === data.title);
+      // console.log(newData, 'newData');
+      newData?.map((anime) => {
         setWorkData({
           year: anime.year,
           quarter: anime.quarter,
@@ -53,7 +56,7 @@ const WorkTitle = (props: { id: string }) => {
       });
     })();
   }, [id]);
-  // console.log(workData);
+  // console.log(workData, 'workData');
   if (!workData) {
     return null;
   }

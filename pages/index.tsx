@@ -73,7 +73,7 @@ const Home = () => {
   const limit = 20;
   const getKey = (pageIndex: number, previousPageData: JsonAnime[]) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `${Site().origin}/api/animes?limit=${limit}&page=${pageIndex + 1}`;
+    return `${Site.origin}/api/animes?limit=${limit}&page=${pageIndex + 1}`;
   };
   const { data, size, setSize } = useSWRInfinite(
     getKey,

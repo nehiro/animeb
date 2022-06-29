@@ -22,24 +22,15 @@ const LineLogin = () => {
       createdAt: Date.now(),
     });
 
-    // const getLineClientId = () => {
-    //   if (process.env.NEXT_PUBLIC_PROD === 'true') {
-    //     return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_PROD as string;
-    //   } else {
-    //     return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_DEV as string;
-    //   }
-    // };
-
     //認証先URLのオブジェクトを作成
     const url = new URL('https://access.line.me/oauth2/v2.1/authorize');
     //url.search：パラメーターを置換する
     //new URLSearchParams：パラメーターと取り出す
     //取り出したPを置換する
-    console.log(Site().origin, 'Site().origin LineLogin.tsx');
     url.search = new URLSearchParams({
       response_type: 'code',
       client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
-      redirect_uri: `${Site().origin}/signup`,
+      redirect_uri: `${Site.origin}/signup`,
       state,
       scope: 'profile openid email',
     }).toString();
@@ -65,23 +56,28 @@ const LineLogin = () => {
         .then((res) => res.text())
         //更に成功したときにトークンを使って、signInWithCustomTokenでログイン
         .then((token) => {
-          signInWithCustomToken(auth, token).then(() => {
-            // console.log(token, 'token');
-            // router.replace(
-            //   {
-            //     //UrlObject
-            //     //id=router.query.id
-            //     //どこのquery
-            //     query: {
-            //       id: router.query.id,
-            //     },
-            //   },
-            //   undefined,
-            //   {
-            //     shallow: true,
-            //   }
-            // );
-          });
+          signInWithCustomToken(auth, token)
+            .then(() => {
+              console.log(token, 'token then');
+              // router.replace(
+              //   {
+              //     //UrlObject
+              //     //id=router.query.id
+              //     //どこのquery
+              //     query: {
+              //       id: router.query.id,
+              //     },
+              //   },
+              //   undefined,
+              //   {
+              //     shallow: true,
+              //   }
+              // );
+            })
+            .catch((e) => {
+              console.log(token, 'token catch');
+              console.log(e, 'error');
+            });
         });
     }
     // console.log(router.query.code, 'code');

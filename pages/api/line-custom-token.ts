@@ -43,13 +43,13 @@ const getIdToken = async (code: string) => {
     },
     body: new URLSearchParams({
       grant_type: 'authorization_code',
-      redirect_uri: `https://anime-club.online/signup`,
-      client_id: getLineClientId(),
-      client_secret: getLineChannelSecret(),
+      redirect_uri: `${Site().origin}/signup`,
+      client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
+      client_secret: process.env.LINE_CHANNEL_SECRET as string,
       code,
     }),
   });
-  // redirect_uri: `${Site().origin}/signup`,
+
   const { id_token } = (await res.json()) as {
     id_token: string;
   };

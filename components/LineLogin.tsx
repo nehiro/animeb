@@ -22,13 +22,13 @@ const LineLogin = () => {
       createdAt: Date.now(),
     });
 
-    const getLineClientId = () => {
-      if (process.env.NEXT_PUBLIC_PROD === 'true') {
-        return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_PROD as string;
-      } else {
-        return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_DEV as string;
-      }
-    };
+    // const getLineClientId = () => {
+    //   if (process.env.NEXT_PUBLIC_PROD === 'true') {
+    //     return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_PROD as string;
+    //   } else {
+    //     return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_DEV as string;
+    //   }
+    // };
 
     //認証先URLのオブジェクトを作成
     const url = new URL('https://access.line.me/oauth2/v2.1/authorize');
@@ -38,12 +38,12 @@ const LineLogin = () => {
     console.log(Site().origin, 'Site().origin LineLogin.tsx');
     url.search = new URLSearchParams({
       response_type: 'code',
-      client_id: getLineClientId(),
-      redirect_uri: `https://anime-club.online/signup`,
+      client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
+      redirect_uri: `${Site().origin}/signup`,
       state,
       scope: 'profile openid email',
     }).toString();
-    // redirect_uri: `${Site().origin}/signup`,
+
     //上で作成したURIを読み込む
     location.assign(url);
   };

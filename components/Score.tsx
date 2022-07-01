@@ -308,6 +308,7 @@ const Score = ({
           tag: data.tag,
           createAt: Date.now(),
         });
+        toast.success(`${anime?.title}のレビューを登録しました`);
       } else {
         await setDoc(animesRef, {
           id: animesRef.id,

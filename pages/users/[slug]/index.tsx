@@ -262,6 +262,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   console.log(userInfo, 'userInfo');
   return {
     props: { userInfo },
+    revalidate: 1,
   };
 };
 

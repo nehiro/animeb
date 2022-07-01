@@ -54,6 +54,11 @@ const MyPage = (props: { userInfo: User }) => {
     });
   }, []);
 
+  //Fallback発生中
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   //ログインユーザーがreviewしているかどうか
   const [otherReviews, setOtherReviews] = useState<ReviewData[]>();
 

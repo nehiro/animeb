@@ -246,12 +246,12 @@ const MyPage = (props: { userInfo: User }) => {
 export default MyPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const usersRef = adminDB.collection('users');
-  const snap = await usersRef.get();
-  const paths = snap.docs.map((doc) => `/users/${doc.id}`);
-  console.log(paths, 'paths');
+  // const usersRef = adminDB.collection('users');
+  // const snap = await usersRef.get();
+  // const paths = snap.docs.map((doc) => `/users/${doc.id}`);
+  // console.log(paths, 'paths');
   return {
-    paths,
+    paths: [],
     fallback: true,
   };
 };

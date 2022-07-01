@@ -353,31 +353,31 @@ const Score = ({
     {
       heading: '物語',
       headingE: 'storyScore',
-      watch: watch('storyScore').toFixed(1),
+      watch: watch('storyScore'),
       defaultValue: reviewedRef?.storyScore,
     },
     {
       heading: '作画',
       headingE: 'drawingScore',
-      watch: watch('drawingScore').toFixed(1),
+      watch: watch('drawingScore'),
       defaultValue: reviewedRef?.drawingScore,
     },
     {
       heading: '声優',
       headingE: 'voiceActorScore',
-      watch: watch('voiceActorScore').toFixed(1),
+      watch: watch('voiceActorScore'),
       defaultValue: reviewedRef?.voiceActorScore,
     },
     {
       heading: '音楽',
       headingE: 'musicScore',
-      watch: watch('musicScore').toFixed(1),
+      watch: watch('musicScore'),
       defaultValue: reviewedRef?.musicScore,
     },
     {
       heading: 'キャラ',
       headingE: 'characterScore',
-      watch: watch('characterScore').toFixed(1),
+      watch: watch('characterScore'),
       defaultValue: reviewedRef?.characterScore,
     },
   ];

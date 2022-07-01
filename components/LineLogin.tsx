@@ -30,7 +30,7 @@ const LineLogin = () => {
     url.search = new URLSearchParams({
       response_type: 'code',
       client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
-      redirect_uri: `${Site.origin}/signup`,
+      redirect_uri: `${Site().origin}/signup`,
       state,
       scope: 'profile openid email',
     }).toString();
@@ -58,7 +58,7 @@ const LineLogin = () => {
         .then((token) => {
           signInWithCustomToken(auth, token)
             .then(() => {
-              console.log(token, 'token then');
+              // console.log(token, 'token then');
               // router.replace(
               //   {
               //     //UrlObject
@@ -75,8 +75,8 @@ const LineLogin = () => {
               // );
             })
             .catch((e) => {
-              console.log(token, 'token catch');
-              console.log(e, 'error');
+              // console.log(token, 'token catch');
+              // console.log(e, 'error');
             });
         });
     }

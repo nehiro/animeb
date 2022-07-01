@@ -9,7 +9,20 @@ type LineUser = {
   picture: string;
   email: string;
 };
-
+// const getLineClientId = () => {
+//   if (process.env.NEXT_PUBLIC_PROD === 'true') {
+//     return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_PROD as string;
+//   } else {
+//     return process.env.NEXT_PUBLIC_LINE_CLIENT_ID_DEV as string;
+//   }
+// };
+// const getLineChannelSecret = () => {
+//   if (process.env.NEXT_PUBLIC_PROD === 'true') {
+//     return process.env.LINE_CHANNEL_SECRET_PROD as string;
+//   } else {
+//     return process.env.LINE_CHANNEL_SECRET_DEV as string;
+//   }
+// };
 const getIdToken = async (code: string) => {
   // console.log(code, 'code走った');
   // console.log(
@@ -22,6 +35,7 @@ const getIdToken = async (code: string) => {
   //   },
   //   'URLSearchParams'
   // );
+  console.log(Site().origin, 'Site().origin linecustomtken');
   const res = await fetch('https://api.line.me/oauth2/v2.1/token', {
     method: 'POST',
     headers: {
@@ -29,13 +43,13 @@ const getIdToken = async (code: string) => {
     },
     body: new URLSearchParams({
       grant_type: 'authorization_code',
-      redirect_uri: `${Site.origin}/signup`,
+      redirect_uri: `${Site().origin}/signup`,
       client_id: process.env.NEXT_PUBLIC_LINE_CLIENT_ID as string,
       client_secret: process.env.LINE_CHANNEL_SECRET as string,
       code,
     }),
   });
-
+  // redirect_uri: `${Site().origin}/signup`,
   const { id_token } = (await res.json()) as {
     id_token: string;
   };
@@ -109,6 +123,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   //渡されてきたprops、state、code
   //state LINEの画面に行くと作成されて、リダイレクトで戻ると削除される
   const { state, code } = req.body;
+  console.log(state, 'state');
+  console.log(code, 'code');
+  console.log(
+    (await adminDB.doc(`lineStates/${state}`).get()).exists,
+    'exists'
+  );
 
   //adminSDKでアクセス
   if (

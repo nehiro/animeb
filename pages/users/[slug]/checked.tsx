@@ -25,23 +25,21 @@ import { auth, db } from '../../../utils/firebase';
 import { useAuth } from '../../../utils/userContext';
 
 const MyPage = (props: { userInfo: User }) => {
-  //user管理
-  const { user, lists } = useAuth();
-  const userId = props.userInfo.uid;
-  const userData = props.userInfo;
-  const { animes } = useAnime();
-  //ログインしているかどうか
   const router = useRouter();
+  //Fallback発生中
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  } //ログインしているかどうか
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       user === null && router.replace('/');
     });
   }, []);
-
-  //Fallback発生中
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
+  //user管理
+  const { user, lists } = useAuth();
+  const userId = props.userInfo.uid;
+  const userData = props.userInfo;
+  const { animes } = useAnime();
 
   //ログインユーザーがlistしているかどうか
   const [otherLists, setOtherLists] = useState<List[]>();

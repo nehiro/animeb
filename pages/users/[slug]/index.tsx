@@ -37,6 +37,17 @@ import { Anime } from '../../../types/Anime';
 import Breadcrumbs from '../../../components/Breadcrumbs';
 
 const MyPage = (props: { userInfo: User }) => {
+  const router = useRouter();
+  //Fallback発生中
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  } //ログインしているかどうか
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      user === null && router.replace('/');
+    });
+  }, []);
+
   //user管理
   const { user, reviews, lists } = useAuth();
   const userId = props.userInfo.uid;
@@ -46,18 +57,6 @@ const MyPage = (props: { userInfo: User }) => {
   const { animes } = useAnime();
   // console.log(user?.uid, 'uid');
   // console.log(props.userInfo.uid, 'props');
-  //ログインしているかどうか
-  const router = useRouter();
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      user === null && router.replace('/');
-    });
-  }, []);
-
-  //Fallback発生中
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
 
   //ログインユーザーがreviewしているかどうか
   const [otherReviews, setOtherReviews] = useState<ReviewData[]>();

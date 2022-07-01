@@ -51,9 +51,9 @@ const MyPage = (props: { userInfo: User }) => {
   //user管理
   const { user, reviews, lists } = useAuth();
   const userId = props.userInfo.uid;
-  console.log(userId, 'userId');
+  // console.log(userId, 'userId');
   const userData = props.userInfo;
-  console.log(userData, 'userData');
+  // console.log(userData, 'userData');
   const { animes } = useAnime();
   // console.log(user?.uid, 'uid');
   // console.log(props.userInfo.uid, 'props');
@@ -248,7 +248,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const usersRef = adminDB.collection('users');
   const snap = await usersRef.get();
   const paths = snap.docs.map((doc) => `/users/${doc.id}`);
-  console.log(paths, 'paths');
+  // console.log(paths, 'paths');
   return {
     paths,
     fallback: true,
@@ -263,7 +263,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // console.log(snap, 'snap');
   // console.log(snap.data(), 'snap.data()');
   const userInfo = snap.data();
-  console.log(userInfo, 'userInfo');
+  // console.log(userInfo, 'userInfo');
   return {
     props: { userInfo },
     revalidate: 1,

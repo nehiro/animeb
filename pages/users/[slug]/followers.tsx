@@ -31,6 +31,12 @@ const MyPage = (props: { userInfo: User }) => {
       user === null && router.replace('/');
     });
   }, []);
+
+  //Fallback発生中
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   const [followCount, setFollowCount] = useState<number>();
   const [followerCount, setFollowerCount] = useState<number>();
   const [otherUserId, setOtherUserId] = useState<string>();
@@ -204,7 +210,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // console.log(paths, 'paths');
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -219,6 +225,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // console.log(userInfo, 'userInfo');
   return {
     props: { userInfo },
+    revalidate: 1,
   };
 };
 

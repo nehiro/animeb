@@ -26,20 +26,20 @@ const About = () => {
                   <div className="aspect-w-12 aspect-h-7 lg:aspect-none">
                     <img
                       className="rounded-lg object-cover object-center shadow-lg"
-                      src="/images/sample.png"
-                      alt="Whitney leaning against a railing on a downtown street"
-                      width={1184}
-                      height={1376}
+                      src="/images/about.png"
+                      alt=""
+                      width={1000}
+                      height={667}
                     />
                   </div>
                 </figure>
               </div>
             </div>
             <div className="mt-8 lg:mt-0">
-              <h2 className="font-semibold uppercase tracking-wide text-purple">
-                初めまして！
-              </h2>
               <div className="mx-auto max-w-prose text-base lg:max-w-none">
+                <h2 className="font-semibold uppercase tracking-wide text-purple">
+                  初めまして！
+                </h2>
                 <p className="text-gray-500">
                   このアニメ部！に飛んできていただき、ありがとうございます！
                 </p>

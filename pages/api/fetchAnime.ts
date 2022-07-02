@@ -10,7 +10,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log(req);
+  // console.log(req);
   // axiosモジュールを使う
   axios
     // getメソッドを呼び出す
@@ -31,7 +31,7 @@ export default function handler(
     // 通信エラーが発生したら
     .catch(function (error: any) {
       // エラーコードを表示
-      console.log(error.status);
+      // console.log(error.status);
     })
     .then(function () {
       // always executed

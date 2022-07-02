@@ -14,14 +14,14 @@ const PostAnime = () => {
   } = useForm<Anime>();
 
   const onSubmit: SubmitHandler<Anime> = async (data) => {
-    console.log(data.cast);
+    // console.log(data.cast);
     const ref = doc(collection(db, 'animes'));
     const id = ref.id;
     const newPost: Anime = {
       ...data,
       id,
     };
-    console.log(newPost);
+    // console.log(newPost);
     await setDoc(doc(db, `animes/${id}`), newPost).then(() => alert('登録'));
   };
 
@@ -42,7 +42,7 @@ const PostAnime = () => {
               />
             </li> */}
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="doing">
+              <label className="mb-2 block" htmlFor="doing">
                 doing
               </label>
               <input
@@ -53,7 +53,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="media">
+              <label className="mb-2 block" htmlFor="media">
                 media
               </label>
               <select {...register('media')} id="media" className="w-full">
@@ -63,7 +63,7 @@ const PostAnime = () => {
               </select>
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="firstTime">
+              <label className="mb-2 block" htmlFor="firstTime">
                 firstTime
               </label>
               <input
@@ -74,7 +74,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="season">
+              <label className="mb-2 block" htmlFor="season">
                 season
               </label>
               <select {...register('season')} id="season" className="w-full">
@@ -85,7 +85,7 @@ const PostAnime = () => {
               </select>
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="title">
+              <label className="mb-2 block" htmlFor="title">
                 title
               </label>
               <input
@@ -96,7 +96,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="ruby">
+              <label className="mb-2 block" htmlFor="ruby">
                 ruby
               </label>
               <input
@@ -107,7 +107,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="pv">
+              <label className="mb-2 block" htmlFor="pv">
                 pv
               </label>
               <input
@@ -118,7 +118,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="year">
+              <label className="mb-2 block" htmlFor="year">
                 year
               </label>
               <input
@@ -129,7 +129,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="quarter">
+              <label className="mb-2 block" htmlFor="quarter">
                 quarter
               </label>
               <select {...register('quarter')} id="quarter" className="w-full">
@@ -140,7 +140,7 @@ const PostAnime = () => {
               </select>
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="staff">
+              <label className="mb-2 block" htmlFor="staff">
                 staff
               </label>
               <input
@@ -151,7 +151,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="op">
+              <label className="mb-2 block" htmlFor="op">
                 op
               </label>
               <input
@@ -162,7 +162,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="ed">
+              <label className="mb-2 block" htmlFor="ed">
                 ed
               </label>
               <input
@@ -173,7 +173,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="summary">
+              <label className="mb-2 block" htmlFor="summary">
                 summary
               </label>
               <textarea
@@ -183,7 +183,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="cast">
+              <label className="mb-2 block" htmlFor="cast">
                 cast
               </label>
               <input
@@ -194,7 +194,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="subTitle">
+              <label className="mb-2 block" htmlFor="subTitle">
                 subTitle
               </label>
               <input
@@ -205,7 +205,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="onair">
+              <label className="mb-2 block" htmlFor="onair">
                 onair
               </label>
               <input
@@ -216,7 +216,7 @@ const PostAnime = () => {
               />
             </li>
             <li className="mb-4">
-              <label className="block mb-2" htmlFor="streaming">
+              <label className="mb-2 block" htmlFor="streaming">
                 streaming
               </label>
               <input
@@ -226,8 +226,8 @@ const PostAnime = () => {
                 className="w-full"
               />
             </li>
-            <li className="mb-4 text-center col-span-2">
-              <button className="bg-buttonBlack rounded-full py-3 px-12 text-white mx-auto inline-block relative">
+            <li className="col-span-2 mb-4 text-center">
+              <button className="relative mx-auto inline-block rounded-full bg-buttonBlack py-3 px-12 text-white">
                 送信
               </button>
             </li>

@@ -29,10 +29,10 @@ const BestAnime = () => {
 
   useEffect(() => {
     if (user?.ranking.length) {
-      console.log('rankingあり');
+      // console.log('rankingあり');
       setRankingData(user.ranking);
     } else {
-      console.log('空');
+      // console.log('空');
       setRankingData([]);
     }
   }, [user?.ranking]);
@@ -47,7 +47,7 @@ const BestAnime = () => {
       id: item.id,
     };
   });
-  console.log(ranking, 'ranking');
+  // console.log(ranking, 'ranking');
 
   const bestAnimeSet = async () => {
     await updateDoc(doc(db, `users/${user?.uid}`), {

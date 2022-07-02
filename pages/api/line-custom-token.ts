@@ -35,7 +35,7 @@ const getIdToken = async (code: string) => {
   //   },
   //   'URLSearchParams'
   // );
-  console.log(Site().origin, 'Site().origin linecustomtken');
+  // console.log(Site().origin, 'Site().origin linecustomtken');
   const res = await fetch('https://api.line.me/oauth2/v2.1/token', {
     method: 'POST',
     headers: {
@@ -76,7 +76,7 @@ const getUserData = async (idToken: string) => {
 
 const createUser = async (lineUser: LineUser) => {
   // console.log(lineUser, 'lineUser');
-  console.log(lineUser.sub, 'lineUser.sub');
+  // console.log(lineUser.sub, 'lineUser.sub');
   // console.log('create-user');
   if (!(await adminDB.doc(`users/${lineUser.sub}`).get()).exists) {
     console.log('1');

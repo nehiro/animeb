@@ -100,7 +100,7 @@ const WatchedAnimes = () => {
     return snap.data() as WatchedAnime;
   };
 
-  console.log(watchedAnimes, 'watchedAnimes');
+  // console.log(watchedAnimes, 'watchedAnimes');
 
   if (user === undefined) {
     return null;

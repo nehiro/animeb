@@ -49,7 +49,7 @@ const Timeline = () => {
     }
     const token = await getIdToken(auth.currentUser, true);
     // const token = await getIdToken(auth.currentUser!, true);
-    console.log(token, 'token');
+    // console.log(token, 'token');
     await savePostToAlgolia(newPost, token);
 
     reset();

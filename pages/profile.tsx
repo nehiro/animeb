@@ -50,7 +50,7 @@ const Profile = () => {
   //   control,
   // });
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(preview, 'preview');
+    // console.log(preview, 'preview');
     const photoURL = preview ? await uploadAvatar() : user?.photoURL || null;
     await updateDoc(doc(db, `users/${user?.uid}`), {
       name: data.name,

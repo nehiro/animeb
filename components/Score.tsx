@@ -142,7 +142,7 @@ const Score = ({
               musicScore: increment(data.musicScore),
               characterScore: increment(data.characterScore),
             });
-            console.log('一つ目');
+            // console.log('一つ目');
             await updateDoc(animesUserRef, {
               isScore: data.isScore,
               storyScore: data.storyScore,
@@ -167,7 +167,7 @@ const Score = ({
               reviewCount: increment(-1),
               unScoreReviewCount: increment(1),
             });
-            console.log('二つ目');
+            // console.log('二つ目');
             await updateDoc(animesUserRef, {
               isScore: data.isScore,
               storyScore: 1,
@@ -195,7 +195,7 @@ const Score = ({
               reviewCount: increment(1),
               unScoreReviewCount: increment(-1),
             });
-            console.log('3つ目');
+            // console.log('3つ目');
             await updateDoc(animesUserRef, {
               isScore: data.isScore,
               storyScore: data.storyScore,
@@ -211,7 +211,7 @@ const Score = ({
             toast.success(`${anime?.title}のレビューを更新しました`);
           } else {
             //今回もfalse:何もしない
-            console.log('4つ目');
+            // console.log('4つ目');
             await updateDoc(animesUserRef, {
               review: data.review,
               spoiler: data.spoiler,
@@ -233,7 +233,7 @@ const Score = ({
             reviewCount: increment(1),
             sumReviewCount: increment(1),
           });
-          console.log('5つ目');
+          // console.log('5つ目');
           await setDoc(animesUserRef, {
             uid: user?.uid,
             isScore: data.isScore,
@@ -253,7 +253,7 @@ const Score = ({
             unScoreReviewCount: increment(1),
             sumReviewCount: increment(1),
           });
-          console.log('6つ目');
+          // console.log('6つ目');
           await setDoc(animesUserRef, {
             uid: user?.uid,
             isScore: data.isScore,
@@ -294,7 +294,7 @@ const Score = ({
           characterScore: data.characterScore,
           // tag: data.tag ? data.tag : null,
         });
-        console.log('7つ目');
+        // console.log('7つ目');
         await setDoc(animesUserRef, {
           uid: user?.uid,
           isScore: data.isScore,
@@ -325,7 +325,7 @@ const Score = ({
           characterScore: 0,
           // tag: data.tag ? data.tag : null,
         });
-        console.log('8つ目');
+        // console.log('8つ目');
         await setDoc(animesUserRef, {
           uid: user?.uid,
           isScore: data.isScore,

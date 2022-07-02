@@ -44,7 +44,7 @@ const CheerCheeredList = () => {
       setPurchases(result.docs.map((doc) => doc.data() as Purchase));
     });
   }, []);
-  console.log(purchases, 'purchases');
+  // console.log(purchases, 'purchases');
   return (
     <div className="mt-5 text-center">
       <h2 className="mb-2 font-semibold">履歴</h2>

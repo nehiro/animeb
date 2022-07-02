@@ -144,12 +144,12 @@ export const unlistButton = async (props: UnlistButton) => {
 };
 //reviewを消す
 export const deleteReviweButton = async (props: DeleteReviweButton) => {
-  console.log('走った');
+  // console.log('走った');
   const user = props.user;
   const anime = props.anime;
   const reviews = props.reviews;
   const setReviewModal = props.setReviewModal;
-  const dbLists = props.dbAnimes.data;
+  const dbLists = props.dbAnimes;
   // console.log(dbLists, 'dbLists');
   if (!user) {
     toast.error('ログインしてください');

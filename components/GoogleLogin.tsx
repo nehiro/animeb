@@ -17,7 +17,7 @@ const GoogleLogin = () => {
         '成功';
       })
       .catch((e) => {
-        console.log(e, '失敗');
+        // console.log(e, '失敗');
       });
   };
 

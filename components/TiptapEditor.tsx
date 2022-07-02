@@ -44,11 +44,11 @@ const TiptapEditor = (props: UseControllerProps<any>) => {
     },
     onUpdate({ editor }) {
       //どんな型で返すか
-      console.log(
-        field.onChange(editor.getJSON()),
-        'field.onChange(editor.getJSON())'
-      );
-      console.log(editor.getJSON(), 'editor.getJSON()');
+      // console.log(
+      //   field.onChange(editor.getJSON()),
+      //   'field.onChange(editor.getJSON())'
+      // );
+      // console.log(editor.getJSON(), 'editor.getJSON()');
       field.onChange(editor.getJSON());
     },
     editorProps: {

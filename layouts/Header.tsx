@@ -23,9 +23,14 @@ import { auth } from '../utils/firebase';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { useMediaQuery } from 'react-responsive';
+import router from 'next/router';
 
 const logout = () => {
   signOut(auth)
+    //サインアウトだけでは、onsnapshot消えない
+    .then(() => {
+      router.reload();
+    })
     .then(() => {
       toast.success(`ログアウト完了`);
     })

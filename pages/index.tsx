@@ -52,7 +52,7 @@ const Home = () => {
   // followとuser管理
   const { user, loading, reviews, lists } = useAuth();
 
-  // console.log(lists, 'lists');
+  console.log(lists, 'lists');
   // console.log(typeof lists, 'type');
   // console.log(reviews, 'reviews');
   // console.log(user, 'user');
@@ -85,7 +85,14 @@ const Home = () => {
       initialSize: 1,
     }
   );
-  if (!data) return 'loading';
+  if (!data) {
+    return (
+      <p className="flex justify-center">
+        <RefreshIcon className="w-10 animate-spin text-gray-700" />
+      </p>
+    );
+    // return 'loading';
+  }
   const newData: JsonAnime[] = data.flat();
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =

@@ -5,7 +5,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { to, name, text, html, contents } = req.body;
-  console.log(to, '送ってきた人');
+  // console.log(to, '送ってきた人');
   //user
   const msg: MailDataRequired = {
     to,
@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   //admin
   const msgToAdmin: MailDataRequired = {
     to: 'contact@anime-club.online',
-    from: to,
+    from: 'contact@anime-club.online',
     subject: '【アニメ部！】お問合せがありました。',
     templateId: 'd-88b95f12184146579aa5ffb9852d8c33',
     dynamicTemplateData: {

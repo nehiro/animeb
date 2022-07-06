@@ -41,10 +41,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     await sgMail.send(msgToAdmin);
+    console.log('admin成功');
     // res
     //   .status(200)
     //   .send('メール送信に成功しました。\n内容を確認次第、ご返信いたします。');
   } catch (error) {
+    console.log(error, 'admin失敗');
     // res.status(500).send('メール送信に失敗しました。');
   }
 };

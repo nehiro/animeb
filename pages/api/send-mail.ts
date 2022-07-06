@@ -5,7 +5,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { to, name, text, html, contents } = req.body;
-  // console.log(process.env.SENDGRID_API_KEY, 'sendgrid api key');
+  console.log(to, '送ってきた人');
   //user
   const msg: MailDataRequired = {
     to,

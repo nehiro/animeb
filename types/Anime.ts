@@ -35,6 +35,7 @@ export type Anime = {
   op: string[] | null;
   ed: string[] | null;
   summary: string | null;
+  summary2?: string | null;
   cast: string[][];
   subTitle: string[] | null;
   onair: string[][] | string[] | null;
@@ -56,6 +57,7 @@ export type JsonAnime = {
   op: string[] | null;
   ed: string[] | null;
   summary: string | null;
+  summary2?: string | null;
   cast: string[][];
   subTitle: string[] | null;
   onair: string[][] | string[] | null;

@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import * as admin from 'firebase-admin';
 import { db } from '../../utils/firebase';
 import { getAuth } from 'firebase-admin/auth';
-import { auth, adminDB } from '../../firebase/server';
+import { auth, adminDB, adminStorage } from '../../firebase/server';
 import {
   collection,
   collectionGroup,
@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).send('error');
   }
 
-  // //フォローフォロワー
+  //フォローフォロワー
 
   //退会ユーザーがフォローしているユーザーのfollowerCountをマイナス
   // const followerRef = collection(db, `users/${uid}/follows/`);
@@ -302,6 +302,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           console.log('listCountマイナス失敗');
         });
     });
+  }
+
+  // Storageのプロフィール画像削除
+  const userPath = `users/${uid}/avatar.jpg`;
+  const userStorage = adminStorage.file(userPath);
+  if (userStorage) {
+    userStorage.delete();
+    console.log('ユーザーの画像削除成功');
+  } else {
+    console.log('削除する画像がありませんでした');
   }
 
   await getAuth()

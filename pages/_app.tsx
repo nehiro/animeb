@@ -5,6 +5,7 @@ import 'tailwindcss/tailwind.css';
 import { AuthProvider } from '../utils/userContext';
 import { AnimeProvider } from '../utils/animeContext';
 import { Toaster } from 'react-hot-toast';
+import '../styles/global.css';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;

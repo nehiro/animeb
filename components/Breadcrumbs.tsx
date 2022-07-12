@@ -17,8 +17,11 @@ const Breadcrumbs = ({ pages }: Props) => {
   return (
     <section className="bg-gray-100 py-1">
       <nav className="container flex" aria-label="Breadcrumb">
-        <ol role="list" className="flex items-center space-x-2 text-sm">
-          <li>
+        <ol
+          role="list"
+          className="hidden-scrollbar flex items-center space-x-2 overflow-x-auto whitespace-nowrap text-sm"
+        >
+          <li className="inline-block">
             <Link href="/">
               <a className="block text-gray-400 hover:text-gray-500">
                 <HomeIcon

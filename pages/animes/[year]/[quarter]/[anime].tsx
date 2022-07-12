@@ -99,7 +99,7 @@ const AnimeWork = (anime: AnimeName) => {
   const [loadCastIndex, setLoadCastIndex] = useState(4);
   const [isCastEmpty, setIsCastEmpty] = useState(false);
   const displayStaffMore = () => {
-    if (!animeInfo) {
+    if (!animeInfo || !animeInfo.staff) {
       return null;
     }
     if (loadStaffIndex > animeInfo.staff.length) {
@@ -413,7 +413,7 @@ const AnimeWork = (anime: AnimeName) => {
                   <h3 className="mb-2 text-sm font-bold">スタッフ</h3>
                   <ul className="mb-1 flex flex-col sm:grid sm:grid-cols-4 sm:gap-4">
                     {/* <ul className="mb-1 flex flex-wrap"> */}
-                    {animeInfo.staff.slice(0, loadStaffIndex).map((item) => (
+                    {animeInfo.staff?.slice(0, loadStaffIndex).map((item) => (
                       <li key={item[0]} className="">
                         <h3 className="mb-1 rounded bg-gray-200 px-2 py-1 text-sm font-bold">
                           {item[0]}

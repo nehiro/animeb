@@ -18,7 +18,7 @@ type Props = {
 };
 const quarter = (props: Props) => {
   const animes = props.datas;
-  console.log(animes, 'animes');
+  // console.log(animes, 'animes');
   const year = props.year;
 
   const quarter = () => {

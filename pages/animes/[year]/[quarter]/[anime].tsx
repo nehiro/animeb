@@ -111,7 +111,7 @@ const AnimeWork = (anime: AnimeName) => {
     }
   };
   const displayCastMore = () => {
-    if (!animeInfo) {
+    if (!animeInfo || !animeInfo.cast) {
       return null;
     }
     if (loadCastIndex > animeInfo.cast.length) {
@@ -474,7 +474,7 @@ const AnimeWork = (anime: AnimeName) => {
                   <h3 className="mb-2 text-sm font-bold">キャスト</h3>
                   <ul className="mb-1  flex flex-col sm:grid sm:grid-cols-4 sm:gap-4">
                     {/* <ul className="mb-1 flex flex-wrap"> */}
-                    {animeInfo.cast.slice(0, loadCastIndex).map((item) => (
+                    {animeInfo.cast?.slice(0, loadCastIndex).map((item) => (
                       <li key={item[0]} className="">
                         <h3 className="mb-1 rounded bg-gray-200 px-2 py-1 text-sm font-bold">
                           {item[0]}

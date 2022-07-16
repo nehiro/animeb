@@ -27,7 +27,7 @@ export type Anime = {
   season: number;
   title: string;
   ruby: string;
-  url: string;
+  url: string | null;
   pv: string | null;
   year: number;
   quarter: number;
@@ -50,7 +50,7 @@ export type JsonAnime = {
   season: number;
   title: string;
   ruby: string;
-  url: string;
+  url: string | null;
   pv: string | null;
   year: number;
   quarter: number;

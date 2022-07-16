@@ -53,6 +53,11 @@ const Index = ({ paths }: { paths: Anime[] }) => {
                       </Link>
                     </td>
                     <td className="text-xs text-gray-500 sm:text-sm">
+                      <Link href={`/animes/${content.year}/4`}>
+                        <a>{content.quarter4}</a>
+                      </Link>
+                    </td>
+                    <td className="text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/1`}>
                         <a>{content.quarter1}</a>
                       </Link>
@@ -65,11 +70,6 @@ const Index = ({ paths }: { paths: Anime[] }) => {
                     <td className="text-xs text-gray-500 sm:text-sm">
                       <Link href={`/animes/${content.year}/3`}>
                         <a>{content.quarter3}</a>
-                      </Link>
-                    </td>
-                    <td className="text-xs text-gray-500 sm:text-sm">
-                      <Link href={`/animes/${content.year}/4`}>
-                        <a>{content.quarter4}</a>
                       </Link>
                     </td>
                   </tr>

@@ -32,6 +32,7 @@ export type Anime = {
   year: number;
   quarter: number;
   staff: string[][] | null;
+  themeSong?: string[];
   op: string[] | string[][] | null;
   ed: string[] | null | string[][];
   summary: string | null;
@@ -54,6 +55,7 @@ export type JsonAnime = {
   year: number;
   quarter: number;
   staff: string[][] | null;
+  themeSong?: string[];
   op: string[] | string[][] | null;
   ed: string[] | null | string[][];
   summary: string | null;

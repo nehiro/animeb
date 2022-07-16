@@ -15,8 +15,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
   let quarter = Number(req.query.quarter);
   // console.log(limit, 'limit');
   // console.log(page, 'page');
-  console.log(year, 'year');
-  console.log(quarter, 'quarter');
+  // console.log(year, 'year');
+  // console.log(quarter, 'quarter');
   try {
     switch (req.method) {
       // 追加

@@ -20,21 +20,14 @@ const Index = ({ paths }: { paths: Anime[] }) => {
   // console.log(animes, 'anime.items');
   const contents = [
     {
-      year: '2008',
+      year: '2022',
       quarter1: '春アニメ',
-      // quarter2: '夏アニメ',
-      // quarter3: '秋アニメ',
-      // quarter4: '冬アニメ',
-    },
-    {
-      year: '2017',
-      // quarter1: '春アニメ',
-      // quarter2: '夏アニメ',
-      // quarter3: '秋アニメ',
+      quarter2: '夏アニメ',
+      quarter3: '秋アニメ',
       quarter4: '冬アニメ',
     },
     {
-      year: '2019',
+      year: '2021',
       // quarter1: '春アニメ',
       // quarter2: '夏アニメ',
       quarter3: '秋アニメ',
@@ -48,18 +41,25 @@ const Index = ({ paths }: { paths: Anime[] }) => {
       // quarter4: '冬アニメ',
     },
     {
-      year: '2021',
+      year: '2019',
       // quarter1: '春アニメ',
       // quarter2: '夏アニメ',
       quarter3: '秋アニメ',
       quarter4: '冬アニメ',
     },
     {
-      year: '2022',
-      quarter1: '春アニメ',
-      quarter2: '夏アニメ',
-      quarter3: '秋アニメ',
+      year: '2017',
+      // quarter1: '春アニメ',
+      // quarter2: '夏アニメ',
+      // quarter3: '秋アニメ',
       quarter4: '冬アニメ',
+    },
+    {
+      year: '2008',
+      quarter1: '春アニメ',
+      // quarter2: '夏アニメ',
+      // quarter3: '秋アニメ',
+      // quarter4: '冬アニメ',
     },
   ];
   return (

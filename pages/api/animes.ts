@@ -11,8 +11,12 @@ type Response = JsonAnime[] | string;
 const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
   let limit = Number(req.query.limit);
   let page = Number(req.query.page);
+  let year = Number(req.query.year);
+  let quarter = Number(req.query.quarter);
   // console.log(limit, 'limit');
   // console.log(page, 'page');
+  console.log(year, 'year');
+  console.log(quarter, 'quarter');
   try {
     switch (req.method) {
       // 追加
@@ -24,7 +28,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Response>) => {
       // 取得
       case 'GET':
         // return res.status(200).json(db.items);
-        const data = db.items;
+        const data = db.items.filter((item) => {
+          return item.year === year && item.quarter === quarter;
+        });
         const dataLength = db.items.length;
         // console.log(dataLength, 'dataLength');
         if (req.query.limit) {

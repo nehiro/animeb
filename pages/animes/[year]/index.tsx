@@ -80,7 +80,8 @@ export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
       { params: { year: '2021' } },
       { params: { year: '2020' } },
       { params: { year: '2019' } },
-      { params: { year: '2018' } },
+      { params: { year: '2017' } },
+      { params: { year: '2008' } },
     ],
     fallback: false,
   };

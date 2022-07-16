@@ -75,6 +75,30 @@ const currentQuarter = () => {
             <RefreshIcon className="w-10 animate-spin text-gray-700" />
           </p>
         )}
+        <SubpageTitle>再放送</SubpageTitle>
+        {animes ? (
+          <ul className="mb-8 grid grid-cols-3 justify-items-center gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            {animes
+              ?.filter(
+                (anime) =>
+                  anime.doing === true &&
+                  anime.media === 'tv' &&
+                  anime.year !== year
+              )
+              .map((anime) => (
+                <li
+                  key={anime.title}
+                  className="flex w-full flex-col justify-between"
+                >
+                  <Card anime={anime}></Card>
+                </li>
+              ))}
+          </ul>
+        ) : (
+          <p className="flex justify-center">
+            <RefreshIcon className="w-10 animate-spin text-gray-700" />
+          </p>
+        )}
       </BackGroundGray>
       <Breadcrumbs
         pages={[

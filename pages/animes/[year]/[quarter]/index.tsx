@@ -87,6 +87,14 @@ type PathParams = {
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
   return {
     paths: [
+      { params: { year: '2008', quarter: `1` } },
+      { params: { year: '2017', quarter: `4` } },
+      { params: { year: '2019', quarter: `3` } },
+      { params: { year: '2019', quarter: `4` } },
+      { params: { year: '2020', quarter: `2` } },
+      { params: { year: '2020', quarter: `3` } },
+      { params: { year: '2021', quarter: `3` } },
+      { params: { year: '2021', quarter: `4` } },
       { params: { year: '2022', quarter: `1` } },
       { params: { year: '2022', quarter: `2` } },
       { params: { year: '2022', quarter: `3` } },

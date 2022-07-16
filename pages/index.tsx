@@ -52,7 +52,7 @@ const Home = () => {
   // followとuser管理
   const { user, loading, reviews, lists } = useAuth();
 
-  console.log(lists, 'lists');
+  // console.log(lists, 'lists');
   // console.log(typeof lists, 'type');
   // console.log(reviews, 'reviews');
   // console.log(user, 'user');
@@ -66,6 +66,52 @@ const Home = () => {
     return snap.docs.map((doc) => doc.data() as User);
   });
 
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const quarter = () => {
+    switch (month) {
+      case 1:
+        return 4;
+      case 2:
+        return 4;
+      case 3:
+        return 4;
+      case 4:
+        return 1;
+      case 5:
+        return 1;
+      case 6:
+        return 1;
+      case 7:
+        return 2;
+      case 8:
+        return 2;
+      case 9:
+        return 2;
+      case 10:
+        return 3;
+      case 11:
+        return 3;
+      case 12:
+        return 3;
+      default:
+        console.log(`Sorry, we are out of ${month}.`);
+    }
+  };
+  const quarterJP = () => {
+    switch (quarter()) {
+      case 1:
+        return '春';
+      case 2:
+        return '夏';
+      case 3:
+        return '秋';
+      case 4:
+        return '冬';
+    }
+  };
+
   const isBigScreen = useMediaQuery({ query: '(min-width: 640px)' });
   const isSmallScreen = useMediaQuery({ query: '(max-width: 639px)' });
 
@@ -73,7 +119,9 @@ const Home = () => {
   const limit = 20;
   const getKey = (pageIndex: number, previousPageData: JsonAnime[]) => {
     if (previousPageData && !previousPageData.length) return null;
-    return `${Site().origin}/api/animes?limit=${limit}&page=${pageIndex + 1}`;
+    return `${Site().origin}/api/animes?limit=${limit}&page=${
+      pageIndex + 1
+    }&year=${year}&quarter=${quarter()}`;
   };
   const { data, size, setSize } = useSWRInfinite(
     getKey,
@@ -94,6 +142,7 @@ const Home = () => {
     // return 'loading';
   }
   const newData: JsonAnime[] = data.flat();
+  console.log(newData, 'newData');
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < limit);
@@ -163,7 +212,9 @@ const Home = () => {
       {/* <AllUserTable></AllUserTable> */}
 
       <BackGroundGray>
-        <TopTitle>今期のアニメ（2022年冬）</TopTitle>
+        <TopTitle>
+          今期のアニメ（{year}年{quarterJP()}）
+        </TopTitle>
         {/* <ul>{animesMap}</ul> */}
 
         {/* <ul id="animeTitle">{animeMap}</ul> */}
@@ -189,7 +240,7 @@ const Home = () => {
           <>
             <ul className="mb-8 grid grid-cols-3 justify-items-center gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
               {newData
-                ?.filter((anime) => anime.year === 2022 && anime.quarter === 4)
+                // ?.filter((anime) => anime.year === 2022 && anime.quarter === 4)
                 .map((anime) => (
                   <li
                     key={anime.title}
@@ -219,9 +270,36 @@ const Home = () => {
       </BackGroundGray>
 
       <BackGroundWhite>
+        <TopTitle>今期のアニメ（再放送）</TopTitle>
+        {animes ? (
+          <ul className="mb-8 grid grid-cols-3 justify-items-center gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            {animes
+              ?.filter(
+                (anime) =>
+                  anime.doing === true &&
+                  anime.media === 'tv' &&
+                  anime.year !== year
+              )
+              .map((anime) => (
+                <li
+                  key={anime.title}
+                  className="flex w-full flex-col justify-between"
+                >
+                  <Card anime={anime}></Card>
+                </li>
+              ))}
+          </ul>
+        ) : (
+          <p className="flex justify-center">
+            <RefreshIcon className="w-10 animate-spin text-gray-700" />
+          </p>
+        )}
+      </BackGroundWhite>
+
+      <BackGroundGray>
         <TopTitle>最近投稿されたレビュー</TopTitle>
         <LatestReview></LatestReview>
-      </BackGroundWhite>
+      </BackGroundGray>
 
       {/* <BackGroundWhite>
         <TopTitle>注目のアニメ</TopTitle>

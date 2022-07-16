@@ -20,6 +20,41 @@ const Index = ({ paths }: { paths: Anime[] }) => {
   // console.log(animes, 'anime.items');
   const contents = [
     {
+      year: '2008',
+      quarter1: '春アニメ',
+      // quarter2: '夏アニメ',
+      // quarter3: '秋アニメ',
+      // quarter4: '冬アニメ',
+    },
+    {
+      year: '2017',
+      // quarter1: '春アニメ',
+      // quarter2: '夏アニメ',
+      // quarter3: '秋アニメ',
+      quarter4: '冬アニメ',
+    },
+    {
+      year: '2019',
+      // quarter1: '春アニメ',
+      // quarter2: '夏アニメ',
+      quarter3: '秋アニメ',
+      quarter4: '冬アニメ',
+    },
+    {
+      year: '2020',
+      // quarter1: '春アニメ',
+      quarter2: '夏アニメ',
+      quarter3: '秋アニメ',
+      // quarter4: '冬アニメ',
+    },
+    {
+      year: '2021',
+      // quarter1: '春アニメ',
+      // quarter2: '夏アニメ',
+      quarter3: '秋アニメ',
+      quarter4: '冬アニメ',
+    },
+    {
       year: '2022',
       quarter1: '春アニメ',
       quarter2: '夏アニメ',
@@ -45,7 +80,7 @@ const Index = ({ paths }: { paths: Anime[] }) => {
                 {contents.map((content) => (
                   <tr
                     key={content.year}
-                    className="flex items-center justify-around py-4"
+                    className="grid grid-cols-5 items-center py-4 text-center"
                   >
                     <td className="text-sm font-medium text-gray-900">
                       <Link href={`/animes/${content.year}`}>

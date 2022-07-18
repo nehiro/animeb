@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getFunctions } from 'firebase/functions';
 import { getStorage } from 'firebase/storage';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 const firebaseConfig = {
   dev: {
@@ -61,3 +62,5 @@ export const auth = getAuth();
 export const db = getFirestore();
 // export const functions = getFunctions('asia-northeast1');
 export const storage = getStorage();
+// export const analytics = getAnalytics();
+// logEvent(analytics, 'notification_received');

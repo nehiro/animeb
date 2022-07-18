@@ -87,6 +87,15 @@ class MyDocument extends Document {
               <meta name="theme-color" content="#ffffff" /> */}
             </>
           )}
+          {/* Global site tag (gtag.js) - Google Analytics */}
+          {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-4VQK0VS9DX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4VQK0VS9DX');
+</script> */}
         </Head>
         <body className="bg-gray-50">
           <Main />

@@ -23,20 +23,19 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
     <>
       <DefaultSeo
         defaultTitle="トップページ"
-        description="アニメレビューサイト"
+        description="アニメレビューサイト|アニメ部！"
         openGraph={{
           type: 'website',
           title: 'トップページ',
-          description: 'アニメレビューサイト',
+          description: 'アニメレビューサイト|アニメ部！',
           site_name: 'アニメ部！',
           url: 'https://anime-club.online/',
           images: [
             {
-              url: 'https://picsum.photos/200/300',
-              width: 200,
-              height: 300,
-              alt: 'Og Image Alt',
-              // alt: 'アニメ部！ロゴ',
+              url: 'https://anime-club.online/images/anime-club.jpg',
+              width: 320,
+              height: 320,
+              alt: 'アニメ部！ロゴ',
               // type: 'image/jpeg',
             },
           ],

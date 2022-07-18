@@ -32,7 +32,7 @@ type DeleteReviweButton = {
   anime: Anime;
   setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   user: User | null | undefined;
-  reviews: ReviewData[] | undefined;
+  reviews: ReviewData[] | null | undefined;
   dbAnimes: any;
 };
 //リストに登録する

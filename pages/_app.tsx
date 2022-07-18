@@ -32,11 +32,11 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
           url: 'https://anime-club.online/',
           images: [
             {
-              url: '../public/favicons/android-chrome-512x512.png',
-              width: 512,
-              height: 512,
+              url: '../../public/images/anime-club.jpg',
+              width: 320,
+              height: 320,
               alt: 'アニメ部！',
-              type: 'image/png',
+              type: 'image/jpg',
             },
           ],
         }}

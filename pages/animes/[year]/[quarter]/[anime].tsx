@@ -48,6 +48,7 @@ import { Tab } from '@headlessui/react';
 import { userReviews } from '../../../../lib/getReviews';
 import { userLists } from '../../../../lib/getList';
 import { DbAnime } from '../../../../types/DbAnime';
+import toast from 'react-hot-toast';
 
 type AnimeName = {
   name: string;
@@ -87,7 +88,7 @@ const AnimeWork = (anime: AnimeName) => {
   const [reviewModal, setReviewModal] = useState(false);
   const modalOpen = () => {
     if (!user) {
-      alert('ログインしてください');
+      toast.error('ログインしてください');
       return;
     }
     setReviewModal(true);

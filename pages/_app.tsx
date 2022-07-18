@@ -32,7 +32,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
           url: 'https://anime-club.online/',
           images: [
             {
-              url: '../../public/images/anime-club.jpg',
+              url: 'https://anime-club.online/images/anime-club.jpg',
               width: 320,
               height: 320,
               alt: 'アニメ部！',

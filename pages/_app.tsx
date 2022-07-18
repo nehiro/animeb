@@ -36,7 +36,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
               width: 320,
               height: 320,
               alt: 'アニメ部！',
-              type: 'image/jpg',
+              type: 'image/jpeg',
             },
           ],
         }}

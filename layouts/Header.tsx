@@ -28,9 +28,9 @@ import router from 'next/router';
 const logout = () => {
   signOut(auth)
     //サインアウトだけでは、onsnapshot消えない
-    .then(() => {
-      router.reload();
-    })
+    // .then(() => {
+    //   router.reload();
+    // })
     .then(() => {
       toast.success(`ログアウト完了`);
     })

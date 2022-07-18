@@ -25,18 +25,10 @@ const UserInfo = (props: { uid: string }) => {
   if (!user) {
     return null;
   }
-  const isAuthUser = () => {
-    if (authUser) {
-      toast.error('ログインしてください');
-    }
-  };
   return (
     <div className="mb-2 flex items-center space-x-2">
       <Link href={`users/${user.uid}`}>
-        <a
-          className={authUser ? undefined : 'pointer-events-none'}
-          onClick={() => isAuthUser()}
-        >
+        <a className={authUser ? undefined : 'pointer-events-none'}>
           <div className="relative mr-2 h-10 w-10 overflow-hidden rounded-full">
             <Image src={user.photoURL} alt="" layout="fill" />
           </div>

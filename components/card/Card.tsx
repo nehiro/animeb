@@ -178,7 +178,8 @@ const Card = ({ anime }: { anime: Anime }) => {
     <>
       <div className="mb-2">
         <Link href={`/animes/${anime.year}/${anime.quarter}/${anime?.title}`}>
-          <a className="relative block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72">
+          {/* <a className="relative block h-40 leading-none sm:h-48 md:h-56 lg:h-64 xl:h-72"> */}
+          <a className="relative block bg-gray-200 pt-[140%] leading-none">
             <Image
               src={
                 'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
@@ -186,7 +187,7 @@ const Card = ({ anime }: { anime: Anime }) => {
                 '.jpg'
               }
               layout="fill"
-              className="object-cover"
+              className="absolute top-0 left-0 h-full w-full object-contain"
               alt=""
             />
           </a>

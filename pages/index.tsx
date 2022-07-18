@@ -142,7 +142,7 @@ const Home = () => {
     // return 'loading';
   }
   const newData: JsonAnime[] = data.flat();
-  console.log(newData, 'newData');
+  // console.log(newData, 'newData');
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < limit);

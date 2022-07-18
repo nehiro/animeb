@@ -1,6 +1,7 @@
 import { RefreshIcon } from '@heroicons/react/outline';
 import React, { ReactElement } from 'react';
 import BackGroundGray from '../components/BackGroundGray';
+import BackGroundWhite from '../components/BackGroundWhite';
 import Breadcrumbs from '../components/Breadcrumbs';
 import Card from '../components/card/Card';
 import NoContents from '../components/NoContents';
@@ -75,6 +76,8 @@ const currentQuarter = () => {
             <RefreshIcon className="w-10 animate-spin text-gray-700" />
           </p>
         )}
+      </BackGroundGray>
+      <BackGroundWhite>
         <SubpageTitle>再放送</SubpageTitle>
         {animes ? (
           <ul className="mb-8 grid grid-cols-3 justify-items-center gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
@@ -99,7 +102,7 @@ const currentQuarter = () => {
             <RefreshIcon className="w-10 animate-spin text-gray-700" />
           </p>
         )}
-      </BackGroundGray>
+      </BackGroundWhite>
       <Breadcrumbs
         pages={[
           {

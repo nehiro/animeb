@@ -22,12 +22,12 @@ import { auth, db } from './firebase';
 //初期値の箱
 type AuthContextProps = {
   user: User | null | undefined;
-  followerUsers?: User[];
-  followUsers?: User[];
+  followerUsers?: User[] | null;
+  followUsers?: User[] | null;
   likeIds?: string[];
   loading: boolean;
-  reviews?: ReviewData[];
-  lists?: List[];
+  reviews?: ReviewData[] | null;
+  lists?: List[] | null;
 };
 
 //箱を定義
@@ -48,20 +48,21 @@ export const AuthProvider: FC = ({ children }) => {
   const [user, setUser] = useState<User | null>();
   // console.log(user, 'user');
   //フォローしているユーザーたち→User[]
-  const [followerUsers, setFollowerUsers] = useState<User[]>();
+  const [followerUsers, setFollowerUsers] = useState<User[] | null>();
   //フォローしてくれているユーザーたち→User[]
-  const [followUsers, setFollowUsers] = useState<User[]>();
+  const [followUsers, setFollowUsers] = useState<User[] | null>();
   //いいねしているIDたち→string[]
   const [likeIds, setLikeIds] = useState<string[]>();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [reviews, setReviews] = useState<ReviewData[]>();
-  const [lists, setLists] = useState<List[]>();
+  const [reviews, setReviews] = useState<ReviewData[] | null>();
+  const [lists, setLists] = useState<List[] | null>();
 
   //呼び出されたら一度だけレンダリング
   useEffect(() => {
     //ログインユーザー監視
     let unsubscribeUser: Unsubscribe;
+    // ログアウトしたときraviews listなどを空に設定
     const unsubscribeAuth = onAuthStateChanged(auth, (authUser) => {
       //Q:ここで何をしているか
       unsubscribeUser?.();
@@ -105,9 +106,14 @@ export const AuthProvider: FC = ({ children }) => {
           }
         });
       } else {
+        console.log('ログアウトした');
         //authUserがあればログイン
         // console.log(authUser, 'authUser');
         console.log('ログインしてない');
+        setFollowerUsers(null);
+        setFollowUsers(null);
+        setReviews(null);
+        setLists(null);
         setUser(null);
         setLoading(false);
       }

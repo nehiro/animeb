@@ -25,7 +25,7 @@ type ListButton = {
 type UnlistButton = {
   anime: Anime;
   user: User | null | undefined;
-  lists: List[] | undefined;
+  lists: List[] | null | undefined;
   dbAnimes: any;
 };
 type DeleteReviweButton = {

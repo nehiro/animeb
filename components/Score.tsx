@@ -431,7 +431,7 @@ const Score = ({
                 </button>
               </div>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="mt-3 text-center sm:mt-0">
+                <div className="text-center">
                   <Dialog.Title
                     as="h3"
                     className="bg-purple py-4 px-12 text-lg font-medium leading-6 text-white"
@@ -463,17 +463,19 @@ const Score = ({
                     leaveTo="transform scale-90 opacity-0"
                   >
                     <div className="mb-2">
-                      <ul className="bg-buttonBlack p-4 text-center text-white">
+                      <ul className="bg-buttonBlack p-2 text-center text-white sm:p-4">
                         <li className="border-b border-gray-500 pb-2 text-2xl">
                           {getAverage(scores)}
                         </li>
                         {scoreItems.map((scoreItem) => (
                           <li
-                            className="flex items-center justify-around border-b border-gray-500 py-2 px-4"
+                            className="flex items-center justify-around border-b border-gray-500 py-2 px-2 sm:px-4"
                             key={scoreItem.headingE}
                           >
                             <p className="mr-4 w-12">
-                              {scoreItem.heading}
+                              <span className="text-sm sm:text-base">
+                                {scoreItem.heading}
+                              </span>
                               <br />
                               {scoreItem.watch}
                             </p>

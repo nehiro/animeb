@@ -252,13 +252,14 @@ const AnimeWork = (anime: AnimeName) => {
           '点'
         }
         openGraph={{
-          url:
+          url: decodeURI(
             'https://anime-club.online/animes/' +
-            animeYear +
-            '/' +
-            animeQuarter +
-            '/' +
-            animeTitle,
+              animeYear +
+              '/' +
+              animeQuarter +
+              '/' +
+              animeTitle
+          ),
           title:
             'アニメ『' +
             animeTitle +
@@ -277,8 +278,8 @@ const AnimeWork = (anime: AnimeName) => {
                 'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
                 `${animeInfo?.title}` +
                 '.jpg',
-              width: 100,
-              height: 150,
+              width: 60,
+              height: 100,
               alt: animeInfo?.title,
             },
           ],

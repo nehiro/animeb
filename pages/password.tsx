@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/dist/client/router';
 import React, { ReactElement, useEffect } from 'react';
 import BackGroundWhite from '../components/BackGroundWhite';
@@ -20,6 +21,7 @@ const Password = () => {
   }, []);
   return (
     <>
+      <NextSeo noindex={true} />
       <BackGroundWhite>
         <SubpageTitle>パスワード設定</SubpageTitle>
         <form action="">

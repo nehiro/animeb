@@ -1,4 +1,5 @@
 import { doc, setDoc, updateDoc } from '@firebase/firestore';
+import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/dist/client/router';
 import React, { ReactElement, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -57,6 +58,7 @@ const AccountSetting = () => {
 
   return (
     <>
+      <NextSeo noindex={true} />
       <Breadcrumbs
         pages={[
           {

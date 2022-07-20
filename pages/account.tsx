@@ -1,4 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
+import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { ReactElement, useEffect } from 'react';
@@ -21,6 +22,7 @@ const Account = () => {
   }, []);
   return (
     <>
+      <NextSeo noindex={true} />
       <Breadcrumbs
         pages={[
           {

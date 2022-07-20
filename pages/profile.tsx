@@ -16,6 +16,7 @@ import Modal from 'react-modal';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import LayoutNoNav from '../layouts/LayoutNoNav';
 import toast from 'react-hot-toast';
+import { NextSeo } from 'next-seo';
 
 //formの型
 interface IFormInput {
@@ -152,6 +153,7 @@ const Profile = () => {
 
   return (
     <>
+      <NextSeo noindex={true} />
       <Breadcrumbs
         pages={[
           {

@@ -7,6 +7,7 @@ import {
 import { doc, getDoc } from 'firebase/firestore';
 import { list } from 'firebase/storage';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { ReactElement, useEffect, useState } from 'react';
@@ -125,6 +126,7 @@ const MyPage = (props: { userInfo: User }) => {
   }
   return (
     <>
+      <NextSeo noindex={true} />
       <Breadcrumbs
         pages={[
           {

@@ -60,9 +60,7 @@ type AnimeName = {
 const AnimeWork = (anime: AnimeName) => {
   const animeTitle = anime.name;
   const animeYear = anime.year;
-  console.log(animeYear, 'animeYear');
   const animeQuarter = anime.quarter;
-  console.log(animeQuarter, 'animeQuarter');
   // console.log(animeTitle, 'animeTitle');
   const { user, reviews, lists } = useAuth();
   const { animes } = useAnime();
@@ -239,8 +237,20 @@ const AnimeWork = (anime: AnimeName) => {
   return (
     <>
       <NextSeo
-        title={animeTitle}
-        description={animeTitle + 'のページ'}
+        title={
+          'アニメ『' +
+          animeTitle +
+          '』の感想・レビュー[' +
+          sumReviewCount +
+          '件] | アニメ部！'
+        }
+        description={
+          'レビュー数：' +
+          sumReviewCount +
+          '件 ／ 平均スコア：' +
+          reviewAverage() +
+          '点'
+        }
         openGraph={{
           url:
             'https://anime-club.online/animes/' +
@@ -249,8 +259,29 @@ const AnimeWork = (anime: AnimeName) => {
             animeQuarter +
             '/' +
             animeTitle,
-          title: animeTitle,
-          description: animeTitle + 'のページ',
+          title:
+            'アニメ『' +
+            animeTitle +
+            '』の感想・レビュー[' +
+            sumReviewCount +
+            '件] | アニメ部！',
+          description:
+            'レビュー数：' +
+            sumReviewCount +
+            '件 ／ 平均スコア：' +
+            reviewAverage() +
+            '点',
+          images: [
+            {
+              url:
+                'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
+                `${animeInfo?.title}` +
+                '.jpg',
+              width: 60,
+              height: 100,
+              alt: animeInfo?.title,
+            },
+          ],
         }}
       />
       <Breadcrumbs

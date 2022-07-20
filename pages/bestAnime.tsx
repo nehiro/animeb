@@ -15,6 +15,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { UserRanking } from '../types/UserRanking';
 import WatchedAnimes from '../components/WatchedAnimes';
 import toast from 'react-hot-toast';
+import { NextSeo } from 'next-seo';
 
 const BestAnime = () => {
   // user管理
@@ -67,6 +68,7 @@ const BestAnime = () => {
 
   return (
     <>
+      <NextSeo noindex={true} />
       <Breadcrumbs
         pages={[
           {

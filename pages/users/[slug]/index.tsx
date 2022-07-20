@@ -35,6 +35,7 @@ import { userLists } from '../../../lib/getList';
 import { List } from '../../../types/List';
 import { Anime } from '../../../types/Anime';
 import Breadcrumbs from '../../../components/Breadcrumbs';
+import { NextSeo } from 'next-seo';
 
 const MyPage = (props: { userInfo: User }) => {
   const router = useRouter();
@@ -144,6 +145,7 @@ const MyPage = (props: { userInfo: User }) => {
   }
   return (
     <>
+      <NextSeo noindex={true} />
       <Breadcrumbs
         pages={[
           {

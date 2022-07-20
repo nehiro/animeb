@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo';
 import React, { ReactElement } from 'react';
 import BackGroundWhite from '../components/BackGroundWhite';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -12,6 +13,7 @@ const cheer = () => {
   const { user } = useAuth();
   return (
     <>
+      <NextSeo noindex={true} />
       <Breadcrumbs
         pages={[
           {

@@ -29,6 +29,7 @@ import LayoutNoNav from '../layouts/LayoutNoNav';
 import { auth, db } from '../utils/firebase';
 import { useAuth } from '../utils/userContext';
 import * as admin from 'firebase-admin';
+import { NextSeo } from 'next-seo';
 
 const Delete = () => {
   const { user } = useAuth();
@@ -83,6 +84,7 @@ const Delete = () => {
 
   return (
     <>
+      <NextSeo noindex={true} />
       <BackGroundWhite>
         <SubpageTitle>退会</SubpageTitle>
         <p className="mb-8 text-center">

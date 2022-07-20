@@ -237,30 +237,32 @@ const AnimeWork = (anime: AnimeName) => {
   return (
     <>
       <NextSeo
-        title={
-          animeTitle
-          // 'アニメ『' +
-          // animeTitle +
-          // '』の感想・レビュー[' +
-          // sumReviewCount +
-          // '件] | アニメ部！'
-        }
-        description={
-          'レビュー数：' +
-          sumReviewCount +
-          '件 ／ 平均スコア：' +
-          reviewAverage() +
-          '点'
-        }
+        title={'a'}
+        // title={
+        //   'アニメ『' +
+        //   animeTitle +
+        //   '』の感想・レビュー[' +
+        //   sumReviewCount +
+        //   '件] | アニメ部！'
+        // }
+        // description={
+        //   'レビュー数：' +
+        //   sumReviewCount +
+        //   '件 ／ 平均スコア：' +
+        //   reviewAverage() +
+        //   '点'
+        // }
         openGraph={{
-          url:
-            'https://anime-club.online/animes/' +
-            animeYear +
-            '/' +
-            animeQuarter +
-            '/' +
-            animeTitle,
-          title: animeTitle,
+          url: 'https://anime-club.online',
+          title: 'a',
+          // url:
+          //   'https://anime-club.online/animes/' +
+          //   animeYear +
+          //   '/' +
+          //   animeQuarter +
+          //   '/' +
+          //   animeTitle,
+          // title:
           //   'アニメ『' +
           //   animeTitle +
           //   '』の感想・レビュー[' +

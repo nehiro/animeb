@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo';
 import React, { ReactElement } from 'react';
 import BackGroundGray from '../components/BackGroundGray';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -8,6 +9,15 @@ import Layout from '../layouts/Layout';
 const Film = () => {
   return (
     <>
+      <NextSeo
+        title="アニメの映画 | アニメ部！"
+        description="歴代のアニメの映画をチェックしよう！"
+        openGraph={{
+          url: 'https://anime-club.online/film',
+          title: 'アニメの映画 | アニメ部！',
+          description: '歴代のアニメの映画をチェックしよう！',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

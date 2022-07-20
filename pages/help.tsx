@@ -6,6 +6,7 @@ import Layout from '../layouts/Layout';
 import Breadcrumbs from '../components/Breadcrumbs';
 import BackGroundWhite from '../components/BackGroundWhite';
 import SubpageTitle from '../components/SubpageTitle';
+import { NextSeo } from 'next-seo';
 
 const Help = () => {
   const faqs01 = [
@@ -100,6 +101,15 @@ const Help = () => {
   }
   return (
     <>
+      <NextSeo
+        title="ヘルプ | アニメ部！"
+        description="アニメ部！の使い方"
+        openGraph={{
+          url: 'https://anime-club.online/help',
+          title: 'ヘルプ | アニメ部！',
+          description: 'アニメ部！の使い方',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

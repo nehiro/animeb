@@ -10,6 +10,7 @@ import SubpageTitle from '../../../../components/SubpageTitle';
 import { RefreshIcon } from '@heroicons/react/outline';
 import Card from '../../../../components/card/Card';
 import NoContents from '../../../../components/NoContents';
+import { NextSeo } from 'next-seo';
 
 type Props = {
   datas: Anime[];
@@ -33,12 +34,38 @@ const quarter = (props: Props) => {
       case '4':
         return '冬';
       default:
-        break;
+        return 'No value';
     }
   };
 
   return (
     <>
+      <NextSeo
+        title={year + quarter() + '年放送・配信のアニメ作品一覧 | アニメ部！'}
+        description={
+          year +
+          ' ' +
+          quarter() +
+          '年放送・配信のアニメを' +
+          animes.length +
+          '作品掲載中。'
+        }
+        openGraph={{
+          url: 'https://anime-club.online/animes/' + year + '/' + props.quarter,
+          title:
+            year +
+            ' ' +
+            quarter() +
+            '年放送・配信のアニメ作品一覧 | アニメ部！',
+          description:
+            year +
+            ' ' +
+            quarter() +
+            '年放送・配信のアニメを' +
+            animes.length +
+            '作品掲載中。',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

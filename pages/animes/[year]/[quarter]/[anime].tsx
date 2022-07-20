@@ -49,6 +49,7 @@ import { userReviews } from '../../../../lib/getReviews';
 import { userLists } from '../../../../lib/getList';
 import { DbAnime } from '../../../../types/DbAnime';
 import toast from 'react-hot-toast';
+import { NextSeo } from 'next-seo';
 
 type AnimeName = {
   name: string;
@@ -235,6 +236,54 @@ const AnimeWork = (anime: AnimeName) => {
 
   return (
     <>
+      <NextSeo
+        title={
+          'アニメ『' +
+          animeTitle +
+          '』の感想・レビュー[' +
+          sumReviewCount +
+          '件] | アニメ部！'
+        }
+        description={
+          'レビュー数：' +
+          sumReviewCount +
+          '件 ／ 平均スコア：' +
+          reviewAverage() +
+          '点'
+        }
+        openGraph={{
+          url:
+            'https://anime-club.online/animes/' +
+            animeYear +
+            '/' +
+            animeQuarter +
+            '/' +
+            animeTitle,
+          title:
+            'アニメ『' +
+            animeTitle +
+            '』の感想・レビュー[' +
+            sumReviewCount +
+            '件] | アニメ部！',
+          description:
+            'レビュー数：' +
+            sumReviewCount +
+            '件 ／ 平均スコア：' +
+            reviewAverage() +
+            '点',
+          images: [
+            {
+              url:
+                'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
+                `${animeInfo?.title}` +
+                '.jpg',
+              width: 100,
+              height: 150,
+              alt: animeInfo?.title,
+            },
+          ],
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

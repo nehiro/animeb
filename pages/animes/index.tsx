@@ -12,6 +12,7 @@ import { useAnime } from '../../utils/animeContext';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import BackGroundGray from '../../components/BackGroundGray';
 import SubpageTitle from '../../components/SubpageTitle';
+import { NextSeo } from 'next-seo';
 
 const Index = ({ paths }: { paths: Anime[] }) => {
   //アニメ管理
@@ -64,6 +65,15 @@ const Index = ({ paths }: { paths: Anime[] }) => {
   ];
   return (
     <>
+      <NextSeo
+        title="放送・配信時期一覧 | アニメ部！"
+        description="放送・配信時期からアニメを探せます。"
+        openGraph={{
+          url: 'https://anime-club.online/animes',
+          title: '放送・配信時期一覧 | アニメ部！',
+          description: '放送・配信時期からアニメを探せます。',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

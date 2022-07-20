@@ -11,6 +11,7 @@ import Breadcrumbs from '../../../components/Breadcrumbs';
 import BackGroundGray from '../../../components/BackGroundGray';
 import SubpageTitle from '../../../components/SubpageTitle';
 import NoContents from '../../../components/NoContents';
+import { NextSeo } from 'next-seo';
 
 type Props = {
   datas: Anime[];
@@ -20,9 +21,21 @@ const year = (props: Props) => {
   // console.log(props);
   const animes = props.datas;
   const year = props.year;
-  // console.log(animes);
+  // console.log(animes.length, 'animes');
   return (
     <>
+      <NextSeo
+        title={year + '年放送・配信のアニメ作品一覧 | アニメ部！'}
+        description={
+          year + '年放送・配信のアニメを' + animes.length + '作品掲載中。'
+        }
+        openGraph={{
+          url: 'https://anime-club.online/animes/' + year,
+          title: year + '年放送・配信のアニメ作品一覧 | アニメ部！',
+          description:
+            year + '年放送・配信のアニメを' + animes.length + '作品掲載中。',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

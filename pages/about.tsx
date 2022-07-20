@@ -5,10 +5,21 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import NoContents from '../components/NoContents';
 import SubpageTitle from '../components/SubpageTitle';
 import LayoutNoNav from '../layouts/LayoutNoNav';
+import { NextSeo } from 'next-seo';
 
 const About = () => {
   return (
     <>
+      <NextSeo
+        title="アニメ部！とは？ | アニメ好きのためのレビュー共有コミュニティ"
+        description="アニメについて語って自己表現しよう！"
+        openGraph={{
+          url: 'https://anime-club.online/about',
+          title:
+            'アニメ部！とは？ | アニメ好きのためのレビュー共有コミュニティ',
+          description: 'アニメについて語って自己表現しよう！',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

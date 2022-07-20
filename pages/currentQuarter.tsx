@@ -1,4 +1,5 @@
 import { RefreshIcon } from '@heroicons/react/outline';
+import { NextSeo } from 'next-seo';
 import React, { ReactElement } from 'react';
 import BackGroundGray from '../components/BackGroundGray';
 import BackGroundWhite from '../components/BackGroundWhite';
@@ -47,6 +48,15 @@ const currentQuarter = () => {
 
   return (
     <>
+      <NextSeo
+        title="今期のアニメ | アニメ部！"
+        description="今放送されているアニメをチェックしよう！"
+        openGraph={{
+          url: 'https://anime-club.online/currentQuarter',
+          title: '今期のアニメ | アニメ部！',
+          description: '今放送されているアニメをチェックしよう！',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

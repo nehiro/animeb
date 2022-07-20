@@ -5,6 +5,7 @@ import SubpageTitle from '../components/SubpageTitle';
 import LayoutNoNav from '../layouts/LayoutNoNav';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { NextSeo } from 'next-seo';
 
 interface IFormInput {
   to: string;
@@ -40,6 +41,16 @@ const Contact = () => {
   };
   return (
     <>
+      <NextSeo
+        title="お問い合わせ | アニメ部！"
+        description="サービスの品質向上のため、皆様からのお問い合わせをお待ちしております。"
+        openGraph={{
+          url: 'https://anime-club.online/contact',
+          title: 'お問い合わせ | アニメ部！',
+          description:
+            'サービスの品質向上のため、皆様からのお問い合わせをお待ちしております。',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

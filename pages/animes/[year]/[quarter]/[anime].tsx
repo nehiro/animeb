@@ -238,11 +238,12 @@ const AnimeWork = (anime: AnimeName) => {
     <>
       <NextSeo
         title={
-          'アニメ『' +
-          animeTitle +
-          '』の感想・レビュー[' +
-          sumReviewCount +
-          '件] | アニメ部！'
+          animeTitle
+          // 'アニメ『' +
+          // animeTitle +
+          // '』の感想・レビュー[' +
+          // sumReviewCount +
+          // '件] | アニメ部！'
         }
         description={
           'レビュー数：' +
@@ -259,29 +260,29 @@ const AnimeWork = (anime: AnimeName) => {
             animeQuarter +
             '/' +
             animeTitle,
-          title:
-            'アニメ『' +
-            animeTitle +
-            '』の感想・レビュー[' +
-            sumReviewCount +
-            '件] | アニメ部！',
-          description:
-            'レビュー数：' +
-            sumReviewCount +
-            '件 ／ 平均スコア：' +
-            reviewAverage() +
-            '点',
-          images: [
-            {
-              url:
-                'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
-                `${animeInfo?.title}` +
-                '.jpg',
-              width: 100,
-              height: 150,
-              alt: animeInfo?.title,
-            },
-          ],
+          title: animeTitle,
+          //   'アニメ『' +
+          //   animeTitle +
+          //   '』の感想・レビュー[' +
+          //   sumReviewCount +
+          //   '件] | アニメ部！',
+          // description:
+          //   'レビュー数：' +
+          //   sumReviewCount +
+          //   '件 ／ 平均スコア：' +
+          //   reviewAverage() +
+          //   '点',
+          // images: [
+          //   {
+          //     url:
+          //       'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
+          //       `${animeInfo?.title}` +
+          //       '.jpg',
+          //     width: 100,
+          //     height: 150,
+          //     alt: animeInfo?.title,
+          //   },
+          // ],
         }}
       />
       <Breadcrumbs

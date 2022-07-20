@@ -22,6 +22,7 @@ import LatestReview from '../components/LatestReview';
 import MostLike from '../components/MostLike';
 import MostReview from '../components/MostReview';
 import { NextSeo } from 'next-seo';
+import BackGroundWhite from '../components/BackGroundWhite';
 
 const Trend = () => {
   //24時間以内によく投稿されたタイトル
@@ -50,8 +51,12 @@ const Trend = () => {
         {/* 最もレビューが多いアニメ */}
         <SubpageTitle>レビューされている数が多い作品</SubpageTitle>
         <MostReview></MostReview>
+      </BackGroundGray>
+      <BackGroundWhite>
         <SubpageTitle>ブックマークされている数が多い作品</SubpageTitle>
         <MostLike></MostLike>
+      </BackGroundWhite>
+      <BackGroundGray>
         <SubpageTitle>最近投稿されたレビュー</SubpageTitle>
         <LatestReview></LatestReview>
       </BackGroundGray>

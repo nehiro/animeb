@@ -51,7 +51,10 @@ const LatestReview = () => {
     <>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {latestReview?.map((item, index) => (
-          <div key={index} className="grid grid-cols-2 gap-4 border p-5">
+          <div
+            key={index}
+            className="grid grid-cols-2 gap-4 border bg-white p-5"
+          >
             <div className="space-y-1">
               <UserInfo uid={item.uid}></UserInfo>
               <p className="text-sm">

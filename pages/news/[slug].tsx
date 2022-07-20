@@ -34,11 +34,11 @@ const Slug = ({ news }: { news: News }) => {
   return (
     <>
       <NextSeo
-        title={'【ニュース】' + news.title + '| アニメ部！'}
+        title={'【ニュース】' + news.title + ' | アニメ部！'}
         description={news.title + 'についてご確認いただけます。'}
         openGraph={{
           url: 'https://anime-club.online/news/' + news.id,
-          title: '【ニュース】' + news.title + '| アニメ部！',
+          title: '【ニュース】' + news.title + ' | アニメ部！',
           description: news.title + 'についてご確認いただけます。',
         }}
       />

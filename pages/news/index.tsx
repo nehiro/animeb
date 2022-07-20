@@ -28,7 +28,7 @@ const Index = ({ news }: { news: News[] }) => {
         title="ニュース | アニメ部！"
         description="アニメ部！のお知らせや機能追加などをご確認いただけます。"
         openGraph={{
-          url: 'https://anime-club.online/privacy',
+          url: 'https://anime-club.online/news/',
           title: 'ニュース | アニメ部！',
           description:
             'アニメ部！のお知らせや機能追加などをご確認いただけます。',

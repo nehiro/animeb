@@ -18,21 +18,9 @@ import { useAnime } from '../../../utils/animeContext';
 import { auth, db } from '../../../utils/firebase';
 import { useAuth } from '../../../utils/userContext';
 import useSWR from 'swr';
-import {
-  collectionGroup,
-  getDocs,
-  getDoc,
-  onSnapshot,
-  query,
-  where,
-  doc,
-  collection,
-} from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
 import { ReviewData } from '../../../types/ReviewData';
-import { DbAnime } from '../../../types/DbAnime';
 import { userReviews } from '../../../lib/getReviews';
-import { userLists } from '../../../lib/getList';
-import { List } from '../../../types/List';
 import { Anime } from '../../../types/Anime';
 import Breadcrumbs from '../../../components/Breadcrumbs';
 import { NextSeo } from 'next-seo';

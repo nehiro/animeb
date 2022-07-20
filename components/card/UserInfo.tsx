@@ -13,12 +13,15 @@ const UserInfo = (props: { uid: string }) => {
   const uid = props.uid;
   useEffect(() => {
     const ref = doc(db, `users/${uid}`);
-    return onSnapshot(ref, async (snap) => {
+    const unsubscribe = onSnapshot(ref, async (snap) => {
       const data = snap.data() as User;
       // if (!data.deleted || data.deleted !== true) {
       setUser(data);
       // }
     });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   // console.log(user);

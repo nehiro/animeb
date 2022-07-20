@@ -35,7 +35,7 @@ export const subscribeAllReviews = async (
   // setNextReviews(getReviews as ReviewData[]);
 
   //現在表示されているレビュー
-  return onSnapshot(reviews, async (snap) => {
+  const unsubscribe = onSnapshot(reviews, async (snap) => {
     const tasks = snap.docs.map((doc) => {
       return doc.data();
     });
@@ -43,6 +43,9 @@ export const subscribeAllReviews = async (
     // console.log(allReviews, 'allReviews');
     setReviews(allReviews as ReviewData[]);
   });
+  return () => {
+    unsubscribe();
+  };
 };
 
 export const getNextSubscribeAllReviews = async (
@@ -108,13 +111,16 @@ export const subscribeSpoilerTrueReviews = async (
     return item.data();
   });
 
-  return onSnapshot(reviews, async (snap) => {
+  const unsubscribe = onSnapshot(reviews, async (snap) => {
     const tasks = snap.docs.map((doc) => {
       return doc.data();
     });
     const allReviews = await Promise.all(tasks);
     setReviews(allReviews as ReviewData[]);
   });
+  return () => {
+    unsubscribe();
+  };
 };
 
 export const getNextSubscribeSpoilerTrueReviews = async (
@@ -165,13 +171,16 @@ export const subscribeSpoilerFalseReviews = async (
   const getReviews = data.docs.map((item) => {
     return item.data();
   });
-  return onSnapshot(reviews, async (snap) => {
+  const unsubscribe = onSnapshot(reviews, async (snap) => {
     const tasks = snap.docs.map((doc) => {
       return doc.data();
     });
     const allReviews = await Promise.all(tasks);
     setReviews(allReviews as ReviewData[]);
   });
+  return () => {
+    unsubscribe();
+  };
 };
 
 export const getNextSubscribeSpoilerFalseReviews = async (

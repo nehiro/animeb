@@ -73,10 +73,13 @@ const AnimeWork = (anime: AnimeName) => {
 
   const getDbAnimes = async () => {
     const ref = collection(db, 'animes');
-    onSnapshot(ref, (snap) => {
+    const unsubscribe = onSnapshot(ref, (snap) => {
       const data = snap.docs.map((doc) => doc.data() as DbAnime);
       setDbAnimes(data);
     });
+    return () => {
+      unsubscribe();
+    };
     // const snap = await getDocs(ref);
   };
 

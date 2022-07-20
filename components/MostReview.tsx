@@ -62,10 +62,13 @@ const MostReview = () => {
       orderBy('reviewCount', 'desc'),
       limit(10)
     );
-    return onSnapshot(snap, async (snap) => {
+    const unsubscribe = onSnapshot(snap, async (snap) => {
       const reviewData = snap.docs.map((doc) => doc.data() as DbAnime);
       setMostReview(reviewData);
     });
+    return () => {
+      unsubscribe();
+    };
   };
   // console.log(mostLike, 'mostLike');
 

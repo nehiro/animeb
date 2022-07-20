@@ -24,7 +24,7 @@ export const userReviews = (
     orderBy('createAt', 'desc')
   );
 
-  return onSnapshot(ref, async (snap) => {
+  const unsubscribe = onSnapshot(ref, async (snap) => {
     // const snap = await getDocs(ref);
     const datas = snap.docs.map((item) => {
       return getReviews(item.ref.parent.parent?.id as string, userId as string);
@@ -34,6 +34,9 @@ export const userReviews = (
     // console.log(reviews, 'reviews');
     callback(reviews);
   });
+  return () => {
+    unsubscribe();
+  };
 
   // return data as ReviewData[];
 };

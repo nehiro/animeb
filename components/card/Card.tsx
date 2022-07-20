@@ -79,7 +79,7 @@ const Card = ({ anime }: { anime: Anime }) => {
   // console.log(dbAnimes, 'dbAnimes');
   useEffect(() => {
     const ref = collection(db, 'animes');
-    onSnapshot(ref, async (snap) => {
+    const unsubscribe = onSnapshot(ref, async (snap) => {
       // console.log(
       //   snap.docs.map((doc) => doc.data()),
       //   'data'
@@ -90,6 +90,9 @@ const Card = ({ anime }: { anime: Anime }) => {
       setDbAnimes(data as any);
       // return snap.docs.map((doc) => doc.data());
     });
+    return () => {
+      unsubscribe();
+    };
   }, [user]);
 
   // console.log(dbAnimes, 'dbAnimes');

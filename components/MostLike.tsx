@@ -58,10 +58,13 @@ const MostLike = () => {
   const getMostLike = () => {
     const ref = collection(db, 'animes');
     const snap = query(ref, orderBy('listCount', 'desc'), limit(10));
-    return onSnapshot(snap, async (snap) => {
+    const unsubscribe = onSnapshot(snap, async (snap) => {
       const reviewData = snap.docs.map((doc) => doc.data() as DbAnime);
       setMostLike(reviewData);
     });
+    return () => {
+      unsubscribe();
+    };
   };
   // console.log(mostLike, 'mostLike');
 

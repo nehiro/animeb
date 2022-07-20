@@ -3,9 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDocs,
   increment,
-  onSnapshot,
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
@@ -13,9 +11,8 @@ import { Anime } from '../types/Anime';
 import { List } from '../types/List';
 import { ReviewData } from '../types/ReviewData';
 import { db } from '../utils/firebase';
-import useSWR from 'swr';
-import { ListData } from '../types/ListData';
-import toast, { Toaster } from 'react-hot-toast';
+
+import toast from 'react-hot-toast';
 
 type ListButton = {
   anime: Anime;

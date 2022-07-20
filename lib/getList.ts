@@ -17,7 +17,7 @@ export const userLists = (
   const ref = collectionGroup(db, 'lists');
   const q = query(ref, where('uid', '==', userId), orderBy('createAt', 'desc'));
   // console.log('走ったuserLists');
-  return onSnapshot(q, async (snap) => {
+  const unsubscribe = onSnapshot(q, async (snap) => {
     // const snap = await getDocs(ref);
 
     const datas = snap.docs.map((item) => {
@@ -30,6 +30,9 @@ export const userLists = (
 
     callback(lists);
   });
+  return () => {
+    unsubscribe();
+  };
 
   // return data as ListData[];
 };

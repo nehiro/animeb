@@ -31,7 +31,7 @@ const LatestReview = () => {
   const getLatestReview = () => {
     const ref = collectionGroup(db, 'reviews');
     const snap = query(ref, orderBy('createAt', 'desc'), limit(10));
-    return onSnapshot(snap, async (snap) => {
+    const unsubscribe = onSnapshot(snap, async (snap) => {
       // const snap = await getDocs(q);
       const reviewData = snap.docs.map((doc) => ({
         ...(doc.data() as ReviewData),
@@ -40,6 +40,9 @@ const LatestReview = () => {
       // console.log(reviewData, 'reviewData');
       setLatestReview(reviewData);
     });
+    return () => {
+      unsubscribe();
+    };
   };
 
   // console.log(latestReview, 'latestReview');

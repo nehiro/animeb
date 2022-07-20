@@ -252,14 +252,13 @@ const AnimeWork = (anime: AnimeName) => {
           '点'
         }
         openGraph={{
-          url: decodeURI(
+          url:
             'https://anime-club.online/animes/' +
-              animeYear +
-              '/' +
-              animeQuarter +
-              '/' +
-              animeTitle
-          ),
+            animeYear +
+            '/' +
+            animeQuarter +
+            '/' +
+            animeTitle,
           title:
             'アニメ『' +
             animeTitle +
@@ -272,17 +271,6 @@ const AnimeWork = (anime: AnimeName) => {
             '件 ／ 平均スコア：' +
             reviewAverage() +
             '点',
-          images: [
-            {
-              url:
-                'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
-                `${animeInfo?.title}` +
-                '.jpg',
-              width: 60,
-              height: 100,
-              alt: animeInfo?.title,
-            },
-          ],
         }}
       />
       <Breadcrumbs

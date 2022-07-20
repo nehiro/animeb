@@ -155,7 +155,7 @@ const AnimeWork = (anime: AnimeName) => {
       case 4:
         return '冬';
       default:
-        break;
+        return 'No value';
     }
   };
 
@@ -237,54 +237,35 @@ const AnimeWork = (anime: AnimeName) => {
   return (
     <>
       <NextSeo
-        title={'a'}
-        // title={
-        //   'アニメ『' +
-        //   animeTitle +
-        //   '』の感想・レビュー[' +
-        //   sumReviewCount +
-        //   '件] | アニメ部！'
-        // }
-        // description={
-        //   'レビュー数：' +
-        //   sumReviewCount +
-        //   '件 ／ 平均スコア：' +
-        //   reviewAverage() +
-        //   '点'
-        // }
+        title={
+          animeYear + quarter() + '年放送・配信のアニメ作品一覧 | アニメ部！'
+        }
+        description={
+          animeYear +
+          ' ' +
+          quarter() +
+          '年放送・配信のアニメを' +
+          animes.length +
+          '作品掲載中。'
+        }
         openGraph={{
-          url: 'https://anime-club.online',
-          title: 'a',
-          // url:
-          //   'https://anime-club.online/animes/' +
-          //   animeYear +
-          //   '/' +
-          //   animeQuarter +
-          //   '/' +
-          //   animeTitle,
-          // title:
-          //   'アニメ『' +
-          //   animeTitle +
-          //   '』の感想・レビュー[' +
-          //   sumReviewCount +
-          //   '件] | アニメ部！',
-          // description:
-          //   'レビュー数：' +
-          //   sumReviewCount +
-          //   '件 ／ 平均スコア：' +
-          //   reviewAverage() +
-          //   '点',
-          // images: [
-          //   {
-          //     url:
-          //       'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
-          //       `${animeInfo?.title}` +
-          //       '.jpg',
-          //     width: 100,
-          //     height: 150,
-          //     alt: animeInfo?.title,
-          //   },
-          // ],
+          url:
+            'https://anime-club.online/animes/' +
+            animeYear +
+            '/' +
+            animeQuarter,
+          title:
+            animeYear +
+            ' ' +
+            quarter() +
+            '年放送・配信のアニメ作品一覧 | アニメ部！',
+          description:
+            animeYear +
+            ' ' +
+            quarter() +
+            '年放送・配信のアニメを' +
+            animes.length +
+            '作品掲載中。',
         }}
       />
       <Breadcrumbs

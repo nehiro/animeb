@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import BackGroundWhite from '../components/BackGroundWhite';
@@ -8,6 +9,16 @@ import LayoutNoNav from '../layouts/LayoutNoNav';
 const Privacy = () => {
   return (
     <>
+      <NextSeo
+        title="プライバシーポリシー | アニメ部！"
+        description="アニメ部！を安心して利用していただくためプライバシーポリシーを定め、個人情報を厳重に管理致します。"
+        openGraph={{
+          url: 'https://anime-club.online/privacy',
+          title: 'プライバシーポリシー | アニメ部！',
+          description:
+            'アニメ部！を安心して利用していただくためプライバシーポリシーを定め、個人情報を厳重に管理致します。',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

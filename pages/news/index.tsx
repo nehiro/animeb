@@ -14,6 +14,7 @@ import { userLists } from '../../lib/getList';
 import { useAuth } from '../../utils/userContext';
 import { User } from '../../types/User';
 import LayoutNoNav from '../../layouts/LayoutNoNav';
+import { NextSeo } from 'next-seo';
 
 const Index = ({ news }: { news: News[] }) => {
   const { user } = useAuth();
@@ -23,6 +24,16 @@ const Index = ({ news }: { news: News[] }) => {
 
   return (
     <>
+      <NextSeo
+        title="ニュース | アニメ部！"
+        description="アニメ部！のお知らせや機能追加などをご確認いただけます。"
+        openGraph={{
+          url: 'https://anime-club.online/privacy',
+          title: 'ニュース | アニメ部！',
+          description:
+            'アニメ部！のお知らせや機能追加などをご確認いただけます。',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

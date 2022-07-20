@@ -10,6 +10,7 @@ import TiptapRender from '../../components/TiptapRender';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import TiptapNewsEditor from '../../components/TiptapNewsEditor';
 import { useAuth } from '../../utils/userContext';
+import { NextSeo } from 'next-seo';
 
 const Slug = ({ news }: { news: News }) => {
   const { user } = useAuth();
@@ -32,16 +33,15 @@ const Slug = ({ news }: { news: News }) => {
 
   return (
     <>
-      {/* <Head>
-        <link
-          href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-          rel="stylesheet"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css"
-        ></link>
-      </Head> */}
+      <NextSeo
+        title={'【ニュース】' + news.title + '| アニメ部！'}
+        description={news.title + 'についてご確認いただけます。'}
+        openGraph={{
+          url: 'https://anime-club.online/news/' + news.id,
+          title: '【ニュース】' + news.title + '| アニメ部！',
+          description: news.title + 'についてご確認いただけます。',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

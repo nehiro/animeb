@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo';
 import React, { ReactElement } from 'react';
 import BackGroundWhite from '../components/BackGroundWhite';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -7,6 +8,16 @@ import LayoutNoNav from '../layouts/LayoutNoNav';
 const Terms = () => {
   return (
     <>
+      <NextSeo
+        title="利用規約 | アニメ部！"
+        description="アニメ部！のご利用に際しては、この利用規約が適用されます。アニメ部！の利用者は、予めこの利用規約に同意した上で、アニメ部！を利用するものとします。"
+        openGraph={{
+          url: 'https://anime-club.online/terms',
+          title: '利用規約 | アニメ部！',
+          description:
+            'アニメ部！のご利用に際しては、この利用規約が適用されます。アニメ部！の利用者は、予めこの利用規約に同意した上で、アニメ部！を利用するものとします。',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

@@ -21,12 +21,23 @@ import { ReviewData } from '../types/ReviewData';
 import LatestReview from '../components/LatestReview';
 import MostLike from '../components/MostLike';
 import MostReview from '../components/MostReview';
+import { NextSeo } from 'next-seo';
 
 const Trend = () => {
   //24時間以内によく投稿されたタイトル
 
   return (
     <>
+      <NextSeo
+        title="注目のアニメ | アニメ部！"
+        description="レビュー数、ブックマーク数が多いアニメをチェックしよう！"
+        openGraph={{
+          url: 'https://anime-club.online/trend',
+          title: '注目のアニメ | アニメ部！',
+          description:
+            'レビュー数、ブックマーク数が多いアニメをチェックしよう！',
+        }}
+      />
       <Breadcrumbs
         pages={[
           {

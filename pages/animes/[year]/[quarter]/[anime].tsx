@@ -155,7 +155,7 @@ const AnimeWork = (anime: AnimeName) => {
       case 4:
         return '冬';
       default:
-        return 'No value';
+        break;
     }
   };
 
@@ -238,34 +238,50 @@ const AnimeWork = (anime: AnimeName) => {
     <>
       <NextSeo
         title={
-          animeYear + quarter() + '年放送・配信のアニメ作品一覧 | アニメ部！'
+          'アニメ『' +
+          animeTitle +
+          '』の感想・レビュー[' +
+          sumReviewCount +
+          '件] | アニメ部！'
         }
         description={
-          animeYear +
-          ' ' +
-          quarter() +
-          '年放送・配信のアニメを' +
-          animes.length +
-          '作品掲載中。'
+          'レビュー数：' +
+          sumReviewCount +
+          '件 ／ 平均スコア：' +
+          reviewAverage() +
+          '点'
         }
         openGraph={{
           url:
             'https://anime-club.online/animes/' +
             animeYear +
             '/' +
-            animeQuarter,
+            animeQuarter +
+            '/' +
+            animeTitle,
           title:
-            animeYear +
-            ' ' +
-            quarter() +
-            '年放送・配信のアニメ作品一覧 | アニメ部！',
+            'アニメ『' +
+            animeTitle +
+            '』の感想・レビュー[' +
+            sumReviewCount +
+            '件] | アニメ部！',
           description:
-            animeYear +
-            ' ' +
-            quarter() +
-            '年放送・配信のアニメを' +
-            animes.length +
-            '作品掲載中。',
+            'レビュー数：' +
+            sumReviewCount +
+            '件 ／ 平均スコア：' +
+            reviewAverage() +
+            '点',
+          images: [
+            {
+              url:
+                'https://raw.githubusercontent.com/nehiro/animeb-public/main/images/' +
+                `${animeInfo?.title}` +
+                '.jpg',
+              width: 100,
+              height: 150,
+              alt: animeInfo?.title,
+            },
+          ],
         }}
       />
       <Breadcrumbs

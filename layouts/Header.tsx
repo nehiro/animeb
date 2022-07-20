@@ -194,14 +194,14 @@ const Header = ({ toggleSideNav }: { toggleSideNav: VoidFunction }) => {
                                     </span>
                                   </a>
                                 </Link> */}
-                                <Link href="/cheer">
+                                {/* <Link href="/cheer">
                                   <a>
                                     <i className="mr-1.5 leading-none">
                                       <HeartIcon className="inline-block h-5 w-5 text-purple" />
                                     </i>
                                     <span className="text-sm">応援する</span>
                                   </a>
-                                </Link>
+                                </Link> */}
                               </div>
                               <div className="bg-gray-100 px-5 py-6 sm:py-4 sm:px-6">
                                 <button

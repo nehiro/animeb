@@ -1,6 +1,6 @@
 export const Site = () => {
-  // return { origin: 'https://anime-club.online' };
-  return { origin: 'http://localhost:3000' };
+  return { origin: 'https://anime-club.online' };
+  // return { origin: 'http://localhost:3000' };
   // console.log(
   //   process.env.NEXT_PUBLIC_PROD,
   //   'process.env.NEXT_PUBLIC_PROD SITE'
